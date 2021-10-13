@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "809670957662",
+    "project_id": "ags-ims",
+    "storage_bucket": "ags-ims.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809670957662:android:8e83a1196e7600a16a32cf",
+        "android_client_info": {
+          "package_name": "com.orbitai.ags_ims"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809670957662-4duug7g9ihr7p85b5u934bl1j94sk174.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAcSHAto_rFfzA3B5f09HkaUVLK9AWJRE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "809670957662-4duug7g9ihr7p85b5u934bl1j94sk174.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
