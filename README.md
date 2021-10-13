@@ -1,6 +1,8 @@
 # AGS IMS
 Cross Platform Cloud Based Inventory Management System for AGS. Made by Orbit Ai.
 
+# Note
+- AGS or Boomflex personnel must not edit any file or any content in this Github repository.
 
 # Pre-Requisites
 - Android Studio 4.1
