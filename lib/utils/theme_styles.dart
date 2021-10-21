@@ -12,30 +12,56 @@ class Styles {
     BuildContext context,
   }) {
     Color primary;
+    Color primaryLight;
     Color accent;
     Color primaryDark;
     Color buttonColorLight;
 
     primary = Color(0xff00274D);
+    primaryLight = Color(0xffB3DAFF);
     accent = Color(0xffFF8088);
     primaryDark = Color(0xff000D1A);
     buttonColorLight = Colors.blueAccent[100];
+
+    final primaryVariant = Color(0xffB3DAFF);
+    final secondary = Color(0xffFF8088);
+    final secondaryVariant = Color(0xffFF1A29);
+    final surface = Color(0xffFAFAFA);
+    final background = Color(0xffFAFAFA);
+    final error = Color(0xffE6000F);
+    final onPrimary = Color(0xffFFFFFF);
+    final onSecondary = Color(0xffFF1A29);
+    final onSurface = Color(0xff000D1A);
+    final onBackground = Color(0xff000D1A);
+    final onError = Color(0xffFFE5E7);
 
     return ThemeData(
       brightness: Brightness.light,
       primaryColor: primary,
       accentColor: accent,
       primaryColorDark: primaryDark,
-      primaryColorLight: primary,
+      primaryColorLight: primaryLight,
+      colorScheme: ColorScheme(
+          primary: primary,
+          primaryVariant: primaryVariant,
+          secondary: secondary,
+          secondaryVariant: secondaryVariant,
+          surface: surface,
+          background: background,
+          error: error,
+          onPrimary: onPrimary,
+          onSecondary: onSecondary,
+          onSurface: onSurface,
+          onBackground: onBackground,
+          onError: onError,
+          brightness: Brightness.light),
       fontFamily: 'ProductSans',
       unselectedWidgetColor: Colors.black12,
       buttonColor: buttonColorLight,
       focusColor: primary,
       cardColor: Theme.of(context).canvasColor,
       progressIndicatorTheme: ProgressIndicatorThemeData(
-        color: accent,
-        linearTrackColor: accent.withAlpha(50)
-      ),
+          color: accent, linearTrackColor: accent.withAlpha(50)),
       cursorColor: primary,
       dialogBackgroundColor: Theme.of(context).canvasColor,
       buttonBarTheme: ButtonBarThemeData(
@@ -57,8 +83,7 @@ class Styles {
               fontSize: Theme.of(context).textTheme.bodyText1.fontSize),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(24.0),
-              side: BorderSide(
-                  width: 1, color: Colors.black.withAlpha(20))),
+              side: BorderSide(width: 1, color: Colors.black.withAlpha(20))),
           elevation: 12),
       textTheme: TextTheme(
         headline1: TextStyle(
@@ -114,8 +139,7 @@ class Styles {
         color: Theme.of(context).canvasColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0),
-            side:
-            BorderSide(width: 1, color: Colors.black.withAlpha(40))),
+            side: BorderSide(width: 1, color: Colors.black.withAlpha(40))),
         shadowColor: Colors.black.withAlpha(60),
         elevation: 0,
       ),
@@ -124,7 +148,7 @@ class Styles {
         focusColor: primary,
         highlightColor: primary,
         hoverColor: primary,
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(14),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
         ),
@@ -132,7 +156,7 @@ class Styles {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           primary: primary,
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(14),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(12)),
           ),
@@ -141,7 +165,7 @@ class Styles {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           primary: primary,
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(14),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(12)),
           ),
@@ -150,20 +174,19 @@ class Styles {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           primary: primary,
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(14),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(12)),
           ),
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        disabledElevation: 0,
-        elevation: 0,
-        focusElevation: 0,
-        highlightElevation: 12,
-        backgroundColor: accent,
-        foregroundColor: primaryDark
-      ),
+          disabledElevation: 0,
+          elevation: 0,
+          focusElevation: 0,
+          highlightElevation: 12,
+          backgroundColor: accent,
+          foregroundColor: primaryDark),
     );
   }
 

@@ -45,99 +45,98 @@ class BaseUtils {
 
   Future<bool> onBackPressed(
       {BuildContext context,
-        StatefulWidget statefulWidget,
-        String title,
-        String content}) {
+      StatefulWidget statefulWidget,
+      String title,
+      String content}) {
     return showDialog(
-      context: context,
-      builder: (context) => new AlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(
-              "No",
-              style: TextStyle(color: Theme.of(context).primaryColor),
-            ),
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: Text(title),
+            content: Text(content),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(
+                  "No",
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+              ),
+              SizedBox(height: 16),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text(
+                  "Yes",
+                  style: TextStyle(color: Colors.yellow[900]),
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 16),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(
-              "Yes",
-              style: TextStyle(color: Colors.yellow[900]),
-            ),
-          ),
-        ],
-      ),
-    ) ??
+        ) ??
         false;
   }
 
-  Future<bool> cancelRegistration(
-      {@required BuildContext context}) {
+  Future<bool> cancelRegistration({@required BuildContext context}) {
     return showDialog(
-      context: context,
-      builder: (alertContext) => new AlertDialog(
-        title: Text('Cancel Registration'),
-        content: Text(
-            'Do you want to cancel the registration? Any information you have entered fill be deleted.'),
-        actions: <Widget>[
-          TextButton(
-            child: Text(
-              "No",
-              style: TextStyle(color: Theme.of(context).primaryColor),
-            ),
-            onPressed: () => Navigator.of(context).pop(false),
+          context: context,
+          builder: (alertContext) => new AlertDialog(
+            title: Text('Cancel Registration'),
+            content: Text(
+                'Do you want to cancel the registration? Any information you have entered fill be deleted.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  "No",
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+                onPressed: () => Navigator.of(context).pop(false),
+              ),
+              SizedBox(height: 16),
+              TextButton(
+                child: Text(
+                  "Yes",
+                  style: TextStyle(color: Colors.yellow[900]),
+                ),
+                onPressed: () {
+                  Navigator.of(alertContext).pop(false);
+                  _auth.getCurrentUserID() != null
+                      ? UserDetailsViewModel().deleteUserData(
+                          context: context, userID: _auth.getCurrentUserID())
+                      : Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
+                },
+              ),
+            ],
           ),
-          SizedBox(height: 16),
-          TextButton(
-            child: Text(
-              "Yes",
-              style: TextStyle(color: Colors.yellow[900]),
-            ),
-            onPressed: () {
-              Navigator.of(alertContext).pop(false);
-              _auth.getCurrentUserID() != null
-                  ? UserDetailsViewModel().deleteUserData(
-                  context: context, userID: _auth.getCurrentUserID())
-                  : Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => LoginPage()));
-            },
-          ),
-        ],
-      ),
-    ) ??
+        ) ??
         false;
   }
 
   Future<bool> closeApp(BuildContext context) {
     return showDialog(
-      context: context,
-      builder: (context) => new AlertDialog(
-        title: Text('Exit'),
-        content: Text('Are you sure you want to exit?'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(
-              "No",
-              style: TextStyle(color: Colors.blueAccent[400]),
-            ),
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: Text('Exit'),
+            content: Text('Are you sure you want to exit?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(
+                  "No",
+                  style: TextStyle(color: Colors.blueAccent[400]),
+                ),
+              ),
+              SizedBox(height: 16),
+              TextButton(
+                onPressed: () =>
+                    SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
+                child: Text(
+                  "Yes",
+                  style: TextStyle(color: Colors.yellow[900]),
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 16),
-          TextButton(
-            onPressed: () =>
-                SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
-            child: Text(
-              "Yes",
-              style: TextStyle(color: Colors.yellow[900]),
-            ),
-          ),
-        ],
-      ),
-    ) ??
+        ) ??
         false;
   }
 
@@ -167,7 +166,8 @@ class BaseUtils {
   initializeSystemOverlays({@required BuildContext context}) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: Theme.of(context).primaryColorDark, // n
-      systemNavigationBarIconBrightness: Brightness.light, // avigation bar color
+      systemNavigationBarIconBrightness:
+          Brightness.light, // avigation bar color
       statusBarColor: Colors.black.withAlpha(50), //
       statusBarIconBrightness: Brightness.light, // status// bar color
     ));
@@ -178,11 +178,11 @@ class BaseUtils {
 
   Future<File> imageProcessor(
       {@required BuildContext context,
-        @required double ratioY,
-        @required double ratioX}) async {
+      @required double ratioY,
+      @required double ratioX}) async {
     final ImagePicker _picker = ImagePicker();
     XFile pickedMedia =
-    await _picker.pickImage(source: ImageSource.gallery, imageQuality: 90);
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 90);
 
     File imageFile;
     imageFile = File(pickedMedia.path);
@@ -232,6 +232,16 @@ class BaseUtils {
     return imageFile;
   }
 
+  bool isPortrait(BuildContext context) {
+    bool portrait;
+    if (MediaQuery.of(context).orientation == Orientation.portrait) {
+      portrait = true;
+    } else {
+      portrait = false;
+    }
+    return portrait;
+  }
+
   String currentDate() {
     var currentDate = DateTime.now();
     var formattedDate = new DateFormat('MMMM dd, yyyy');
@@ -250,5 +260,69 @@ class BaseUtils {
   String timeStamp() {
     String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
     return timestamp;
+  }
+
+  void snackBarProgress(
+      {@required BuildContext context, @required String content}) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: SizedBox(
+        height: 36,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SpinKitFadingCube(
+              color: Theme.of(context).primaryColorLight,
+              size: 18.0,
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            Text(
+              content,
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
+            )
+          ],
+        ),
+      ),
+      backgroundColor: Theme.of(context).primaryColor,
+    ));
+  }
+
+  void snackBarNoProgress(
+      {@required BuildContext context, @required String content}) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: SizedBox(
+        height: 36,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              content,
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
+            )
+          ],
+        ),
+      ),
+      backgroundColor: Theme.of(context).primaryColor,
+    ));
+  }
+
+  void snackBarError(
+      {@required BuildContext context, @required String content}) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: SizedBox(
+        height: 36,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              content,
+              style: TextStyle(color: Theme.of(context).colorScheme.onError),
+            )
+          ],
+        ),
+      ),
+      backgroundColor: Theme.of(context).colorScheme.error,
+    ));
   }
 }
