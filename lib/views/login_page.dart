@@ -110,8 +110,8 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.all(0),
         height: isDesktop
             ? MediaQuery.of(context).size.height
-            : isTablet
-                ? 500
+            : isMobile || isTablet
+                ? 330
                 : null,
         child: Padding(
           padding: EdgeInsets.all(20),
@@ -130,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
             ? MediaQuery.of(context).size.width / 3.0
             : MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(
-            left: 40, right: 40, top: 0, bottom: isDesktop ? 0 : 40),
+            left: 40, right: 40, top: 0, bottom: isDesktop ? 0 : 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment:
@@ -175,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: _obscurePassword,
             ),
             SizedBox(
-              height: 20,
+              height: 50,
             ),
             isMobile
                 ? Row(

@@ -1,8 +1,9 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors
 
+import 'dart:ffi';
 import 'dart:io';
 
-import 'package:ags_ims/core/view_models/user_details_view_model.dart';
+import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
@@ -99,7 +100,7 @@ class BaseUtils {
                 onPressed: () {
                   Navigator.of(alertContext).pop(false);
                   _auth.getCurrentUserID() != null
-                      ? UserDetailsViewModel().deleteUserData(
+                      ? UserProfileViewModel().deleteUserData(
                           context: context, userID: _auth.getCurrentUserID())
                       : Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => LoginPage()));
@@ -207,27 +208,6 @@ class BaseUtils {
       var fileName = path.basename(croppedFile.path);
       var croppedImage = imageLib.decodeImage(croppedFile.readAsBytesSync());
       croppedImage = imageLib.copyResize(croppedImage, width: 600);
-      Map editedImage = await Navigator.push(
-        context,
-        new MaterialPageRoute(
-          builder: (context) => new PhotoFilterSelector(
-            title: Text("Add Filter"),
-            image: croppedImage,
-            filters: presetFiltersList,
-            filename: fileName,
-            loader: SpinKitThreeBounce(
-              color: Colors.blueAccent[400],
-              size: 10.0,
-            ),
-            fit: BoxFit.contain,
-            appBarColor: Theme.of(context).primaryColor,
-            //circleShape: true,
-          ),
-        ),
-      );
-      if (editedImage != null) {
-        imageFile = editedImage['image_filtered'];
-      }
     }
     return imageFile;
   }
@@ -284,6 +264,7 @@ class BaseUtils {
           ],
         ),
       ),
+      duration: Duration(seconds: 30),
       backgroundColor: Theme.of(context).primaryColor,
     ));
   }

@@ -21,6 +21,8 @@ class UI {
     @required String label,
     @required IconData icon,
     @required Color color,
+    bool autoFocus,
+    int maxLength,
   }) {
     return TextFormField(
       controller: controller,
@@ -31,6 +33,8 @@ class UI {
         }
         return null;
       },
+      maxLength: maxLength != null ? maxLength : null,
+      autofocus: autoFocus != null ? autoFocus : false,
       decoration: InputDecoration(
         icon: Icon(
           icon,

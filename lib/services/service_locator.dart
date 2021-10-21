@@ -1,5 +1,7 @@
 
+import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
 import 'package:ags_ims/services/auth_service.dart';
+import 'package:ags_ims/services/cloud_storage_service.dart';
 import 'package:ags_ims/services/firestore_db_service.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
@@ -12,4 +14,6 @@ void setUpLocator() {
   locator.registerLazySingleton<Auth>(() => Auth());
   locator.registerLazySingleton<UI>(() => UI());
   locator.registerLazySingleton<BaseUtils>(() => BaseUtils());
+  locator.registerLazySingleton<CloudStorageService>(() => CloudStorageService());
+  locator.registerLazySingleton<UserProfileViewModel>(() => UserProfileViewModel());
 }

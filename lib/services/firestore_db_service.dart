@@ -1,6 +1,7 @@
 
 // ignore_for_file: avoid_print
 
+import 'package:ags_ims/core/models/images.dart';
 import 'package:ags_ims/core/models/user_details.dart';
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/firestore_db.dart';
@@ -48,6 +49,29 @@ class FireStoreDBService extends FireStoreDB{
   }
 
   @override
+  Future<void> updateUserDetails({@required UserDetails userDetails}) async {
+    final docRef = _fireStoreDB.collection("users").doc(userDetails.userID);
+
+    _fireStoreDB.runTransaction<void>((transaction) async {
+      var snapshot = await transaction.get<Map<String, dynamic>>(
+        docRef,
+      );
+
+      snapshot.exists
+          ? transaction.update(
+        docRef,
+        userDetails.toJson(),
+      )
+          : transaction.set(
+        docRef,
+        userDetails.toJson(),
+      );
+    }).whenComplete(() {
+      print("FireStore Status: Success");
+    });
+  }
+
+  @override
   Future<void> deleteUserDetails({@required userID}) {
     final DocumentReference docRef =
     _fireStoreDB.collection("users").doc(userID);
@@ -60,5 +84,46 @@ class FireStoreDBService extends FireStoreDB{
           : print("USER DATA DOESN'T EXISTS");
     })
         : null;
+  }
+
+  @override
+  Future<void> setProfilePhoto({@required Images profilePhoto}) async {
+    final docRef = _fireStoreDB
+        .collection("users")
+        .doc(profilePhoto.userID)
+        .collection("profile_images")
+        .doc(profilePhoto.imageID);
+
+    final userInfoRef =
+    _fireStoreDB.collection("users").doc(profilePhoto.userID);
+
+    _fireStoreDB.runTransaction<void>((transaction) async {
+      var snapshot = await transaction.get<Map<String, dynamic>>(
+        userInfoRef,
+      );
+
+      snapshot.exists
+          ? userInfoRef.update({
+        "profileUrl": profilePhoto.url,
+      })
+          : print('User Info not Exists');
+    }).whenComplete(() {
+      print("FireStore Status: Success");
+    });
+
+    _fireStoreDB.runTransaction<void>((transaction) async {
+      var snapshot = await transaction.get<Map<String, dynamic>>(
+        docRef,
+      );
+
+      snapshot.exists
+          ? print('Profile Photo Exists')
+          : transaction.set(
+        docRef,
+        profilePhoto.toJson(),
+      );
+    }).whenComplete(() {
+      print("FireStore Status: Success");
+    });
   }
 }
