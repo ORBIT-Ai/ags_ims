@@ -45,9 +45,12 @@ class UserProfileViewModel {
           imageFile: imageFile,
           userID: userID,
         ).then((value) {
-          updateUserInfo(context: context, userID: userID, url: value).whenComplete(() {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => HomePage()));
+          updateUserInfo(context: context, userID: userID, url: value)
+              .whenComplete(() {
+            Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => HomePage()));
+            BaseUtils().snackBarNoProgress(
+                context: context, content: "Registered Successfully");
           });
         });
       });

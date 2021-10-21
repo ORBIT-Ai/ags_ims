@@ -35,30 +35,30 @@ class Auth {
   }
 
   Future<void> signInEmailPassword(
-      BuildContext context,
-      GlobalKey<FormState> _loginFormKey,
-      TextEditingController emailInputController,
-      TextEditingController pwdInputController,
-      ) async {
+    BuildContext context,
+    GlobalKey<FormState> _loginFormKey,
+    TextEditingController emailInputController,
+    TextEditingController pwdInputController,
+  ) async {
     if (_loginFormKey.currentState.validate()) {
       FirebaseAuth.instance
           .signInWithEmailAndPassword(
-          email: emailInputController.text,
-          password: pwdInputController.text)
+              email: emailInputController.text,
+              password: pwdInputController.text)
           .then((currentUser) {
-        if(currentUser != null){
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => HomePage()));
+        if (currentUser != null) {
+          Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => HomePage()));
+          BaseUtils().snackBarNoProgress(
+              context: context, content: "Successfully Logged In");
         } else {
           BaseUtils().errorDialog(context,
               "The account may not exists or the password is invalid.");
         }
       }).catchError((err) => {
-        BaseUtils().errorDialog(context,
-            "The account may not exists or the password is invalid.")
-      });
+                BaseUtils().errorDialog(context,
+                    "The account may not exists or the password is invalid.")
+              });
     }
   }
 

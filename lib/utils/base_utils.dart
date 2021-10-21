@@ -264,7 +264,7 @@ class BaseUtils {
           ],
         ),
       ),
-      duration: Duration(seconds: 30),
+      //duration: Duration(seconds: 30),
       backgroundColor: Theme.of(context).primaryColor,
     ));
   }
