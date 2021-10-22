@@ -143,60 +143,78 @@ class _HomePageState extends State<HomePage> {
                           userID: _auth.getCurrentUserID()),
                       builder:
                           (context, AsyncSnapshot<UserDetails> userDetails) {
-                        return userDetails.hasData ? Column(
-                          children: [
-                            SizedBox(
-                              height: 100,
-                              width: 100,
-                              child: _ui.profilePhoto(
-                                context: context,
-                                profileUrl: userDetails.data.profileUrl,
-                                filterQuality: FilterQuality.medium,
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            _ui.headlineMedium(
-                              context: context,
-                              content: userDetails.data.userName,
-                              color: Theme.of(context).colorScheme.primary,
-                              isDesktop: false,
-                            ),
-                            SizedBox(height: 10),
-                            Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
-                                side: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 1,
-                                ),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(8),
-                                child: _ui.caption(
-                                  context: context,
-                                  content: userDetails.data.position.trim(),
-                                  color: Theme.of(context).colorScheme.primary,
-                                  isDesktop: false,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ) : Container();
+                        return userDetails.hasData
+                            ? Column(
+                                children: [
+                                  SizedBox(
+                                    height: 100,
+                                    width: 100,
+                                    child: _ui.profilePhoto(
+                                      context: context,
+                                      profileUrl: userDetails.data.profileUrl,
+                                      filterQuality: FilterQuality.medium,
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+                                  _ui.headlineMedium(
+                                    context: context,
+                                    content: userDetails.data.userName,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    isDesktop: false,
+                                  ),
+                                  SizedBox(height: 10),
+                                  Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(24),
+                                      side: BorderSide(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8),
+                                      child: _ui.caption(
+                                        context: context,
+                                        content:
+                                            userDetails.data.position.trim(),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        isDesktop: false,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Container();
                       }),
                 ),
               ),
               ListTile(
+                tileColor: _title == "Home"
+                    ? Theme.of(context).primaryColorLight
+                    : null,
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(
                       Icons.home_rounded,
-                      color: Colors.grey,
+                      color: _title == "Home"
+                          ? Theme.of(context).primaryColor
+                          : Colors.grey,
                     ),
                     SizedBox(
                       width: 20,
                     ),
-                    Text(HomeMainPage().title)
+                    Text(
+                      HomeMainPage().title,
+                      style: TextStyle(
+                        color: _title == "Home"
+                            ? Theme.of(context).primaryColor
+                            : null,
+                      ),
+                    )
                   ],
                 ),
                 onTap: () {
@@ -211,17 +229,29 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               ListTile(
+                tileColor: _title == "Stocks"
+                    ? Theme.of(context).primaryColorLight
+                    : null,
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(
                       Icons.archive_rounded,
-                      color: Colors.grey,
+                      color: _title == "Stocks"
+                          ? Theme.of(context).primaryColor
+                          : Colors.grey,
                     ),
                     SizedBox(
                       width: 20,
                     ),
-                    Text(StocksPage().title)
+                    Text(
+                      StocksPage().title,
+                      style: TextStyle(
+                        color: _title == "Stocks"
+                            ? Theme.of(context).primaryColor
+                            : null,
+                      ),
+                    )
                   ],
                 ),
                 onTap: () {
@@ -236,17 +266,29 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               ListTile(
+                tileColor: _title == "Sales"
+                    ? Theme.of(context).primaryColorLight
+                    : null,
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(
                       Icons.shopping_bag_rounded,
-                      color: Colors.grey,
+                      color: _title == "Sales"
+                          ? Theme.of(context).primaryColor
+                          : Colors.grey,
                     ),
                     SizedBox(
                       width: 20,
                     ),
-                    Text(SalesPage().title)
+                    Text(
+                      SalesPage().title,
+                      style: TextStyle(
+                        color: _title == "Sales"
+                            ? Theme.of(context).primaryColor
+                            : null,
+                      ),
+                    )
                   ],
                 ),
                 onTap: () {
@@ -261,17 +303,29 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               ListTile(
+                tileColor: _title == "Scanner"
+                    ? Theme.of(context).primaryColorLight
+                    : null,
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(
                       Icons.camera_rounded,
-                      color: Colors.grey,
+                      color: _title == "Scanner"
+                          ? Theme.of(context).primaryColor
+                          : Colors.grey,
                     ),
                     SizedBox(
                       width: 20,
                     ),
-                    Text(ScannerPage().title)
+                    Text(
+                      ScannerPage().title,
+                      style: TextStyle(
+                        color: _title == "Scanner"
+                            ? Theme.of(context).primaryColor
+                            : null,
+                      ),
+                    )
                   ],
                 ),
                 onTap: () {
