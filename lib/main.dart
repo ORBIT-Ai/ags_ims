@@ -23,9 +23,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Yder',
+      title: 'AGS IMS',
       theme: Theme.of(context),
-      home: MainPage(title: 'Yder'),
+      home: MainPage(title: 'AGS IMS'),
     );
   }
 }
