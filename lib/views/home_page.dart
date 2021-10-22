@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                 : Stack(
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.only(top: 56),
+                        padding: EdgeInsets.only(top: 0),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

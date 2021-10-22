@@ -342,7 +342,7 @@ class UI {
             : Theme.of(context).textTheme.headline4.fontSize,
         color: color,
       ),
-      maxLines: 5,
+      maxLines: null,
       overflow: TextOverflow.visible,
       textAlign: textAlign,
     );
@@ -931,71 +931,119 @@ class UI {
     @required bool isDesktop,
     void function(),
   }) {
-    String asset = page == "feeds"
-        ? 'feeds.png'
-        : page == "create_insight"
-            ? 'create_insight.png'
-            : page == "insight_create"
-                ? 'create_insight.png'
-                : page == "connections"
-                    ? 'connections.png'
-                    : page == "feeds"
-                        ? 'feeds.png'
-                        : page == "notifications"
-                            ? 'notifications.png'
-                            : page == "marketplace"
-                                ? 'marketplace.png'
-                                : page == "menu"
-                                    ? 'menu.png'
-                                    : '';
+    String asset = page == "home"
+        ? 'home_vector.png'
+        : page == "stocks"
+            ? 'stocks_vector.png'
+            : page == "sales"
+                ? 'sales_vector.png'
+                : page == "on_hand"
+                    ? 'onhand_vector.png'
+                    : page == "stock_out"
+                        ? 'stockout_vector.png'
+                        : page == "scanner"
+                            ? 'scanner_vector.png'
+                            : page == "print"
+                                ? 'print_vector.png'
+                                : page == "account"
+                                    ? 'account_vector.png'
+                                    : page == "about"
+                                        ? 'about_vector.png'
+                                        : page == "history"
+                                            ? 'history_vector.png'
+                                            : page == "help"
+                                                ? 'help_vector.png'
+                                                : '';
     return Card(
       margin: EdgeInsets.only(bottom: 0, left: 10, right: 10),
       color: Theme.of(context).canvasColor,
       child: Padding(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.only(top: 0, right: 20, left: 20, bottom: 20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: isDesktop
+              ? CrossAxisAlignment.stretch
+              : CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Image.asset(
-                  'assets/images/$asset',
-                  width: 150,
-                  height: 150,
-                  color: Theme.of(context).primaryColor,
-                  colorBlendMode: BlendMode.modulate,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            isDesktop
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      headlineMedium(
-                          context: context,
-                          content: header,
-                          color: Theme.of(context).primaryColor,
-                          isDesktop: isDesktop),
-                      SizedBox(
-                        height: 5,
+                      Image.asset(
+                        'assets/images/$asset',
+                        width: 200,
+                        height: 150,
+                        color: Theme.of(context).primaryColorLight,
+                        colorBlendMode: BlendMode.modulate,
                       ),
-                      headlineSmall(
-                          context: context,
-                          content: subhead,
-                          color: Theme.of(context).textTheme.subtitle2.color,
-                          isDesktop: isDesktop),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            headlineMedium(
+                                context: context,
+                                content: header,
+                                color: Theme.of(context).primaryColor,
+                                isDesktop: isDesktop),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            headlineSmall(
+                                context: context,
+                                content: subhead,
+                                color:
+                                    Theme.of(context).textTheme.subtitle2.color,
+                                isDesktop: isDesktop,
+                                textAlign: TextAlign.justify),
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        'assets/images/$asset',
+                        width: 300,
+                        height: 250,
+                        color: Theme.of(context).primaryColorLight,
+                        colorBlendMode: BlendMode.modulate,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          headlineMedium(
+                              context: context,
+                              content: header,
+                              color: Theme.of(context).primaryColor,
+                              isDesktop: isDesktop),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          headlineSmall(
+                              context: context,
+                              content: subhead,
+                              color:
+                                  Theme.of(context).textTheme.subtitle2.color,
+                              isDesktop: isDesktop,
+                              textAlign: TextAlign.justify),
+                        ],
+                      ),
                     ],
                   ),
-                )
-              ],
-            ),
             SizedBox(
-              height: 10,
+              height: hasButton ? 10 : 0,
             ),
             hasButton != null && hasButton
                 ? outlinedButtonIcon(
