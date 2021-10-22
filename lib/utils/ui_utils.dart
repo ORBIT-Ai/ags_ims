@@ -598,7 +598,7 @@ class UI {
   }
 
   Widget profilePhoto(
-      {BuildContext context, String profileUrl, FilterQuality filterQuality}) {
+      {@required BuildContext context, @required String profileUrl, @required FilterQuality filterQuality}) {
     return CircleAvatar(
       backgroundColor: Theme.of(context).canvasColor,
       child: ClipOval(
@@ -611,7 +611,9 @@ class UI {
             imageUrl: profileUrl == null || profileUrl == ""
                 ? "https://firebasestorage.googleapis.com/v0/b/orbitai-yder.appspot.com/o/assets%2Fsample_profile.jpg?alt=media&token=1e6be4ca-a800-42c1-968e-2de962273116"
                 : profileUrl,
-            fit: BoxFit.fitHeight,
+            fit: BoxFit.cover,
+            width: 100,
+            height: 100,
             filterQuality: filterQuality,
           )),
       radius: 90,
