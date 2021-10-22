@@ -2,6 +2,7 @@
 
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/views/home_page.dart';
+import 'package:ags_ims/views/login_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +31,11 @@ class Auth {
     user != null ? user.delete() : print("NO USER AUTHENTICATED");
   }
 
-  Future<void> signOut() async {
-    _auth..signOut();
+  Future<void> signOut({@required BuildContext context}) async {
+    _auth.signOut().whenComplete(() {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
+    });
   }
 
   Future<void> signInEmailPassword(
@@ -48,7 +52,7 @@ class Auth {
           .then((currentUser) {
         if (currentUser != null) {
           Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => HomePage()));
+              context, MaterialPageRoute(builder: (context) => HomePage()));
           BaseUtils().snackBarNoProgress(
               context: context, content: "Successfully Logged In");
         } else {

@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _title = "Dashboard";
+    _title = "Home";
     _appBarIcon = Icons.dashboard_rounded;
   }
 
@@ -352,7 +352,7 @@ class _HomePageState extends State<HomePage> {
                 foregroundColor: Theme.of(context).colorScheme.secondary,
                 icon: Icons.exit_to_app_rounded,
                 function: () {
-                  _auth.signOut();
+                  _auth.signOut(context: context);
                 },
               ))
         ],
