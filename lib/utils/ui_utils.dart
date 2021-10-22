@@ -1,4 +1,3 @@
-
 // ignore_for_file: unnecessary_string_interpolations, prefer_if_null_operators, unnecessary_new, use_function_type_syntax_for_parameters, prefer_const_constructors, avoid_unnecessary_containers, avoid_print, sized_box_for_whitespace
 
 import 'package:ags_ims/services/auth_service.dart';
@@ -56,12 +55,12 @@ class UI {
 
   TextFormField textFormFieldSMSCode(
       {@required BuildContext context,
-        @required TextEditingController controller,
-        @required TextInputType keyboardType,
-        @required String label,
-        @required IconData icon,
-        @required Color color,
-        @required void verifyCode()}) {
+      @required TextEditingController controller,
+      @required TextInputType keyboardType,
+      @required String label,
+      @required IconData icon,
+      @required Color color,
+      @required void verifyCode()}) {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
@@ -193,9 +192,14 @@ class UI {
         labelStyle: TextStyle(
           color: color != null ? color : Theme.of(context).primaryColor,
         ),
-        suffixIcon: Icon(suffixIcon, color: suffixIconColor,),
+        suffixIcon: Icon(
+          suffixIcon,
+          color: suffixIconColor,
+        ),
         helperText: helperText != null ? '$helperText' : '',
-        helperStyle: TextStyle(color: Theme.of(context).primaryColor,),
+        helperStyle: TextStyle(
+          color: Theme.of(context).primaryColor,
+        ),
         helperMaxLines: 4,
         hintStyle: TextStyle(
             color: color != null ? color : Theme.of(context).primaryColor),
@@ -211,8 +215,8 @@ class UI {
 
   TextField textFieldTransNoIcon(
       {@required BuildContext context,
-        @required TextEditingController controller,
-        @required Color color}) {
+      @required TextEditingController controller,
+      @required Color color}) {
     return TextField(
       controller: controller,
       style: TextStyle(
@@ -227,10 +231,10 @@ class UI {
 
   TextField textFieldTransIcon(
       {@required BuildContext context,
-        @required TextEditingController controller,
-        @required IconData icon,
-        @required Color color,
-        String hint}) {
+      @required TextEditingController controller,
+      @required IconData icon,
+      @required Color color,
+      String hint}) {
     return TextField(
       controller: controller,
       style: TextStyle(
@@ -254,11 +258,11 @@ class UI {
 
   TextField textFieldTransIconLabel(
       {@required BuildContext context,
-        @required TextEditingController controller,
-        @required IconData icon,
-        @required Color color,
-        @required String label,
-        void onChanged(text)}) {
+      @required TextEditingController controller,
+      @required IconData icon,
+      @required Color color,
+      @required String label,
+      void onChanged(text)}) {
     return TextField(
       controller: controller,
       style: TextStyle(
@@ -451,9 +455,9 @@ class UI {
 
   Widget thumbnailLarge(
       {@required BuildContext context,
-        @required IconData icon,
-        @required Color color,
-        @required isDesktop}) {
+      @required IconData icon,
+      @required Color color,
+      @required isDesktop}) {
     return ClipOval(
       child: Container(
           width: isDesktop ? 144 : 72,
@@ -469,9 +473,9 @@ class UI {
 
   Widget thumbnailMedium(
       {@required BuildContext context,
-        @required IconData icon,
-        @required Color color,
-        @required isDesktop}) {
+      @required IconData icon,
+      @required Color color,
+      @required isDesktop}) {
     return ClipOval(
       child: Container(
           width: isDesktop ? 112 : 56,
@@ -487,9 +491,9 @@ class UI {
 
   Widget thumbnailSmall(
       {@required BuildContext context,
-        @required IconData icon,
-        @required Color color,
-        @required isDesktop}) {
+      @required IconData icon,
+      @required Color color,
+      @required isDesktop}) {
     return ClipOval(
       child: Container(
           width: isDesktop ? 72 : 36,
@@ -505,56 +509,56 @@ class UI {
 
   Widget infoNoDataFetched(
       {@required BuildContext context,
-        @required isDesktop,
-        @required String content}) {
+      @required isDesktop,
+      @required String content}) {
     return Container(
       padding: EdgeInsets.all(50),
       child: isDesktop
           ? Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          UI().thumbnailSmall(
-              context: context,
-              icon: Icons.info_outline_rounded,
-              color: Colors.grey,
-              isDesktop: isDesktop),
-          SizedBox(
-            height: 20,
-          ),
-          UI().headlineSmall(
-              context: context,
-              content: content,
-              color: Colors.grey,
-              isDesktop: isDesktop),
-        ],
-      )
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                UI().thumbnailSmall(
+                    context: context,
+                    icon: Icons.info_outline_rounded,
+                    color: Colors.grey,
+                    isDesktop: isDesktop),
+                SizedBox(
+                  height: 20,
+                ),
+                UI().headlineSmall(
+                    context: context,
+                    content: content,
+                    color: Colors.grey,
+                    isDesktop: isDesktop),
+              ],
+            )
           : Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          UI().thumbnailSmall(
-              context: context,
-              icon: Icons.info_outline_rounded,
-              color: Colors.grey,
-              isDesktop: isDesktop),
-          SizedBox(
-            width: 10,
-          ),
-          UI().headlineSmall(
-              context: context,
-              content: content,
-              color: Colors.grey,
-              isDesktop: isDesktop),
-        ],
-      ),
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                UI().thumbnailSmall(
+                    context: context,
+                    icon: Icons.info_outline_rounded,
+                    color: Colors.grey,
+                    isDesktop: isDesktop),
+                SizedBox(
+                  width: 10,
+                ),
+                UI().headlineSmall(
+                    context: context,
+                    content: content,
+                    color: Colors.grey,
+                    isDesktop: isDesktop),
+              ],
+            ),
     );
   }
 
   Widget deviceNotSupported(
       {@required BuildContext context,
-        @required isDesktop,
-        @required String content}) {
+      @required isDesktop,
+      @required String content}) {
     return Container(
         padding: EdgeInsets.all(50),
         child: Column(
@@ -598,24 +602,29 @@ class UI {
   }
 
   Widget profilePhoto(
-      {@required BuildContext context, @required String profileUrl, @required FilterQuality filterQuality}) {
+      {@required BuildContext context,
+      @required String profileUrl,
+      @required FilterQuality filterQuality}) {
     return CircleAvatar(
       backgroundColor: Theme.of(context).canvasColor,
       child: ClipOval(
           child: CachedNetworkImage(
-            fadeInCurve: Curves.fastLinearToSlowEaseIn,
-            fadeOutCurve: Curves.easeOut,
-            // here `bytes` is a Uint8List containing the bytes for the in-memory image
-            placeholder: (context, url) =>
-                Image.asset("assets/images/sample_profile.jpg"),
-            imageUrl: profileUrl == null || profileUrl == ""
-                ? "https://firebasestorage.googleapis.com/v0/b/orbitai-yder.appspot.com/o/assets%2Fsample_profile.jpg?alt=media&token=1e6be4ca-a800-42c1-968e-2de962273116"
-                : profileUrl,
-            fit: BoxFit.cover,
-            width: 100,
-            height: 100,
-            filterQuality: filterQuality,
-          )),
+        fadeInCurve: Curves.fastLinearToSlowEaseIn,
+        fadeOutCurve: Curves.easeOut,
+        // here `bytes` is a Uint8List containing the bytes for the in-memory image
+        placeholder: (context, url) => Image.asset(
+          "assets/images/sample_profile.jpg",
+          color: Theme.of(context).primaryColor,
+          colorBlendMode: BlendMode.modulate,
+        ),
+        imageUrl: profileUrl == null || profileUrl == ""
+            ? "https://firebasestorage.googleapis.com/v0/b/orbitai-yder.appspot.com/o/assets%2Fsample_profile.jpg?alt=media&token=1e6be4ca-a800-42c1-968e-2de962273116"
+            : profileUrl,
+        fit: BoxFit.cover,
+        width: 100,
+        height: 100,
+        filterQuality: filterQuality,
+      )),
       radius: 90,
     );
   }
@@ -626,28 +635,28 @@ class UI {
       backgroundColor: Theme.of(context).canvasColor,
       child: ClipOval(
           child: CachedNetworkImage(
-            fadeInCurve: Curves.fastLinearToSlowEaseIn,
-            fadeOutCurve: Curves.easeOut,
-            // here `bytes` is a Uint8List containing the bytes for the in-memory image
-            placeholder: (context, url) =>
-                Image.asset("assets/images/sample_profile.jpg"),
-            imageUrl: profileUrl == null || profileUrl == ""
-                ? "https://firebasestorage.googleapis.com/v0/b/orbitai-yder.appspot.com/o/assets%2Fsample_profile.jpg?alt=media&token=1e6be4ca-a800-42c1-968e-2de962273116"
-                : profileUrl,
-            filterQuality: filterQuality,
-            fit: BoxFit.fitHeight,
-          )),
+        fadeInCurve: Curves.fastLinearToSlowEaseIn,
+        fadeOutCurve: Curves.easeOut,
+        // here `bytes` is a Uint8List containing the bytes for the in-memory image
+        placeholder: (context, url) =>
+            Image.asset("assets/images/sample_profile.jpg"),
+        imageUrl: profileUrl == null || profileUrl == ""
+            ? "https://firebasestorage.googleapis.com/v0/b/orbitai-yder.appspot.com/o/assets%2Fsample_profile.jpg?alt=media&token=1e6be4ca-a800-42c1-968e-2de962273116"
+            : profileUrl,
+        filterQuality: filterQuality,
+        fit: BoxFit.fitHeight,
+      )),
       radius: 24,
     );
   }
 
   Widget textButtonIcon(
       {@required BuildContext context,
-        @required String label,
-        @required Color backgroundColor,
-        @required Color foregroundColor,
-        @required IconData icon,
-        @required void function()}) {
+      @required String label,
+      @required Color backgroundColor,
+      @required Color foregroundColor,
+      @required IconData icon,
+      @required void function()}) {
     // ignore: deprecated_member_use
     return TextButton.icon(
       style: TextButton.styleFrom(
@@ -665,24 +674,24 @@ class UI {
       label: label == ''
           ? Container()
           : Text(
-        label,
-        style: TextStyle(
-          color: foregroundColor,
-          fontWeight: FontWeight.bold,
-        ),
-        textAlign: TextAlign.left,
-      ),
+              label,
+              style: TextStyle(
+                color: foregroundColor,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.left,
+            ),
       onPressed: function,
     );
   }
 
   Widget elevatedButtonIcon(
       {@required BuildContext context,
-        @required String label,
-        @required Color backgroundColor,
-        @required Color foregroundColor,
-        @required IconData icon,
-        @required void function()}) {
+      @required String label,
+      @required Color backgroundColor,
+      @required Color foregroundColor,
+      @required IconData icon,
+      @required void function()}) {
     // ignore: deprecated_member_use
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
@@ -692,18 +701,18 @@ class UI {
       icon: Icon(icon, color: foregroundColor),
       label: Text(label,
           style:
-          TextStyle(color: foregroundColor, fontWeight: FontWeight.bold)),
+              TextStyle(color: foregroundColor, fontWeight: FontWeight.bold)),
       onPressed: function,
     );
   }
 
   Widget outlinedButtonIcon(
       {@required BuildContext context,
-        @required String label,
-        @required Color backgroundColor,
-        @required Color foregroundColor,
-        @required IconData icon,
-        @required void function()}) {
+      @required String label,
+      @required Color backgroundColor,
+      @required Color foregroundColor,
+      @required IconData icon,
+      @required void function()}) {
     // ignore: deprecated_member_use
     return OutlinedButton.icon(
       style: OutlinedButton.styleFrom(
@@ -714,7 +723,7 @@ class UI {
       icon: Icon(icon, color: foregroundColor),
       label: Text(label,
           style:
-          TextStyle(color: foregroundColor, fontWeight: FontWeight.bold)),
+              TextStyle(color: foregroundColor, fontWeight: FontWeight.bold)),
       onPressed: function,
     );
   }
@@ -745,8 +754,8 @@ class UI {
                 size: ratio == "small"
                     ? 14
                     : ratio == "medium"
-                    ? 24
-                    : 36,
+                        ? 24
+                        : 36,
               ),
             ),
           ),
@@ -755,24 +764,24 @@ class UI {
           ),
           ratio == "small"
               ? subheadSmall(
-            context: context,
-            content: content,
-            color: contentColor,
-            isDesktop: isDesktop,
-          )
+                  context: context,
+                  content: content,
+                  color: contentColor,
+                  isDesktop: isDesktop,
+                )
               : ratio == "medium"
-              ? subheadMedium(
-            context: context,
-            content: content,
-            color: contentColor,
-            isDesktop: isDesktop,
-          )
-              : subheadLarge(
-            context: context,
-            content: content,
-            color: contentColor,
-            isDesktop: isDesktop,
-          ),
+                  ? subheadMedium(
+                      context: context,
+                      content: content,
+                      color: contentColor,
+                      isDesktop: isDesktop,
+                    )
+                  : subheadLarge(
+                      context: context,
+                      content: content,
+                      color: contentColor,
+                      isDesktop: isDesktop,
+                    ),
         ],
       ),
     );
@@ -797,32 +806,32 @@ class UI {
           size: ratio == "small"
               ? 16
               : ratio == "medium"
-              ? 24
-              : 36,
+                  ? 24
+                  : 36,
         ),
         SizedBox(
           width: 5,
         ),
         ratio == "small"
             ? subheadSmall(
-          context: context,
-          content: content,
-          color: contentColor,
-          isDesktop: isDesktop,
-        )
+                context: context,
+                content: content,
+                color: contentColor,
+                isDesktop: isDesktop,
+              )
             : ratio == "medium"
-            ? subheadMedium(
-          context: context,
-          content: content,
-          color: contentColor,
-          isDesktop: isDesktop,
-        )
-            : subheadLarge(
-          context: context,
-          content: content,
-          color: contentColor,
-          isDesktop: isDesktop,
-        ),
+                ? subheadMedium(
+                    context: context,
+                    content: content,
+                    color: contentColor,
+                    isDesktop: isDesktop,
+                  )
+                : subheadLarge(
+                    context: context,
+                    content: content,
+                    color: contentColor,
+                    isDesktop: isDesktop,
+                  ),
       ],
     );
   }
@@ -838,8 +847,8 @@ class UI {
     double inkRatio = ratio == "small"
         ? 18
         : ratio == "medium"
-        ? 48
-        : 56;
+            ? 48
+            : 56;
     return Ink(
       width: inkRatio,
       height: inkRatio,
@@ -862,8 +871,8 @@ class UI {
           size: ratio == "small"
               ? 14
               : ratio == "medium"
-              ? 24
-              : 36,
+                  ? 24
+                  : 36,
         ),
       ),
     );
@@ -880,8 +889,8 @@ class UI {
     double inkRatio = ratio == "small"
         ? 18
         : ratio == "medium"
-        ? 48
-        : 56;
+            ? 48
+            : 56;
     return Ink(
       width: inkRatio,
       height: inkRatio,
@@ -904,8 +913,8 @@ class UI {
           size: ratio == "small"
               ? 14
               : ratio == "medium"
-              ? 24
-              : 36,
+                  ? 24
+                  : 36,
         ),
       ),
     );
@@ -925,20 +934,20 @@ class UI {
     String asset = page == "feeds"
         ? 'feeds.png'
         : page == "create_insight"
-        ? 'create_insight.png'
-        : page == "insight_create"
-        ? 'create_insight.png'
-        : page == "connections"
-        ? 'connections.png'
-        : page == "feeds"
-        ? 'feeds.png'
-        : page == "notifications"
-        ? 'notifications.png'
-        : page == "marketplace"
-        ? 'marketplace.png'
-        : page == "menu"
-        ? 'menu.png'
-        : '';
+            ? 'create_insight.png'
+            : page == "insight_create"
+                ? 'create_insight.png'
+                : page == "connections"
+                    ? 'connections.png'
+                    : page == "feeds"
+                        ? 'feeds.png'
+                        : page == "notifications"
+                            ? 'notifications.png'
+                            : page == "marketplace"
+                                ? 'marketplace.png'
+                                : page == "menu"
+                                    ? 'menu.png'
+                                    : '';
     return Card(
       margin: EdgeInsets.only(bottom: 0, left: 10, right: 10),
       color: Theme.of(context).canvasColor,
@@ -990,13 +999,13 @@ class UI {
             ),
             hasButton != null && hasButton
                 ? outlinedButtonIcon(
-              context: context,
-              label: buttonText.toUpperCase(),
-              backgroundColor: Theme.of(context).canvasColor,
-              foregroundColor: Theme.of(context).primaryColor,
-              icon: buttonIcon,
-              function: function,
-            )
+                    context: context,
+                    label: buttonText.toUpperCase(),
+                    backgroundColor: Theme.of(context).canvasColor,
+                    foregroundColor: Theme.of(context).primaryColor,
+                    icon: buttonIcon,
+                    function: function,
+                  )
                 : Container()
           ],
         ),
@@ -1006,8 +1015,8 @@ class UI {
 
   Widget bottomSheetHeader(
       {@required BuildContext context,
-        @required String page,
-        @required bool isDesktop}) {
+      @required String page,
+      @required bool isDesktop}) {
     return Container(
       padding: EdgeInsets.all(20),
       child: Row(
@@ -1017,10 +1026,10 @@ class UI {
             icon: page == 'self_intro'
                 ? Icons.person_rounded
                 : page == 'user_post'
-                ? Icons.format_quote_rounded
-                : page == "select_interest"
-                ? Icons.star_rounded
-                : null,
+                    ? Icons.format_quote_rounded
+                    : page == "select_interest"
+                        ? Icons.star_rounded
+                        : null,
             color: Theme.of(context).primaryColor,
             isDesktop: isDesktop,
           ),
@@ -1035,10 +1044,10 @@ class UI {
                 content: page == 'self_intro'
                     ? "Self Intro"
                     : page == 'user_post'
-                    ? 'Post Preferences'
-                    : page == "select_interest"
-                    ? 'Select Interest'
-                    : '',
+                        ? 'Post Preferences'
+                        : page == "select_interest"
+                            ? 'Select Interest'
+                            : '',
                 color: Theme.of(context).primaryColor,
                 isDesktop: isDesktop,
               ),
@@ -1047,10 +1056,10 @@ class UI {
                 content: page == 'self_intro'
                     ? "Few words that describes you."
                     : page == 'user_post'
-                    ? 'What do you want to do with this post?'
-                    : page == "select_interest"
-                    ? 'Choose specific interest based on your post.'
-                    : '',
+                        ? 'What do you want to do with this post?'
+                        : page == "select_interest"
+                            ? 'Choose specific interest based on your post.'
+                            : '',
                 color: null,
                 isDesktop: isDesktop,
               ),
@@ -1076,15 +1085,15 @@ class UI {
       size: size == 'small'
           ? 18
           : size == 'medium'
-          ? 36
-          : 48,
+              ? 36
+              : 48,
     );
   }
 
   Widget mainSearchBar(
       {@required BuildContext context,
-        @required TextEditingController controller,
-        @required void function}) {
+      @required TextEditingController controller,
+      @required void function}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1135,7 +1144,8 @@ class UI {
     );
   }
 
-  Widget loadingProfile({@required BuildContext context, @required bool isDesktop}){
+  Widget loadingProfile(
+      {@required BuildContext context, @required bool isDesktop}) {
     return Container(
       height: 250,
       width: 250,
@@ -1153,7 +1163,7 @@ class UI {
             height: 10,
           ),
           SizedBox(
-            child:  headlineSmall(
+            child: headlineSmall(
               context: context,
               content: "Loading Profile",
               color: Theme.of(context).textTheme.headline6.color,
@@ -1165,16 +1175,19 @@ class UI {
     );
   }
 
-  Widget profileCollectionsHeader({@required BuildContext context, @required String userID, bool isDesktop}){
+  Widget profileCollectionsHeader(
+      {@required BuildContext context,
+      @required String userID,
+      bool isDesktop}) {
     return Container(
-      padding: EdgeInsets.only(left:5, right:5),
+      padding: EdgeInsets.only(left: 5, right: 5),
       child: Card(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(top:20,left:20),
+              padding: EdgeInsets.only(top: 20, left: 20),
               child: headlineMedium(
                 context: context,
                 content: "Collections",
@@ -1184,7 +1197,7 @@ class UI {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top:5,left:20),
+              padding: EdgeInsets.only(top: 5, left: 20),
               child: headlineSmall(
                 context: context,
                 content: "View uploaded photos, videos, and audios.",
@@ -1205,7 +1218,7 @@ class UI {
                     backgroundColor: Colors.transparent,
                     foregroundColor: Theme.of(context).primaryColor,
                     icon: Icons.photo_rounded,
-                    function: (){},
+                    function: () {},
                   ),
                   textButtonIcon(
                     context: context,
@@ -1213,7 +1226,7 @@ class UI {
                     backgroundColor: Colors.transparent,
                     foregroundColor: Theme.of(context).primaryColor,
                     icon: Icons.movie_rounded,
-                    function: (){},
+                    function: () {},
                   ),
                   textButtonIcon(
                     context: context,
@@ -1221,7 +1234,7 @@ class UI {
                     backgroundColor: Colors.transparent,
                     foregroundColor: Theme.of(context).primaryColor,
                     icon: Icons.multitrack_audio_rounded,
-                    function: (){},
+                    function: () {},
                   ),
                   textButtonIcon(
                     context: context,
@@ -1229,7 +1242,7 @@ class UI {
                     backgroundColor: Colors.transparent,
                     foregroundColor: Theme.of(context).primaryColor,
                     icon: Icons.save_rounded,
-                    function: (){},
+                    function: () {},
                   ),
                   textButtonIcon(
                     context: context,
@@ -1237,7 +1250,7 @@ class UI {
                     backgroundColor: Colors.transparent,
                     foregroundColor: Theme.of(context).primaryColor,
                     icon: Icons.archive_rounded,
-                    function: (){},
+                    function: () {},
                   ),
                 ],
               ),

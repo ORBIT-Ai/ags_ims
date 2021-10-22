@@ -143,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                           userID: _auth.getCurrentUserID()),
                       builder:
                           (context, AsyncSnapshot<UserDetails> userDetails) {
-                        return Column(
+                        return userDetails.hasData ? Column(
                           children: [
                             SizedBox(
                               height: 100,
@@ -181,7 +181,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ],
-                        );
+                        ) : Container();
                       }),
                 ),
               ),
