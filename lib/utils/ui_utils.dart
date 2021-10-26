@@ -936,7 +936,7 @@ class UI {
         : page == "stocks"
             ? 'stocks_vector.png'
             : page == "sales"
-                ? 'sales_vector.png'
+                ? 'sale_vector.png'
                 : page == "on_hand"
                     ? 'onhand_vector.png'
                     : page == "stock_out"

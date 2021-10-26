@@ -72,93 +72,96 @@ class _HomeMainPageState extends State<HomeMainPage> {
               isDesktop: isDesktop,
             );
           }),
-      ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: 4,
-          itemBuilder: (context, i) {
-            final icon = i == 0
-                ? Icons.archive_rounded
-                : i == 1
-                    ? Icons.shopping_bag
-                    : i == 2
-                        ? isDesktop
-                            ? Icons.print_rounded
-                            : Icons.camera_rounded
-                        : i == 3
-                            ? Icons.history_rounded
-                            : null;
+      GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: 4,
+        itemBuilder: (context, i) {
+          final icon = i == 0
+              ? Icons.archive_rounded
+              : i == 1
+                  ? Icons.shopping_bag
+                  : i == 2
+                      ? isDesktop
+                          ? Icons.print_rounded
+                          : Icons.camera_rounded
+                      : i == 3
+                          ? Icons.history_rounded
+                          : null;
 
-            final title = i == 0
-                ? "Stocks"
-                : i == 1
-                    ? "Sales"
-                    : i == 2
-                        ? isDesktop
-                            ? "Print"
-                            : "Scanner"
-                        : i == 3
-                            ? "History"
-                            : null;
+          final title = i == 0
+              ? "Stocks"
+              : i == 1
+                  ? "Sales"
+                  : i == 2
+                      ? isDesktop
+                          ? "Print"
+                          : "Scanner"
+                      : i == 3
+                          ? "History"
+                          : null;
 
-            final subhead = i == 0
-                ? "Add, Update and Delete items in the stocks."
-                : i == 1
-                    ? "Review the items that are present in the warehouse and those that are out-of-stock."
-                    : i == 2
-                        ? isDesktop
-                            ? "Export or print daily, weekly, monthly and annual reports."
-                            : "Scan barcodes from specific items and get its details."
-                        : i == 3
-                            ? "View recent actions made by other employees within the ecosystem."
-                            : null;
+          final subhead = i == 0
+              ? "Add, Update and Delete items in the stocks."
+              : i == 1
+                  ? "Review the items that are present in the warehouse and those that are out-of-stock."
+                  : i == 2
+                      ? isDesktop
+                          ? "Export or print daily, weekly, monthly and annual reports."
+                          : "Scan barcodes from specific items and get its details."
+                      : i == 3
+                          ? "View recent actions made by other employees within the ecosystem."
+                          : null;
 
-            return Card(
-              margin: EdgeInsets.only(top: 10, right: 10, left: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(18),
-                        topLeft: Radius.circular(18)),
-                    child: Container(
-                      padding: EdgeInsets.all(30),
-                      color: Theme.of(context).colorScheme.primaryVariant,
-                      child: Icon(
-                        icon,
-                        color: Theme.of(context).primaryColor,
-                        size: isDesktop ? 72 : 48,
-                      ),
+          return Card(
+            margin: EdgeInsets.only(top: 10, right: 10, left: 10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(18),
+                      topLeft: Radius.circular(18)),
+                  child: Container(
+                    padding: EdgeInsets.all(30),
+                    color: Theme.of(context).colorScheme.primaryVariant,
+                    child: Icon(
+                      icon,
+                      color: Theme.of(context).primaryColor,
+                      size: isDesktop ? 72 : 48,
                     ),
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            _ui.headlineMedium(
-                              context: context,
-                              content: title,
-                              color: null,
-                              isDesktop: isDesktop,
-                            ),
-                            _ui.subheadSmall(
-                              context: context,
-                              content: subhead,
-                              color: null,
-                              isDesktop: isDesktop,
-                            ),
-                          ]),
-                    ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _ui.headlineMedium(
+                            context: context,
+                            content: title,
+                            color: null,
+                            isDesktop: isDesktop,
+                          ),
+                          _ui.subheadSmall(
+                            context: context,
+                            content: subhead,
+                            color: null,
+                            isDesktop: isDesktop,
+                          ),
+                        ]),
                   ),
-                ],
-              ),
-            );
-          }),
+                ),
+              ],
+            ),
+          );
+        },
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: isDesktop ? 2 : 1, childAspectRatio: 4 / 1.5),
+      ),
       SizedBox(height: 10),
     ];
   }
