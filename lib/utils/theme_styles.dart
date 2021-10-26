@@ -23,7 +23,7 @@ class Styles {
     primaryDark = Color(0xff000D1A);
     buttonColorLight = Colors.blueAccent[100];
 
-    final primaryVariant = Color(0xffB3DAFF);
+    final primaryVariant = Color(0xffE5F3FF);
     final secondary = Color(0xffFF8088);
     final secondaryVariant = Color(0xffFF1A29);
     final surface = Color(0xffFAFAFA);

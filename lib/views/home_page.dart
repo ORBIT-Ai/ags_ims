@@ -7,7 +7,12 @@ import 'package:ags_ims/services/firestore_db_service.dart';
 import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
+import 'package:ags_ims/views/home_pages/about_page.dart';
+import 'package:ags_ims/views/home_pages/account_page.dart';
+import 'package:ags_ims/views/home_pages/help_page.dart';
+import 'package:ags_ims/views/home_pages/history_page.dart';
 import 'package:ags_ims/views/home_pages/home_main_page.dart';
+import 'package:ags_ims/views/home_pages/print_page.dart';
 import 'package:ags_ims/views/home_pages/sales_page.dart';
 import 'package:ags_ims/views/home_pages/scanner_page.dart';
 import 'package:ags_ims/views/home_pages/stocks_page.dart';
@@ -33,6 +38,10 @@ class _HomePageState extends State<HomePage> {
   var _title;
   var _appBarIcon;
 
+  bool isDesktop;
+  bool isMobile;
+  bool isTablet;
+
   @override
   void initState() {
     super.initState();
@@ -46,11 +55,11 @@ class _HomePageState extends State<HomePage> {
       onWillPop: () => _baseUtils.closeApp(context),
       child: Form(
         child: ResponsiveBuilder(builder: (context, sizingInformation) {
-          bool isDesktop =
+          isDesktop =
               sizingInformation.deviceScreenType == DeviceScreenType.desktop;
-          bool isMobile =
+          isMobile =
               sizingInformation.deviceScreenType == DeviceScreenType.mobile;
-          bool isTablet =
+          isTablet =
               sizingInformation.deviceScreenType == DeviceScreenType.tablet;
           String deviceType = isDesktop
               ? "desktop"
@@ -133,7 +142,7 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               SizedBox(
-                height: 270,
+                height: 250,
                 child: DrawerHeader(
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
@@ -164,24 +173,36 @@ class _HomePageState extends State<HomePage> {
                                     isDesktop: false,
                                   ),
                                   SizedBox(height: 10),
-                                  Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(24),
-                                      side: BorderSide(
-                                        color: Theme.of(context).primaryColor,
-                                        width: 1,
+                                  GestureDetector(
+                                    onTap: (){
+                                      setState(() {
+                                        _currentPage = AccountPage();
+                                        _title = AccountPage().title;
+                                        _appBarIcon = Icons.dashboard_rounded;
+                                        _deviceType == "desktop"
+                                            ? Container()
+                                            : Navigator.pop(context);
+                                      });
+                                    },
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(24),
+                                        side: BorderSide(
+                                          color: Theme.of(context).primaryColor,
+                                          width: 1,
+                                        ),
                                       ),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.all(8),
-                                      child: _ui.caption(
-                                        context: context,
-                                        content:
-                                            userDetails.data.position.trim(),
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        isDesktop: false,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(8),
+                                        child: _ui.caption(
+                                          context: context,
+                                          content:
+                                          userDetails.data.position.trim(),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          isDesktop: false,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -302,7 +323,7 @@ class _HomePageState extends State<HomePage> {
                   });
                 },
               ),
-              ListTile(
+              isMobile ? ListTile(
                 tileColor: _title == "Scanner"
                     ? Theme.of(context).primaryColorLight
                     : null,
@@ -332,6 +353,154 @@ class _HomePageState extends State<HomePage> {
                   setState(() {
                     _currentPage = ScannerPage();
                     _title = ScannerPage().title;
+                    _appBarIcon = Icons.group_rounded;
+                    _deviceType == "desktop"
+                        ? Container()
+                        : Navigator.pop(context);
+                  });
+                },
+              ) :
+              ListTile(
+                tileColor: _title == "Print"
+                    ? Theme.of(context).primaryColorLight
+                    : null,
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.print_rounded,
+                      color: _title == "Print"
+                          ? Theme.of(context).primaryColor
+                          : Colors.grey,
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      PrintPage().title,
+                      style: TextStyle(
+                        color: _title == "Print"
+                            ? Theme.of(context).primaryColor
+                            : null,
+                      ),
+                    )
+                  ],
+                ),
+                onTap: () {
+                  setState(() {
+                    _currentPage = PrintPage();
+                    _title = PrintPage().title;
+                    _appBarIcon = Icons.group_rounded;
+                    _deviceType == "desktop"
+                        ? Container()
+                        : Navigator.pop(context);
+                  });
+                },
+              ),
+              ListTile(
+                tileColor: _title == "History"
+                    ? Theme.of(context).primaryColorLight
+                    : null,
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.history_rounded,
+                      color: _title == "History"
+                          ? Theme.of(context).primaryColor
+                          : Colors.grey,
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      HistoryPage().title,
+                      style: TextStyle(
+                        color: _title == "History"
+                            ? Theme.of(context).primaryColor
+                            : null,
+                      ),
+                    )
+                  ],
+                ),
+                onTap: () {
+                  setState(() {
+                    _currentPage = HistoryPage();
+                    _title = HistoryPage().title;
+                    _appBarIcon = Icons.group_rounded;
+                    _deviceType == "desktop"
+                        ? Container()
+                        : Navigator.pop(context);
+                  });
+                },
+              ),
+              ListTile(
+                tileColor: _title == "Help"
+                    ? Theme.of(context).primaryColorLight
+                    : null,
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.help,
+                      color: _title == "Help"
+                          ? Theme.of(context).primaryColor
+                          : Colors.grey,
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      HelpPage().title,
+                      style: TextStyle(
+                        color: _title == "Help"
+                            ? Theme.of(context).primaryColor
+                            : null,
+                      ),
+                    )
+                  ],
+                ),
+                onTap: () {
+                  setState(() {
+                    _currentPage = HelpPage();
+                    _title = HelpPage().title;
+                    _appBarIcon = Icons.group_rounded;
+                    _deviceType == "desktop"
+                        ? Container()
+                        : Navigator.pop(context);
+                  });
+                },
+              ),
+              ListTile(
+                tileColor: _title == "About"
+                    ? Theme.of(context).primaryColorLight
+                    : null,
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.info,
+                      color: _title == "About"
+                          ? Theme.of(context).primaryColor
+                          : Colors.grey,
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      AboutPage().title,
+                      style: TextStyle(
+                        color: _title == "About"
+                            ? Theme.of(context).primaryColor
+                            : null,
+                      ),
+                    )
+                  ],
+                ),
+                onTap: () {
+                  setState(() {
+                    _currentPage = AboutPage();
+                    _title = AboutPage().title;
                     _appBarIcon = Icons.group_rounded;
                     _deviceType == "desktop"
                         ? Container()
