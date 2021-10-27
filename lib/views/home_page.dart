@@ -20,7 +20,10 @@ import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+  final String title;
+  final Widget currentPage;
+
+  const HomePage({Key key, this.title, this.currentPage}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -34,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   final _fireStoreDB = locator<FireStoreDBService>();
   final _userProfile = locator<UserProfileViewModel>();
 
-  Widget _currentPage = HomeMainPage();
+  Widget _currentPage;
   var _title;
   var _appBarIcon;
 
@@ -45,7 +48,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _title = "Home";
+    _currentPage = widget.currentPage ?? HomeMainPage();
+    _title = widget.title ?? "Home";
     _appBarIcon = Icons.dashboard_rounded;
   }
 

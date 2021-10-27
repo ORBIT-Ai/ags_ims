@@ -17,10 +17,10 @@ class Styles {
     Color primaryDark;
     Color buttonColorLight;
 
-    primary = Color(0xff00274D);
+    primary = Color(0xff004180);
     primaryLight = Color(0xffB3DAFF);
     accent = Color(0xffFF8088);
-    primaryDark = Color(0xff000D1A);
+    primaryDark = Color(0xff00274D);
     buttonColorLight = Colors.blueAccent[100];
 
     final primaryVariant = Color(0xffE5F3FF);
@@ -186,7 +186,7 @@ class Styles {
           focusElevation: 0,
           highlightElevation: 12,
           backgroundColor: accent,
-          foregroundColor: primaryDark),
+          foregroundColor: primary),
     );
   }
 
