@@ -72,6 +72,8 @@ dependencies:
   carousel_pro: ^1.0.0
   path_provider: ^2.0.2
   just_audio: ^0.9.4
+  #barcode: ^2.1.0
+  barcode_image: ^2.0.0
 
   #UI
   curved_bottom_navigation: ^1.0.0

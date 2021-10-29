@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new, sized_box_for_whitespace
 
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
 import 'package:ags_ims/services/auth_service.dart';
@@ -9,8 +10,12 @@ import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:image/image.dart' as image;
+import 'package:barcode_image/barcode_image.dart';
 
 class AddItem extends StatefulWidget {
   const AddItem({Key key}) : super(key: key);
@@ -59,19 +64,19 @@ class _AddItemState extends State<AddItem> {
             height: MediaQuery.of(context).size.height,
             child: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.all(20),
-                  width: MediaQuery.of(context).size.width,
-                  child: isDesktop || isMobile || isTablet
-                      ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: mainContent(context: context),
-                  )
-                      : UI().deviceNotSupported(
+              padding: EdgeInsets.all(20),
+              width: MediaQuery.of(context).size.width,
+              child: isDesktop || isMobile || isTablet
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: mainContent(context: context),
+                    )
+                  : UI().deviceNotSupported(
                       context: context,
                       isDesktop: isDesktop,
                       content: "Device Not Supported"),
-                )),
+            )),
           ),
           Positioned(
             bottom: 20,
@@ -207,14 +212,16 @@ class _AddItemState extends State<AddItem> {
                             barCodeImage,
                             height: 100,
                             width: 100,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fitHeight,
                           ),
                   ),
                 )
               : Container(),
-          barCodeImage == null ? Container() : SizedBox(
-            height: 15,
-          ),
+          barCodeImage == null
+              ? Container()
+              : SizedBox(
+                  height: 15,
+                ),
           _ui.outlinedButtonIcon(
             context: context,
             label: barCodeImage != null
@@ -224,10 +231,33 @@ class _AddItemState extends State<AddItem> {
             foregroundColor: Theme.of(context).colorScheme.primary,
             icon: MdiIcons.barcode,
             function: () async {
-              barCodeGenerated = true;
-              barCodeImage = await _baseUtils.imageProcessor(
-                  context: context, ratioY: 4, ratioX: 4);
+              // Create an image
+              final img = image.Image(300, 120);
+
+              // Fill it with a solid color (white)
+              image.fill(img, image.getColor(255, 255, 255));
+
+              // Draw the barcode
+              drawBarcode(
+                  img,
+                  Barcode.code128(useCode128C: true,),
+                  _baseUtils.timeStamp().toString(),
+                  font: image.arial_48, textPadding: 1);
+
+              //File('barcode.png').writeAsBytesSync(image.encodePng(img));
+              final data = image.encodePng(img);
+              Directory tempDir = await getExternalStorageDirectory();
+              String tempPath = tempDir.path;
+              String barcodeName = _baseUtils.timeStamp().toString();
+              XFile barcodeFile = XFile.fromData(
+                Uint8List.fromList(data),
+                name: '$barcodeName.png',
+                mimeType: 'image/png',
+              );
+              await barcodeFile.saveTo('$tempPath/$barcodeName.png');
+              barCodeImage = File('$tempPath/$barcodeName.png');
               setState(() {
+                barCodeGenerated = true;
                 _baseUtils.snackBarNoProgress(
                     context: context, content: "Image Loaded");
               });
