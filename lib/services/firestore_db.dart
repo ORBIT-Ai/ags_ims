@@ -1,5 +1,6 @@
 
 import 'package:ags_ims/core/models/images.dart';
+import 'package:ags_ims/core/models/item_details.dart';
 import 'package:ags_ims/core/models/user_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -20,4 +21,15 @@ abstract class FireStoreDB{
   //Set Specific Profile Photo
   Future<void> setProfilePhoto({Images profilePhoto});
 
+  //Add Item
+  Future<void> setItem({ItemDetails itemDetails});
+
+  //Get Item
+  Future<void> getItem({String itemID});
+
+  //Update Item
+  Future<void> updateItem({ItemDetails itemDetails});
+
+  //Delete Item
+  Future<void> deleteItem({ItemDetails itemDetails});
 }

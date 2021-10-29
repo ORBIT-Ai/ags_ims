@@ -186,7 +186,7 @@ class Styles {
           focusElevation: 0,
           highlightElevation: 12,
           backgroundColor: accent,
-          foregroundColor: primary),
+          foregroundColor: primaryDark),
     );
   }
 

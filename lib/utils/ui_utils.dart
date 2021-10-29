@@ -20,6 +20,7 @@ class UI {
     @required String label,
     @required IconData icon,
     @required Color color,
+    String prefixText,
     bool autoFocus,
     int maxLength,
   }) {
@@ -39,6 +40,7 @@ class UI {
           icon,
           color: color != null ? color : Theme.of(context).primaryColor,
         ),
+        prefixText: prefixText,
         hintText: '$label is required *',
         labelText: '$label',
         labelStyle: new TextStyle(
@@ -154,6 +156,7 @@ class UI {
     @required maxLength,
     bool enabled,
     String suffix,
+    String prefix,
     String content,
     String helperText,
     Color textColor,
@@ -187,6 +190,7 @@ class UI {
           color: color != null ? color : Theme.of(context).primaryColor,
         ),
         suffixText: suffix,
+        prefixText: prefix,
         hintText: '$hint',
         labelText: '$label',
         labelStyle: TextStyle(

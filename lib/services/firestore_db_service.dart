@@ -1,7 +1,7 @@
-
 // ignore_for_file: avoid_print
 
 import 'package:ags_ims/core/models/images.dart';
+import 'package:ags_ims/core/models/item_details.dart';
 import 'package:ags_ims/core/models/user_details.dart';
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/firestore_db.dart';
@@ -9,15 +9,14 @@ import 'package:ags_ims/services/service_locator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class FireStoreDBService extends FireStoreDB{
-
+class FireStoreDBService extends FireStoreDB {
   final _fireStoreDB = FirebaseFirestore.instance;
   final _auth = locator<Auth>();
 
   @override
   Future<UserDetails> getUserDetails({@required String userID}) {
     final DocumentReference docRef =
-    _fireStoreDB.collection("users").doc(userID);
+        _fireStoreDB.collection("users").doc(userID);
     return docRef.get().then((DocumentSnapshot documentSnapshot) {
       return documentSnapshot.exists
           ? UserDetails.fromJson(documentSnapshot.data())
@@ -36,13 +35,13 @@ class FireStoreDBService extends FireStoreDB{
 
       snapshot.exists
           ? transaction.update(
-        docRef,
-        userDetails.toJson(),
-      )
+              docRef,
+              userDetails.toJson(),
+            )
           : transaction.set(
-        docRef,
-        userDetails.toJson(),
-      );
+              docRef,
+              userDetails.toJson(),
+            );
     }).whenComplete(() {
       print("FireStore Status: Success");
     });
@@ -59,13 +58,13 @@ class FireStoreDBService extends FireStoreDB{
 
       snapshot.exists
           ? transaction.update(
-        docRef,
-        userDetails.toJson(),
-      )
+              docRef,
+              userDetails.toJson(),
+            )
           : transaction.set(
-        docRef,
-        userDetails.toJson(),
-      );
+              docRef,
+              userDetails.toJson(),
+            );
     }).whenComplete(() {
       print("FireStore Status: Success");
     });
@@ -74,15 +73,15 @@ class FireStoreDBService extends FireStoreDB{
   @override
   Future<void> deleteUserDetails({@required userID}) {
     final DocumentReference docRef =
-    _fireStoreDB.collection("users").doc(userID);
+        _fireStoreDB.collection("users").doc(userID);
     return _auth.getCurrentUser() != null
         ? docRef.get().then((DocumentSnapshot documentSnapshot) {
-      return documentSnapshot.exists
-          ? docRef.delete().whenComplete(() {
-        print("USER DATA DELETED");
-      })
-          : print("USER DATA DOESN'T EXISTS");
-    })
+            return documentSnapshot.exists
+                ? docRef.delete().whenComplete(() {
+                    print("USER DATA DELETED");
+                  })
+                : print("USER DATA DOESN'T EXISTS");
+          })
         : null;
   }
 
@@ -95,7 +94,7 @@ class FireStoreDBService extends FireStoreDB{
         .doc(profilePhoto.imageID);
 
     final userInfoRef =
-    _fireStoreDB.collection("users").doc(profilePhoto.userID);
+        _fireStoreDB.collection("users").doc(profilePhoto.userID);
 
     _fireStoreDB.runTransaction<void>((transaction) async {
       var snapshot = await transaction.get<Map<String, dynamic>>(
@@ -104,8 +103,8 @@ class FireStoreDBService extends FireStoreDB{
 
       snapshot.exists
           ? userInfoRef.update({
-        "profileUrl": profilePhoto.url,
-      })
+              "profileUrl": profilePhoto.url,
+            })
           : print('User Info not Exists');
     }).whenComplete(() {
       print("FireStore Status: Success");
@@ -119,9 +118,79 @@ class FireStoreDBService extends FireStoreDB{
       snapshot.exists
           ? print('Profile Photo Exists')
           : transaction.set(
+              docRef,
+              profilePhoto.toJson(),
+            );
+    }).whenComplete(() {
+      print("FireStore Status: Success");
+    });
+  }
+
+  @override
+  Future<void> setItem({@required ItemDetails itemDetails}) async {
+    final docRef = _fireStoreDB.collection("items").doc(itemDetails.itemID);
+
+    _fireStoreDB.runTransaction<void>((transaction) async {
+      var snapshot = await transaction.get<Map<String, dynamic>>(
         docRef,
-        profilePhoto.toJson(),
       );
+
+      snapshot.exists
+          ? print('Item Exists')
+          : transaction.set(
+              docRef,
+              itemDetails.toJson(),
+            );
+    }).whenComplete(() {
+      print("FireStore Status: Success");
+    });
+  }
+
+  @override
+  Future<ItemDetails> getItem({@required String itemID}) {
+    final DocumentReference docRef =
+        _fireStoreDB.collection("items").doc(itemID);
+    return docRef.get().then((DocumentSnapshot documentSnapshot) {
+      return documentSnapshot.exists
+          ? ItemDetails.fromJson(documentSnapshot.data())
+          : null;
+    });
+  }
+
+  @override
+  Future<void> updateItem({@required ItemDetails itemDetails}) async {
+    final docRef = _fireStoreDB.collection("items").doc(itemDetails.itemID);
+
+    _fireStoreDB.runTransaction<void>((transaction) async {
+      var snapshot = await transaction.get<Map<String, dynamic>>(
+        docRef,
+      );
+
+      snapshot.exists
+          ? transaction.update(
+              docRef,
+              itemDetails.toJson(),
+            )
+          : print('Item not existing');
+    }).whenComplete(() {
+      print("FireStore Status: Success");
+    });
+  }
+
+  @override
+  Future<void> deleteItem({@required ItemDetails itemDetails}) async {
+    final docRef = _fireStoreDB.collection("items").doc(itemDetails.itemID);
+
+    _fireStoreDB.runTransaction<void>((transaction) async {
+      var snapshot = await transaction.get<Map<String, dynamic>>(
+        docRef,
+      );
+
+      snapshot.exists
+          ? transaction.delete(
+              docRef,
+            )
+          : print('Item not existing');
     }).whenComplete(() {
       print("FireStore Status: Success");
     });
