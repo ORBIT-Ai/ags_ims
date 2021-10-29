@@ -47,6 +47,7 @@ class ItemViewModel {
       _fireStoreDB.setItem(itemDetails: itemDetails).whenComplete(() {
         _baseUtils.snackBarNoProgress(
             context: context, content: 'Item Successfully Added');
+        itemImage.delete();
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
