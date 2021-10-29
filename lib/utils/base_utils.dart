@@ -191,8 +191,8 @@ class BaseUtils {
     File croppedFile = await ImageCropper.cropImage(
         sourcePath: imageFile.path,
         aspectRatio: CropAspectRatio(ratioY: ratioY, ratioX: ratioX),
-        maxWidth: 1080,
-        maxHeight: 1080,
+        maxWidth: 500,
+        maxHeight: 500,
         compressQuality: 100,
         androidUiSettings: AndroidUiSettings(
           toolbarColor: Theme.of(context).primaryColor,
@@ -205,11 +205,11 @@ class BaseUtils {
         ));
 
     if (croppedFile != null) {
-      var fileName = path.basename(croppedFile.path);
+      //var fileName = path.basename(croppedFile.path);
       var croppedImage = imageLib.decodeImage(croppedFile.readAsBytesSync());
-      croppedImage = imageLib.copyResize(croppedImage, width: 600);
+      croppedImage = imageLib.copyResize(croppedImage, width: 500);
     }
-    return imageFile;
+    return croppedFile;
   }
 
   bool isPortrait(BuildContext context) {

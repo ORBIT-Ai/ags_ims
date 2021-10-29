@@ -105,7 +105,7 @@ class _AddItemState extends State<AddItem> {
                     itemCount: int.parse(itemCountInputController.text.toString().trim()),
                   );
                 } else {
-                  _baseUtils.snackBarError(context: context, content: "Make sure all fields are filled in.");
+                  _baseUtils.snackBarError(context: context, content: "Make sure all fields were filled in.");
                 }
               },
             ),
@@ -274,12 +274,10 @@ class _AddItemState extends State<AddItem> {
               // Draw the barcode
               drawBarcode(
                   img,
-                  Barcode.code128(
-                    useCode128C: true,
-                  ),
+                  Barcode.code128(),
                   itemID,
-                  font: image.arial_48,
-                  textPadding: 1);
+                  font: image.arial_24,
+                  textPadding: 10);
 
               //File('barcode.png').writeAsBytesSync(image.encodePng(img));
               final data = image.encodePng(img);
@@ -296,7 +294,7 @@ class _AddItemState extends State<AddItem> {
               setState(() {
                 barCodeGenerated = true;
                 _baseUtils.snackBarNoProgress(
-                    context: context, content: "Image Loaded");
+                    context: context, content: "Generating Barcode");
               });
             },
           ),
