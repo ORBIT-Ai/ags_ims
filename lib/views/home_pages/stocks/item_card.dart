@@ -8,6 +8,8 @@ import 'package:ags_ims/services/firestore_db_service.dart';
 import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
+import 'package:ags_ims/views/home_page.dart';
+import 'package:ags_ims/views/home_pages/stocks/item_details.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -41,6 +43,13 @@ class _ItemCardState extends State<ItemCard> {
                   onTap: () {
                     _baseUtils.snackBarNoProgress(
                         context: context, content: itemDetails.data.itemCode);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HomePage(
+                              title: 'Stocks',
+                              currentPage: ItemDetailedView(isDesktop: widget.isDesktop, itemID: widget.itemID,),
+                            )));
                   },
                   child: Column(
                     children: [
