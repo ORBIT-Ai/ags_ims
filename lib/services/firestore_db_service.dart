@@ -127,7 +127,7 @@ class FireStoreDBService extends FireStoreDB {
   }
 
   @override
-  Future<void> setItem({@required ItemDetails itemDetails}) async {
+  Future<void> setStocksItem({@required ItemDetails itemDetails}) async {
     final docRef = _fireStoreDB.collection("items").doc(itemDetails.itemID);
 
     _fireStoreDB.runTransaction<void>((transaction) async {
@@ -147,7 +147,7 @@ class FireStoreDBService extends FireStoreDB {
   }
 
   @override
-  Future<ItemDetails> getItem({@required String itemID}) {
+  Future<ItemDetails> getStocksItem({@required String itemID}) {
     final DocumentReference docRef =
         _fireStoreDB.collection("items").doc(itemID);
     return docRef.get().then((DocumentSnapshot documentSnapshot) {
@@ -158,7 +158,20 @@ class FireStoreDBService extends FireStoreDB {
   }
 
   @override
-  Future<void> updateItem({@required ItemDetails itemDetails}) async {
+  Future<List<ItemDetails>> getStocks() async {
+    CollectionReference collection =
+    _fireStoreDB.collection("items");
+
+    QuerySnapshot doc =
+        await collection.get();
+    //print(doc.docs.length);
+    return doc.docs
+        .map((snapshot) => ItemDetails.fromJson(snapshot.data()))
+        .toList();
+  }
+
+  @override
+  Future<void> updateStocksItem({@required ItemDetails itemDetails}) async {
     final docRef = _fireStoreDB.collection("items").doc(itemDetails.itemID);
 
     _fireStoreDB.runTransaction<void>((transaction) async {
@@ -178,7 +191,7 @@ class FireStoreDBService extends FireStoreDB {
   }
 
   @override
-  Future<void> deleteItem({@required ItemDetails itemDetails}) async {
+  Future<void> deleteStocksItem({@required ItemDetails itemDetails}) async {
     final docRef = _fireStoreDB.collection("items").doc(itemDetails.itemID);
 
     _fireStoreDB.runTransaction<void>((transaction) async {

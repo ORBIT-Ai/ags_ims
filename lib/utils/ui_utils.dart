@@ -742,13 +742,13 @@ class UI {
     @required bool isDesktop,
   }) {
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.all(4),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
+            borderRadius: BorderRadius.all(Radius.circular(18)),
             child: Container(
               padding: EdgeInsets.all(8),
               color: iconColor.withAlpha(20),

@@ -22,14 +22,17 @@ abstract class FireStoreDB{
   Future<void> setProfilePhoto({Images profilePhoto});
 
   //Add Item
-  Future<void> setItem({ItemDetails itemDetails});
+  Future<void> setStocksItem({ItemDetails itemDetails});
 
   //Get Item
-  Future<void> getItem({String itemID});
+  Future<void> getStocksItem({String itemID});
+
+  //Get Items
+  Future<void> getStocks();
 
   //Update Item
-  Future<void> updateItem({ItemDetails itemDetails});
+  Future<void> updateStocksItem({ItemDetails itemDetails});
 
   //Delete Item
-  Future<void> deleteItem({ItemDetails itemDetails});
+  Future<void> deleteStocksItem({ItemDetails itemDetails});
 }

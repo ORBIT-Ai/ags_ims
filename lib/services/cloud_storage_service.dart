@@ -58,6 +58,7 @@ class CloudStorageService extends CloudStorage {
       imageFile != null
           ? await _firebaseStorage
               .ref("items")
+              .child('item_image')
               .child(itemID)
               .child("$imageID.png")
               .putFile(imageFile)
@@ -65,7 +66,37 @@ class CloudStorageService extends CloudStorage {
               ref = value.ref;
             }).onError((e, stackTrace) {
               print("STORAGE ERROR:: $e");
-            })
+            }).whenComplete(() => imageFile.delete())
+          : print("EMPTY FILE");
+    } on FirebaseException catch (e) {
+      // e.g, e.code == 'canceled'
+      print("STORAGE EXCEPTION:: $e");
+    }
+    return ref;
+  }
+
+  @override
+  Future<Reference> setItemBarCodePhoto(
+      {@required itemID, @required File imageFile}) async {
+    final imageID = _baseUtils.timeStamp();
+
+    print(_auth.getCurrentUserID());
+
+    var ref;
+
+    try {
+      imageFile != null
+          ? await _firebaseStorage
+              .ref("items")
+              .child('item_barcode_image')
+              .child(itemID)
+              .child("$imageID.png")
+              .putFile(imageFile)
+              .then((value) {
+              ref = value.ref;
+            }).onError((e, stackTrace) {
+              print("STORAGE ERROR:: $e");
+            }).whenComplete(() => imageFile.delete())
           : print("EMPTY FILE");
     } on FirebaseException catch (e) {
       // e.g, e.code == 'canceled'

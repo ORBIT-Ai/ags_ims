@@ -43,7 +43,7 @@ class _AddItemState extends State<AddItem> {
   TextEditingController itemPriceInputController;
   TextEditingController itemCountInputController;
 
-  File imageFile, barCodeImage;
+  File itemImage, barCodeImage;
   ImageCache imageCache = new ImageCache();
 
   String itemID;
@@ -93,19 +93,25 @@ class _AddItemState extends State<AddItem> {
                 if (itemNameInputController.text != null &&
                     itemPriceInputController.text != null &&
                     itemCountInputController.text != null &&
+                    itemImage != null &&
                     barCodeImage != null &&
                     itemID != null) {
                   _itemViewModel.addItem(
                     context: context,
                     itemID: itemID,
                     itemName: itemNameInputController.text.toString().trim(),
-                    itemPrice: int.parse(itemPriceInputController.text.toString().trim()),
-                    itemImage: barCodeImage,
+                    itemPrice: int.parse(
+                        itemPriceInputController.text.toString().trim()),
+                    itemImage: itemImage,
+                    itemBarcodeImage: barCodeImage,
                     itemCode: itemID,
-                    itemCount: int.parse(itemCountInputController.text.toString().trim()),
+                    itemCount: int.parse(
+                        itemCountInputController.text.toString().trim()),
                   );
                 } else {
-                  _baseUtils.snackBarError(context: context, content: "Make sure all fields were filled in.");
+                  _baseUtils.snackBarError(
+                      context: context,
+                      content: "Make sure all fields were filled in.");
                 }
               },
             ),
@@ -167,7 +173,7 @@ class _AddItemState extends State<AddItem> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          imageFile == null
+          itemImage == null
               ? Container()
               : Container(
                   width: 100,
@@ -175,7 +181,7 @@ class _AddItemState extends State<AddItem> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     clipBehavior: Clip.hardEdge,
-                    child: imageFile == null
+                    child: itemImage == null
                         ? Container(
                             color: Theme.of(context).primaryColorLight,
                             height: 100,
@@ -187,26 +193,26 @@ class _AddItemState extends State<AddItem> {
                             ),
                           )
                         : Image.file(
-                            imageFile,
+                            itemImage,
                             height: 100,
                             width: 100,
                             fit: BoxFit.cover,
                           ),
                   ),
                 ),
-          imageFile == null
+          itemImage == null
               ? Container()
               : SizedBox(
                   height: 15,
                 ),
           _ui.outlinedButtonIcon(
             context: context,
-            label: imageFile != null ? "Change Image" : "Add Item Image",
+            label: itemImage != null ? "Change Image" : "Add Item Image",
             backgroundColor: Theme.of(context).colorScheme.background,
             foregroundColor: Theme.of(context).colorScheme.primary,
             icon: Icons.photo_rounded,
             function: () async {
-              imageFile = await _baseUtils.imageProcessor(
+              itemImage = await _baseUtils.imageProcessor(
                   context: context, ratioY: 4, ratioX: 4);
               setState(() {
                 _baseUtils.snackBarNoProgress(
@@ -272,12 +278,8 @@ class _AddItemState extends State<AddItem> {
 
               itemID = _baseUtils.timeStamp().toString();
               // Draw the barcode
-              drawBarcode(
-                  img,
-                  Barcode.code128(),
-                  itemID,
-                  font: image.arial_24,
-                  textPadding: 10);
+              drawBarcode(img, Barcode.code128(), itemID,
+                  font: image.arial_24, textPadding: 10);
 
               //File('barcode.png').writeAsBytesSync(image.encodePng(img));
               final data = image.encodePng(img);

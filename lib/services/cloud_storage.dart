@@ -11,6 +11,9 @@ abstract class CloudStorage{
   //Set New Item Photo
   Future<void> setItemPhoto({String itemID, File imageFile});
 
+  //Set New Item BarCode Photo
+  Future<void> setItemBarCodePhoto({String itemID, File imageFile});
+
   //Delete Item Photo
   Future<void> deleteItemPhoto({String itemID});
 

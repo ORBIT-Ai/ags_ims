@@ -24,37 +24,41 @@ class ItemViewModel {
     @required String itemID,
     @required String itemName,
     @required File itemImage,
+    @required File itemBarcodeImage,
     @required String itemCode,
     @required int itemPrice,
     @required int itemCount,
   }) async {
     _cloudStorage
         .setItemPhoto(itemID: itemID, imageFile: itemImage)
-        .then((value) async {
-
-      ItemDetails itemDetails = ItemDetails(
-        itemID: itemID,
-        itemName: itemName,
-        itemImage: await value.getDownloadURL(),
-        itemCode: itemCode,
-        itemPrice: itemPrice,
-        itemCount: itemCount,
-        isOnHand: true,
-        isActive: true,
-        isDeleted: false,
-        isTrashed: false,
-      );
-      _fireStoreDB.setItem(itemDetails: itemDetails).whenComplete(() {
-        _baseUtils.snackBarNoProgress(
-            context: context, content: 'Item Successfully Added');
-        itemImage.delete();
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => HomePage(
-                      title: 'Stocks',
-                      currentPage: StocksPage(),
-                    )));
+        .then((itemImage) async {
+      _cloudStorage
+          .setItemBarCodePhoto(itemID: itemID, imageFile: itemBarcodeImage)
+          .then((itemBarcodeImage) async {
+        ItemDetails itemDetails = ItemDetails(
+          itemID: itemID,
+          itemName: itemName,
+          itemImage: await itemImage.getDownloadURL(),
+          itemBarcodeImage: await itemBarcodeImage.getDownloadURL(),
+          itemCode: itemCode,
+          itemPrice: itemPrice,
+          itemCount: itemCount,
+          isOnHand: true,
+          isActive: true,
+          isDeleted: false,
+          isTrashed: false,
+        );
+        _fireStoreDB.setStocksItem(itemDetails: itemDetails).whenComplete(() {
+          _baseUtils.snackBarNoProgress(
+              context: context, content: 'Item Successfully Added');
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HomePage(
+                        title: 'Stocks',
+                        currentPage: StocksPage(),
+                      )));
+        });
       });
     });
   }

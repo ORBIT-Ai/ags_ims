@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:ags_ims/core/models/item_details.dart';
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/firestore_db_service.dart';
@@ -8,6 +9,7 @@ import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:ags_ims/views/home_page.dart';
 import 'package:ags_ims/views/home_pages/stocks/add_item.dart';
+import 'package:ags_ims/views/home_pages/stocks/item_card.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -41,19 +43,19 @@ class _StocksPageState extends State<StocksPage> {
         children: [
           SingleChildScrollView(
               child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: isDesktop || isMobile || isTablet
-                    ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: mainContent(context: context),
-                )
-                    : UI().deviceNotSupported(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: isDesktop || isMobile || isTablet
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: mainContent(context: context),
+                  )
+                : UI().deviceNotSupported(
                     context: context,
                     isDesktop: isDesktop,
                     content: "Device Not Supported"),
-              )),
+          )),
           Positioned(
             bottom: 20,
             right: 20,
@@ -64,9 +66,9 @@ class _StocksPageState extends State<StocksPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => HomePage(
-                          title: 'Stocks',
-                          currentPage: AddItem(),
-                        )));
+                              title: 'Stocks',
+                              currentPage: AddItem(),
+                            )));
               },
             ),
           ),
@@ -83,9 +85,27 @@ class _StocksPageState extends State<StocksPage> {
         page: "sales",
         header: "Sales",
         subhead:
-        "Review the items that are present in the warehouse and those that are out-of-stock. Any actions will reflect to the History so others could track what’s happening to the ecosystem.",
+            "Review the items that are present in the warehouse and those that are out-of-stock. Any actions will reflect to the History so others could track what’s happening to the ecosystem.",
         hasButton: false,
         isDesktop: isDesktop,
+      ),
+      Container(
+        padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+        child: FutureBuilder(
+            future: _fireStoreDB.getStocks(),
+            builder: (context, AsyncSnapshot<List<ItemDetails>> items) {
+              return items.hasData
+                  ? ListView.builder(
+                itemCount: items.data.length,
+                shrinkWrap: true,
+                itemBuilder: (context, i) {
+                  return ItemCard(
+                          itemID: items.data[i].itemID,
+                          isDesktop: isDesktop,
+                        );
+                },
+              ): Container();
+            }),
       ),
     ];
   }
