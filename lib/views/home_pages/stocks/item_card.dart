@@ -47,7 +47,8 @@ class _ItemCardState extends State<ItemCard> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => HomePage(
-                              title: 'Stocks',
+                              title: "Item Details",
+                              itemID: widget.itemID,
                               currentPage: ItemDetailedView(isDesktop: widget.isDesktop, itemID: widget.itemID,),
                             )));
                   },

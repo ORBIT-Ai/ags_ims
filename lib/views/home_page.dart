@@ -15,15 +15,18 @@ import 'package:ags_ims/views/home_pages/home_main_page.dart';
 import 'package:ags_ims/views/home_pages/print_page.dart';
 import 'package:ags_ims/views/home_pages/sales_page.dart';
 import 'package:ags_ims/views/home_pages/scanner_page.dart';
+import 'package:ags_ims/views/home_pages/stocks/item_details.dart';
+import 'package:ags_ims/views/home_pages/stocks/update_item.dart';
 import 'package:ags_ims/views/home_pages/stocks_page.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class HomePage extends StatefulWidget {
-  final String title;
+  final String title, itemID;
   final Widget currentPage;
 
-  const HomePage({Key key, this.title, this.currentPage}) : super(key: key);
+  const HomePage({Key key, this.title, this.currentPage, this.itemID})
+      : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -83,6 +86,24 @@ class _HomePageState extends State<HomePage> {
                         ? Theme.of(context).canvasColor
                         : Theme.of(context).primaryColor),
               ),
+              actions: [
+                _title == "Item Details"
+                    ? IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage(
+                                        title: "Update Item",
+                                        currentPage: UpdateItem(
+                                          isDesktop: isDesktop,
+                                          itemID: widget.itemID,
+                                        ),
+                                      )));
+                        },
+                        icon: Icon(Icons.edit_rounded))
+                    : Container()
+              ],
               iconTheme: IconThemeData(
                   color: isDesktop
                       ? Theme.of(context).canvasColor
@@ -178,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   SizedBox(height: 10),
                                   GestureDetector(
-                                    onTap: (){
+                                    onTap: () {
                                       setState(() {
                                         _currentPage = AccountPage();
                                         _title = AccountPage().title;
@@ -201,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                                         child: _ui.caption(
                                           context: context,
                                           content:
-                                          userDetails.data.position.trim(),
+                                              userDetails.data.position.trim(),
                                           color: Theme.of(context)
                                               .colorScheme
                                               .primary,
@@ -327,80 +348,81 @@ class _HomePageState extends State<HomePage> {
                   });
                 },
               ),
-              isMobile ? ListTile(
-                tileColor: _title == "Scanner"
-                    ? Theme.of(context).primaryColorLight
-                    : null,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.camera_rounded,
-                      color: _title == "Scanner"
-                          ? Theme.of(context).primaryColor
-                          : Colors.grey,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      ScannerPage().title,
-                      style: TextStyle(
-                        color: _title == "Scanner"
-                            ? Theme.of(context).primaryColor
-                            : null,
+              isMobile
+                  ? ListTile(
+                      tileColor: _title == "Scanner"
+                          ? Theme.of(context).primaryColorLight
+                          : null,
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.camera_rounded,
+                            color: _title == "Scanner"
+                                ? Theme.of(context).primaryColor
+                                : Colors.grey,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            ScannerPage().title,
+                            style: TextStyle(
+                              color: _title == "Scanner"
+                                  ? Theme.of(context).primaryColor
+                                  : null,
+                            ),
+                          )
+                        ],
                       ),
+                      onTap: () {
+                        setState(() {
+                          _currentPage = ScannerPage();
+                          _title = ScannerPage().title;
+                          _appBarIcon = Icons.group_rounded;
+                          _deviceType == "desktop"
+                              ? Container()
+                              : Navigator.pop(context);
+                        });
+                      },
                     )
-                  ],
-                ),
-                onTap: () {
-                  setState(() {
-                    _currentPage = ScannerPage();
-                    _title = ScannerPage().title;
-                    _appBarIcon = Icons.group_rounded;
-                    _deviceType == "desktop"
-                        ? Container()
-                        : Navigator.pop(context);
-                  });
-                },
-              ) :
-              ListTile(
-                tileColor: _title == "Print"
-                    ? Theme.of(context).primaryColorLight
-                    : null,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.print_rounded,
-                      color: _title == "Print"
-                          ? Theme.of(context).primaryColor
-                          : Colors.grey,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      PrintPage().title,
-                      style: TextStyle(
-                        color: _title == "Print"
-                            ? Theme.of(context).primaryColor
-                            : null,
+                  : ListTile(
+                      tileColor: _title == "Print"
+                          ? Theme.of(context).primaryColorLight
+                          : null,
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.print_rounded,
+                            color: _title == "Print"
+                                ? Theme.of(context).primaryColor
+                                : Colors.grey,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            PrintPage().title,
+                            style: TextStyle(
+                              color: _title == "Print"
+                                  ? Theme.of(context).primaryColor
+                                  : null,
+                            ),
+                          )
+                        ],
                       ),
-                    )
-                  ],
-                ),
-                onTap: () {
-                  setState(() {
-                    _currentPage = PrintPage();
-                    _title = PrintPage().title;
-                    _appBarIcon = Icons.group_rounded;
-                    _deviceType == "desktop"
-                        ? Container()
-                        : Navigator.pop(context);
-                  });
-                },
-              ),
+                      onTap: () {
+                        setState(() {
+                          _currentPage = PrintPage();
+                          _title = PrintPage().title;
+                          _appBarIcon = Icons.group_rounded;
+                          _deviceType == "desktop"
+                              ? Container()
+                              : Navigator.pop(context);
+                        });
+                      },
+                    ),
               ListTile(
                 tileColor: _title == "History"
                     ? Theme.of(context).primaryColorLight

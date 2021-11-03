@@ -23,6 +23,7 @@ class UI {
     String prefixText,
     bool autoFocus,
     int maxLength,
+    String initialValue,
   }) {
     return TextFormField(
       controller: controller,
@@ -33,6 +34,7 @@ class UI {
         }
         return null;
       },
+      initialValue: initialValue ?? null,
       maxLength: maxLength != null ? maxLength : null,
       autofocus: autoFocus != null ? autoFocus : false,
       decoration: InputDecoration(
