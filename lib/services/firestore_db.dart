@@ -1,6 +1,7 @@
 
 import 'package:ags_ims/core/models/images.dart';
 import 'package:ags_ims/core/models/item_details.dart';
+import 'package:ags_ims/core/models/notification.dart';
 import 'package:ags_ims/core/models/user_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -35,4 +36,10 @@ abstract class FireStoreDB{
 
   //Delete Item
   Future<void> deleteStocksItem({ItemDetails itemDetails});
+
+  //Get All Notifications
+  Future<List<Notifications>> getNotifications();
+
+  //Set Notifications
+  Future<void> setNotification({Notifications notification});
 }

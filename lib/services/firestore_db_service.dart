@@ -2,6 +2,7 @@
 
 import 'package:ags_ims/core/models/images.dart';
 import 'package:ags_ims/core/models/item_details.dart';
+import 'package:ags_ims/core/models/notification.dart';
 import 'package:ags_ims/core/models/user_details.dart';
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/firestore_db.dart';
@@ -204,6 +205,41 @@ class FireStoreDBService extends FireStoreDB {
               docRef,
             )
           : print('Item not existing');
+    }).whenComplete(() {
+      print("FireStore Status: Success");
+    });
+  }
+
+  @override
+  Future<List<Notifications>> getNotifications({@required userID}) async {
+    CollectionReference notifications =
+    _fireStoreDB.collection("notifications");
+
+    QuerySnapshot doc =
+    await notifications.where("receiverUserID", isEqualTo: userID).get();
+    //print(doc.docs.length);
+    return doc.docs
+        .map((snapshot) => Notifications.fromJson(snapshot.data()))
+        .toList();
+  }
+
+  @override
+  Future<void> setNotification({@required Notifications notification}) async {
+    final docRef = _fireStoreDB
+        .collection("notifications")
+        .doc(notification.notificationInfo['notificationID']);
+
+    _fireStoreDB.runTransaction<void>((transaction) async {
+      var snapshot = await transaction.get<Map<String, dynamic>>(
+        docRef,
+      );
+
+      snapshot.exists
+          ? print('Notification Exists')
+          : transaction.set(
+        docRef,
+        notification.toJson(),
+      );
     }).whenComplete(() {
       print("FireStore Status: Success");
     });
