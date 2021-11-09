@@ -2,7 +2,9 @@
 
 import 'dart:io';
 
+import 'package:ags_ims/core/enums/notification_types.dart';
 import 'package:ags_ims/core/models/item_details.dart';
+import 'package:ags_ims/core/view_models/notification_view_model.dart';
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/cloud_storage_service.dart';
 import 'package:ags_ims/services/firestore_db_service.dart';
@@ -18,6 +20,7 @@ class ItemViewModel {
   final _auth = locator<Auth>();
   final _baseUtils = locator<BaseUtils>();
   final _cloudStorage = locator<CloudStorageService>();
+  final _notificationsViewModel = locator<NotificationViewModel>();
 
   Future<void> addItem({
     @required BuildContext context,
@@ -49,6 +52,12 @@ class ItemViewModel {
           isTrashed: false,
         );
         _fireStoreDB.setStocksItem(itemDetails: itemDetails).whenComplete(() {
+          _notificationsViewModel.newNotification(
+            userID: _auth.getCurrentUserID(),
+            notificationType: NotificationTypes.addedItem,
+            tag: itemName,
+            tagID: itemID,
+          );
           _baseUtils.snackBarNoProgress(
               context: context, content: 'Item Successfully Added');
           Navigator.pushReplacement(
@@ -92,6 +101,12 @@ class ItemViewModel {
           isTrashed: false,
         );
         _fireStoreDB.updateStocksItem(itemDetails: itemDetails).whenComplete(() {
+          _notificationsViewModel.newNotification(
+            userID: _auth.getCurrentUserID(),
+            notificationType: NotificationTypes.updatedItem,
+            tag: itemName,
+            tagID: itemID,
+          );
           _baseUtils.snackBarNoProgress(
               context: context, content: 'Item Successfully Updated');
           Navigator.pushReplacement(
@@ -118,6 +133,92 @@ class ItemViewModel {
         isTrashed: false,
       );
       _fireStoreDB.updateStocksItem(itemDetails: itemDetails).whenComplete(() {
+        _notificationsViewModel.newNotification(
+          userID: _auth.getCurrentUserID(),
+          notificationType: NotificationTypes.updatedItem,
+          tag: itemName,
+          tagID: itemID,
+        );
+        _baseUtils.snackBarNoProgress(
+            context: context, content: 'Item Successfully Updated');
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomePage(
+                  title: 'Stocks',
+                  currentPage: StocksPage(),
+                )));
+      });
+    }
+  }
+
+  Future<void> deleteItem({
+    @required BuildContext context,
+    @required String itemID,
+    @required String itemName,
+    File newItemImage,
+    String itemImage,
+    @required String itemBarcodeImage,
+    @required String itemCode,
+    @required int itemPrice,
+    @required int itemCount,
+  }) async {
+    if(newItemImage != null){
+      _cloudStorage
+          .setItemPhoto(itemID: itemID, imageFile: newItemImage)
+          .then((newItemImage) async {
+        ItemDetails itemDetails = ItemDetails(
+          itemID: itemID,
+          itemName: itemName,
+          itemImage: await newItemImage.getDownloadURL(),
+          itemBarcodeImage: itemBarcodeImage,
+          itemCode: itemCode,
+          itemPrice: itemPrice,
+          itemCount: itemCount,
+          isOnHand: false,
+          isActive: false,
+          isDeleted: false,
+          isTrashed: true,
+        );
+        _fireStoreDB.updateStocksItem(itemDetails: itemDetails).whenComplete(() {
+          _notificationsViewModel.newNotification(
+            userID: _auth.getCurrentUserID(),
+            notificationType: NotificationTypes.deletedItem,
+            tag: itemName,
+            tagID: itemID,
+          );
+          _baseUtils.snackBarNoProgress(
+              context: context, content: 'Item Successfully Updated');
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HomePage(
+                    title: 'Stocks',
+                    currentPage: StocksPage(),
+                  )));
+        });
+      });
+    } else {
+      ItemDetails itemDetails = ItemDetails(
+        itemID: itemID,
+        itemName: itemName,
+        itemImage: itemImage,
+        itemBarcodeImage: itemBarcodeImage,
+        itemCode: itemCode,
+        itemPrice: itemPrice,
+        itemCount: itemCount,
+        isOnHand: false,
+        isActive: false,
+        isDeleted: false,
+        isTrashed: true,
+      );
+      _fireStoreDB.updateStocksItem(itemDetails: itemDetails).whenComplete(() {
+        _notificationsViewModel.newNotification(
+          userID: _auth.getCurrentUserID(),
+          notificationType: NotificationTypes.deletedItem,
+          tag: itemName,
+          tagID: itemID,
+        );
         _baseUtils.snackBarNoProgress(
             context: context, content: 'Item Successfully Updated');
         Navigator.pushReplacement(
