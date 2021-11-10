@@ -1,4 +1,6 @@
+// ignore_for_file: prefer_const_constructors, unnecessary_new
 
+import 'package:ags_ims/core/models/user_details.dart';
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/firestore_db_service.dart';
@@ -27,36 +29,205 @@ class _AccountPageState extends State<AccountPage> {
   bool isMobile;
   bool isTablet;
 
+  TextEditingController emailInputController;
+  TextEditingController fullNameInputController;
+  TextEditingController positionInputController;
+  TextEditingController phoneNumberInputController;
+  TextEditingController idNumberInputController;
+
+  @override
+  initState() {
+    //initializePrefs();
+    emailInputController = new TextEditingController();
+    fullNameInputController = new TextEditingController();
+    positionInputController = new TextEditingController();
+    phoneNumberInputController = new TextEditingController();
+    idNumberInputController = new TextEditingController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveBuilder(builder: (context, sizingInformation) {
       isDesktop =
           sizingInformation.deviceScreenType == DeviceScreenType.desktop;
-      isMobile =
-          sizingInformation.deviceScreenType == DeviceScreenType.mobile;
-      isTablet =
-          sizingInformation.deviceScreenType == DeviceScreenType.tablet;
-      return SingleChildScrollView(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: isDesktop ? MediaQuery.of(context).size.height : null,
-            child: isDesktop || isMobile || isTablet
-                ? Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: mainContent(context: context),
-            )
-                : UI().deviceNotSupported(
-                context: context,
-                isDesktop: isDesktop,
-                content: "Device Not Supported"),
-          ));
+      isMobile = sizingInformation.deviceScreenType == DeviceScreenType.mobile;
+      isTablet = sizingInformation.deviceScreenType == DeviceScreenType.tablet;
+      return Container(
+        child: FutureBuilder(
+            future:
+                _fireStoreDB.getUserDetails(userID: _auth.getCurrentUserID()),
+            builder: (context, AsyncSnapshot<UserDetails> userDetails) {
+              if(userDetails.hasData){
+                emailInputController.text = userDetails.data.emailAddress;
+                fullNameInputController.text = userDetails.data.userName;
+                positionInputController.text = userDetails.data.position;
+                phoneNumberInputController.text = userDetails.data.phoneNumber;
+                idNumberInputController.text = userDetails.data.idNumber;
+              }
+              return SingleChildScrollView(
+                  child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: isDesktop ? MediaQuery.of(context).size.height : null,
+                child: isDesktop || isMobile || isTablet
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: mainContent(context: context),
+                      )
+                    : UI().deviceNotSupported(
+                        context: context,
+                        isDesktop: isDesktop,
+                        content: "Device Not Supported"),
+              ));
+            }),
+      );
     });
   }
 
-  List<Widget> mainContent({BuildContext context}) {
+  List<Widget> mainContent(
+      {BuildContext context, AsyncSnapshot<UserDetails> userDetails}) {
     return [
+      SizedBox(height: 15),
+      _ui.headerCard(
+        context: context,
+        page: "account",
+        header: "Account",
+        subhead: "Manage your account, update details and credentials.",
+        hasButton: false,
+        isDesktop: isDesktop,
+      ),
+      Container(
+        padding: EdgeInsets.only(
+            left: 20, right: 20, top: 20, bottom: isDesktop ? 0 : 40),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: _ui.textFormField(
+                      context: context,
+                      controller: emailInputController,
+                      keyboardType: TextInputType.emailAddress,
+                      label: "Email Address",
+                      icon: Icons.email_rounded,
+                      color: null,
+                      autoFocus: true),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: _ui.textFormField(
+                    context: context,
+                    controller: fullNameInputController,
+                    keyboardType: TextInputType.name,
+                    label: "Full Name",
+                    icon: Icons.person_rounded,
+                    color: null,
+                    enabled: false,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: _ui.textFormField(
+                    context: context,
+                    controller: positionInputController,
+                    keyboardType: TextInputType.text,
+                    label: "Position",
+                    icon: Icons.business_center_rounded,
+                    color: null,
+                    enabled: false,
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: _ui.textFormField(
+                    context: context,
+                    controller: phoneNumberInputController,
+                    keyboardType: TextInputType.phone,
+                    label: "Phone Number",
+                    icon: Icons.phone_rounded,
+                    color: null,
+                    enabled: false,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            _ui.textFormField(
+              context: context,
+              controller: idNumberInputController,
+              keyboardType: TextInputType.text,
+              label: "ID Number",
+              icon: Icons.person_pin_rounded,
+              color: null,
+              enabled: false,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            isMobile
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: controlsButtons(context),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: controlsButtons(context),
+                  ),
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: FloatingActionButton.extended(
+                    label: Text("Delete Account"),
+                    icon: Icon(Icons.delete_rounded),
+                    backgroundColor: Theme.of(context).primaryColor,
+                    foregroundColor: Theme.of(context).primaryColorLight,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      )
+    ];
+  }
 
+  List<Widget> controlsButtons(BuildContext context) {
+    return [
+      Expanded(
+        child: FloatingActionButton.extended(
+          label: Text("Update Account"),
+          icon: Icon(Icons.exit_to_app_rounded),
+          backgroundColor: Theme.of(context).primaryColorLight,
+        ),
+      ),
+      SizedBox(
+        width: 15,
+        height: 15,
+      ),
+      Expanded(
+        child: FloatingActionButton.extended(
+          label: Text("Logout Account"),
+          icon: Icon(Icons.exit_to_app_rounded),
+        ),
+      ),
     ];
   }
 }

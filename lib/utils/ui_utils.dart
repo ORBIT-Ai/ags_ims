@@ -24,6 +24,7 @@ class UI {
     bool autoFocus,
     int maxLength,
     String initialValue,
+    bool enabled,
   }) {
     return TextFormField(
       controller: controller,
@@ -34,6 +35,7 @@ class UI {
         }
         return null;
       },
+      enabled: enabled != null ? enabled : false,
       initialValue: initialValue ?? null,
       maxLength: maxLength != null ? maxLength : null,
       autofocus: autoFocus != null ? autoFocus : false,
