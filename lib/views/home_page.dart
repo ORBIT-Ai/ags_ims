@@ -24,8 +24,10 @@ import 'package:responsive_builder/responsive_builder.dart';
 class HomePage extends StatefulWidget {
   final String title, itemID;
   final Widget currentPage;
+  final AsyncSnapshot<UserDetails> userDetails;
 
-  const HomePage({Key key, this.title, this.currentPage, this.itemID})
+  const HomePage(
+      {Key key, this.title, this.currentPage, this.userDetails, this.itemID})
       : super(key: key);
 
   @override

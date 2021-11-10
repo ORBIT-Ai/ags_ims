@@ -7,6 +7,8 @@ import 'package:ags_ims/services/firestore_db_service.dart';
 import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
+import 'package:ags_ims/views/home_page.dart';
+import 'package:ags_ims/views/home_pages/update_account.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -58,7 +60,7 @@ class _AccountPageState extends State<AccountPage> {
             future:
                 _fireStoreDB.getUserDetails(userID: _auth.getCurrentUserID()),
             builder: (context, AsyncSnapshot<UserDetails> userDetails) {
-              if(userDetails.hasData){
+              if (userDetails.hasData) {
                 emailInputController.text = userDetails.data.emailAddress;
                 fullNameInputController.text = userDetails.data.userName;
                 positionInputController.text = userDetails.data.position;
@@ -73,7 +75,7 @@ class _AccountPageState extends State<AccountPage> {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: mainContent(context: context),
+                        children: mainContent(context: context, userDetails: userDetails),
                       )
                     : UI().deviceNotSupported(
                         context: context,
@@ -182,11 +184,11 @@ class _AccountPageState extends State<AccountPage> {
             isMobile
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: controlsButtons(context),
+                    children: controlsButtons(context, userDetails),
                   )
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: controlsButtons(context),
+                    children: controlsButtons(context, userDetails),
                   ),
             SizedBox(
               height: 15,
@@ -209,13 +211,26 @@ class _AccountPageState extends State<AccountPage> {
     ];
   }
 
-  List<Widget> controlsButtons(BuildContext context) {
+  List<Widget> controlsButtons(
+      BuildContext context, AsyncSnapshot<UserDetails> userDetails) {
     return [
       Expanded(
         child: FloatingActionButton.extended(
           label: Text("Update Account"),
           icon: Icon(Icons.exit_to_app_rounded),
           backgroundColor: Theme.of(context).primaryColorLight,
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => HomePage(
+                          title: "Update Account",
+                          currentPage: UpdateAccount(
+                            userDetails: userDetails,
+                          ),
+                          userDetails: userDetails,
+                        )));
+          },
         ),
       ),
       SizedBox(

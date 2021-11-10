@@ -35,7 +35,7 @@ class UI {
         }
         return null;
       },
-      enabled: enabled != null ? enabled : false,
+      enabled: enabled != null ? enabled : true,
       initialValue: initialValue ?? null,
       maxLength: maxLength != null ? maxLength : null,
       autofocus: autoFocus != null ? autoFocus : false,
