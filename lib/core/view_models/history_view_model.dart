@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_print
 
-import 'package:ags_ims/core/enums/notification_types.dart';
-import 'package:ags_ims/core/models/notification.dart';
-import 'package:ags_ims/core/models/notification_info.dart';
+import 'package:ags_ims/core/enums/history_types.dart';
+import 'package:ags_ims/core/models/history.dart';
+import 'package:ags_ims/core/models/history_info.dart';
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/cloud_storage_service.dart';
 import 'package:ags_ims/services/firestore_db_service.dart';
@@ -10,18 +10,18 @@ import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:flutter/foundation.dart';
 
-class NotificationViewModel {
+class HistoryViewModel {
   final _fireStoreDB = locator<FireStoreDBService>();
   final _auth = locator<Auth>();
   final _baseUtils = locator<BaseUtils>();
   final _cloudStorage = locator<CloudStorageService>();
 
-  Future<void> newNotification(
+  Future<void> newHistory(
       {@required String userID,
-      @required NotificationTypes notificationType,
+      @required HistoryTypes historyType,
       String tag,
       String tagID}) async {
-    final notificationID = _baseUtils.timeStamp();
+    final historyID = _baseUtils.timeStamp();
 
     String date = _baseUtils.currentDate();
     String time = _baseUtils.currentTime();
@@ -34,38 +34,38 @@ class NotificationViewModel {
         .then((senderUserDetails) async {
       senderUserName = senderUserDetails.userName;
 
-      switch (notificationType) {
-        case NotificationTypes.newUser:
+      switch (historyType) {
+        case HistoryTypes.newUser:
           description = "$senderUserName signed up.";
           break;
-        case NotificationTypes.deletedUser:
+        case HistoryTypes.deletedUser:
           description = "$senderUserName deleted his/her account.";
           break;
-        case NotificationTypes.addedItem:
+        case HistoryTypes.addedItem:
           description = "$senderUserName added the item $tag.";
           break;
-        case NotificationTypes.updatedItem:
+        case HistoryTypes.updatedItem:
           description = "$senderUserName updated the item $tag.";
           break;
-        case NotificationTypes.deletedItem:
+        case HistoryTypes.deletedItem:
           description = "$senderUserName deleted the item $tag.";
           break;
-        case NotificationTypes.itemStockIn:
+        case HistoryTypes.itemStockIn:
           description = "$senderUserName added stocks to the item $tag.";
           break;
-        case NotificationTypes.itemStockOut:
+        case HistoryTypes.itemStockOut:
           description = "$tag has been out of stock.";
           break;
-        case NotificationTypes.exportedDailyReport:
+        case HistoryTypes.exportedDailyReport:
           description = "$senderUserName exported a daily report.";
           break;
-        case NotificationTypes.exportedWeeklyReport:
+        case HistoryTypes.exportedWeeklyReport:
           description = "$senderUserName exported a weekly report.";
           break;
-        case NotificationTypes.exportedMonthlyReport:
+        case HistoryTypes.exportedMonthlyReport:
           description = "$senderUserName exported a monthly report.";
           break;
-        case NotificationTypes.exportedAnnualReport:
+        case HistoryTypes.exportedAnnualReport:
           description = "$senderUserName exported an annual report.";
           break;
         default:
@@ -73,20 +73,20 @@ class NotificationViewModel {
           break;
       }
 
-      Notifications notification = Notifications(
+      History history = History(
         userID: userID,
-        notificationInfo: NotificationInfo(
-          notificationID: notificationID,
+        historyInfo: HistoryInfo(
+          historyID: historyID,
           description: description,
           date: date,
           time: time,
-          type: notificationType.toString().split('.').last,
+          type: historyType.toString().split('.').last,
           tag: tag,
           tagID: tagID,
         ).toJson(),
       );
 
-      _fireStoreDB.setNotification(notification: notification).whenComplete(() {
+      _fireStoreDB.setHistory(history: history).whenComplete(() {
         print("NOTIFICATION SUCCESSFULLY SENT");
       });
     });

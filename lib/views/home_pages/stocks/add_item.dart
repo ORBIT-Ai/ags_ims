@@ -39,6 +39,8 @@ class _AddItemState extends State<AddItem> {
 
   bool barCodeGenerated = false;
 
+  bool isUploading = false;
+
   TextEditingController itemNameInputController;
   TextEditingController itemPriceInputController;
   TextEditingController itemCountInputController;
@@ -87,33 +89,52 @@ class _AddItemState extends State<AddItem> {
           Positioned(
             bottom: 20,
             right: 20,
-            child: FloatingActionButton(
-              child: Icon(Icons.cloud_upload_outlined),
-              onPressed: () {
-                if (itemNameInputController.text != null &&
-                    itemPriceInputController.text != null &&
-                    itemCountInputController.text != null &&
-                    itemImage != null &&
-                    barCodeImage != null &&
-                    itemID != null) {
-                  _itemViewModel.addItem(
-                    context: context,
-                    itemID: itemID,
-                    itemName: itemNameInputController.text.toString().trim(),
-                    itemPrice: int.parse(
-                        itemPriceInputController.text.toString().trim()),
-                    itemImage: itemImage,
-                    itemBarcodeImage: barCodeImage,
-                    itemCode: itemID,
-                    itemCount: int.parse(
-                        itemCountInputController.text.toString().trim()),
-                  );
-                } else {
-                  _baseUtils.snackBarError(
-                      context: context,
-                      content: "Make sure all fields were filled in.");
-                }
-              },
+            child: Stack(
+              children: [
+                FloatingActionButton(
+                  child: Icon(Icons.cloud_upload_outlined),
+                  onPressed: () {
+                    setState(() {
+                      isUploading = true;
+                    });
+                    if (itemNameInputController.text != null &&
+                        itemPriceInputController.text != null &&
+                        itemCountInputController.text != null &&
+                        itemImage != null &&
+                        barCodeImage != null &&
+                        itemID != null) {
+                      _itemViewModel.addItem(
+                        context: context,
+                        itemID: itemID,
+                        itemName:
+                            itemNameInputController.text.toString().trim(),
+                        itemPrice: int.parse(
+                            itemPriceInputController.text.toString().trim()),
+                        itemImage: itemImage,
+                        itemBarcodeImage: barCodeImage,
+                        itemCode: itemID,
+                        itemCount: int.parse(
+                            itemCountInputController.text.toString().trim()),
+                      );
+                    } else {
+                      _baseUtils.snackBarError(
+                          context: context,
+                          content: "Make sure all fields were filled in.");
+                    }
+                  },
+                ),
+                isUploading
+                    ? Positioned(
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 10,
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                      )
+                    : Container()
+              ],
             ),
           ),
         ],

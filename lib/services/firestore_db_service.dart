@@ -2,7 +2,7 @@
 
 import 'package:ags_ims/core/models/images.dart';
 import 'package:ags_ims/core/models/item_details.dart';
-import 'package:ags_ims/core/models/notification.dart';
+import 'package:ags_ims/core/models/history.dart';
 import 'package:ags_ims/core/models/user_details.dart';
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/firestore_db.dart';
@@ -211,23 +211,34 @@ class FireStoreDBService extends FireStoreDB {
   }
 
   @override
-  Future<List<Notifications>> getNotifications({@required userID}) async {
+  Future<List<History>> getHistories() async {
     CollectionReference notifications =
-    _fireStoreDB.collection("notifications");
+    _fireStoreDB.collection("history");
 
     QuerySnapshot doc =
-    await notifications.where("receiverUserID", isEqualTo: userID).get();
+    await notifications.get();
     //print(doc.docs.length);
     return doc.docs
-        .map((snapshot) => Notifications.fromJson(snapshot.data()))
+        .map((snapshot) => History.fromJson(snapshot.data()))
         .toList();
   }
 
   @override
-  Future<void> setNotification({@required Notifications notification}) async {
+  Future<History> getHistory({@required String historyID}) {
+    final DocumentReference docRef =
+    _fireStoreDB.collection("history").doc(historyID);
+    return docRef.get().then((DocumentSnapshot documentSnapshot) {
+      return documentSnapshot.exists
+          ? History.fromJson(documentSnapshot.data())
+          : null;
+    });
+  }
+
+  @override
+  Future<void> setHistory({@required History history}) async {
     final docRef = _fireStoreDB
-        .collection("notifications")
-        .doc(notification.notificationInfo['notificationID']);
+        .collection("history")
+        .doc(history.historyInfo['historyID']);
 
     _fireStoreDB.runTransaction<void>((transaction) async {
       var snapshot = await transaction.get<Map<String, dynamic>>(
@@ -235,10 +246,10 @@ class FireStoreDBService extends FireStoreDB {
       );
 
       snapshot.exists
-          ? print('Notification Exists')
+          ? print('History Exists')
           : transaction.set(
         docRef,
-        notification.toJson(),
+        history.toJson(),
       );
     }).whenComplete(() {
       print("FireStore Status: Success");

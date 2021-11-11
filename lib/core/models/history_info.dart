@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-class NotificationInfo {
-  final String notificationID;
+class HistoryInfo {
+  final String historyID;
   final String description;
   final String date;
   final String time;
@@ -9,8 +9,8 @@ class NotificationInfo {
   final String tag;
   final String tagID;
 
-  NotificationInfo({
-    @required this.notificationID,
+  HistoryInfo({
+    @required this.historyID,
     @required this.description,
     @required this.date,
     @required this.time,
@@ -19,9 +19,9 @@ class NotificationInfo {
     @required this.tagID,
   });
 
-  NotificationInfo.fromJson(Map<String, dynamic> json)
+  HistoryInfo.fromJson(Map<String, dynamic> json)
       : this(
-          notificationID: json['notificationID'] as String,
+          historyID: json['historyID'] as String,
           description: json['description'] as String,
           date: json['date'] as String,
           time: json['time'] as String,
@@ -32,7 +32,7 @@ class NotificationInfo {
 
   toJson() {
     return {
-      'notificationID': notificationID,
+      'historyID': historyID,
       'description': description,
       'date': date,
       'time': time,

@@ -1,7 +1,7 @@
 
 import 'package:ags_ims/core/models/images.dart';
 import 'package:ags_ims/core/models/item_details.dart';
-import 'package:ags_ims/core/models/notification.dart';
+import 'package:ags_ims/core/models/history.dart';
 import 'package:ags_ims/core/models/user_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -38,8 +38,11 @@ abstract class FireStoreDB{
   Future<void> deleteStocksItem({ItemDetails itemDetails});
 
   //Get All Notifications
-  Future<List<Notifications>> getNotifications();
+  Future<List<History>> getHistories();
+
+  //Get Specific Notifications
+  Future<History> getHistory({String historyID});
 
   //Set Notifications
-  Future<void> setNotification({Notifications notification});
+  Future<void> setHistory({History history});
 }

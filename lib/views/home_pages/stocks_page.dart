@@ -44,7 +44,6 @@ class _StocksPageState extends State<StocksPage> {
           SingleChildScrollView(
               child: SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
             child: isDesktop || isMobile || isTablet
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.center,

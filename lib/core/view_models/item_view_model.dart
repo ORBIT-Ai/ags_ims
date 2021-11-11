@@ -2,9 +2,9 @@
 
 import 'dart:io';
 
-import 'package:ags_ims/core/enums/notification_types.dart';
+import 'package:ags_ims/core/enums/history_types.dart';
 import 'package:ags_ims/core/models/item_details.dart';
-import 'package:ags_ims/core/view_models/notification_view_model.dart';
+import 'package:ags_ims/core/view_models/history_view_model.dart';
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/cloud_storage_service.dart';
 import 'package:ags_ims/services/firestore_db_service.dart';
@@ -20,7 +20,7 @@ class ItemViewModel {
   final _auth = locator<Auth>();
   final _baseUtils = locator<BaseUtils>();
   final _cloudStorage = locator<CloudStorageService>();
-  final _notificationsViewModel = locator<NotificationViewModel>();
+  final _notificationsViewModel = locator<HistoryViewModel>();
 
   Future<void> addItem({
     @required BuildContext context,
@@ -52,9 +52,9 @@ class ItemViewModel {
           isTrashed: false,
         );
         _fireStoreDB.setStocksItem(itemDetails: itemDetails).whenComplete(() {
-          _notificationsViewModel.newNotification(
+          _notificationsViewModel.newHistory(
             userID: _auth.getCurrentUserID(),
-            notificationType: NotificationTypes.addedItem,
+            historyType: HistoryTypes.addedItem,
             tag: itemName,
             tagID: itemID,
           );
@@ -101,9 +101,9 @@ class ItemViewModel {
           isTrashed: false,
         );
         _fireStoreDB.updateStocksItem(itemDetails: itemDetails).whenComplete(() {
-          _notificationsViewModel.newNotification(
+          _notificationsViewModel.newHistory(
             userID: _auth.getCurrentUserID(),
-            notificationType: NotificationTypes.updatedItem,
+            historyType: HistoryTypes.updatedItem,
             tag: itemName,
             tagID: itemID,
           );
@@ -133,9 +133,9 @@ class ItemViewModel {
         isTrashed: false,
       );
       _fireStoreDB.updateStocksItem(itemDetails: itemDetails).whenComplete(() {
-        _notificationsViewModel.newNotification(
+        _notificationsViewModel.newHistory(
           userID: _auth.getCurrentUserID(),
-          notificationType: NotificationTypes.updatedItem,
+          historyType: HistoryTypes.updatedItem,
           tag: itemName,
           tagID: itemID,
         );
@@ -181,9 +181,9 @@ class ItemViewModel {
           isTrashed: true,
         );
         _fireStoreDB.updateStocksItem(itemDetails: itemDetails).whenComplete(() {
-          _notificationsViewModel.newNotification(
+          _notificationsViewModel.newHistory(
             userID: _auth.getCurrentUserID(),
-            notificationType: NotificationTypes.deletedItem,
+            historyType: HistoryTypes.deletedItem,
             tag: itemName,
             tagID: itemID,
           );
@@ -213,9 +213,9 @@ class ItemViewModel {
         isTrashed: true,
       );
       _fireStoreDB.updateStocksItem(itemDetails: itemDetails).whenComplete(() {
-        _notificationsViewModel.newNotification(
+        _notificationsViewModel.newHistory(
           userID: _auth.getCurrentUserID(),
-          notificationType: NotificationTypes.deletedItem,
+          historyType: HistoryTypes.deletedItem,
           tag: itemName,
           tagID: itemID,
         );

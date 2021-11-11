@@ -1,37 +1,21 @@
+import 'package:flutter/foundation.dart';
 
-import 'package:flutter/material.dart';
-
-class History{
-  final String action;
-  final String description;
-  final String date;
-  final String time;
+class History {
   final String userID;
+  final Map<String, dynamic> historyInfo;
 
-  History({
-    @required this.action,
-    @required this.description,
-    @required this.date,
-    @required this.time,
-    @required this.userID,
-  });
+  History({@required this.userID, @required this.historyInfo});
 
   History.fromJson(Map<String, dynamic> json)
       : this(
-    action: json['action'] as String,
-    description: json['description'] as String,
-    date: json['date'] as String,
-    time: json['time'] as String,
-    userID: json['userID'] as String,
-  );
+          userID: json['userID'] as String,
+          historyInfo: json['historyInfo'] as Map<String, dynamic>,
+        );
 
   toJson() {
     return {
-      'action': action,
-      'description': description,
-      'date': date,
-      'time': time,
       'userID': userID,
+      'historyInfo': historyInfo,
     };
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:ags_ims/core/models/item_details.dart';
 import 'package:ags_ims/core/view_models/item_view_model.dart';
@@ -72,11 +72,14 @@ class _ItemCardState extends State<ItemCard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              _ui.headlineSmall(
-                                  context: context,
-                                  content: itemDetails.data.itemName,
-                                  color: null,
-                                  isDesktop: widget.isDesktop),
+                              Container(
+                                width: widget.isDesktop ? 600 : 200,
+                                child: _ui.headlineSmall(
+                                    context: context,
+                                    content: itemDetails.data.itemName,
+                                    color: null,
+                                    isDesktop: widget.isDesktop),
+                              ),
                               SizedBox(
                                 height: 4,
                               ),

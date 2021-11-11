@@ -1,9 +1,9 @@
 // ignore_for_file: avoid_print, prefer_const_constructors
 
-import 'package:ags_ims/core/enums/notification_types.dart';
+import 'package:ags_ims/core/enums/history_types.dart';
 import 'package:ags_ims/core/models/images.dart';
 import 'package:ags_ims/core/models/user_details.dart';
-import 'package:ags_ims/core/view_models/notification_view_model.dart';
+import 'package:ags_ims/core/view_models/history_view_model.dart';
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/cloud_storage_service.dart';
 import 'package:ags_ims/services/firestore_db_service.dart';
@@ -18,7 +18,7 @@ class UserProfileViewModel {
   final _auth = locator<Auth>();
   final _baseUtils = locator<BaseUtils>();
   final _cloudStorage = locator<CloudStorageService>();
-  final _notificationsViewModel = locator<NotificationViewModel>();
+  final _notificationsViewModel = locator<HistoryViewModel>();
 
   Future<void> setUserInfo({
     @required BuildContext context,
@@ -50,9 +50,9 @@ class UserProfileViewModel {
         ).then((value) {
           updateUserInfo(context: context, userID: userID, url: value)
               .whenComplete(() {
-            _notificationsViewModel.newNotification(
+            _notificationsViewModel.newHistory(
               userID: _auth.getCurrentUserID(),
-              notificationType: NotificationTypes.newUser,
+              historyType: HistoryTypes.newUser,
               tag: "",
               tagID: "",
             );
@@ -121,9 +121,9 @@ class UserProfileViewModel {
     @required BuildContext context,
     @required String userID,
   }) async {
-    _notificationsViewModel.newNotification(
+    _notificationsViewModel.newHistory(
       userID: userID,
-      notificationType: NotificationTypes.deletedUser,
+      historyType: HistoryTypes.deletedUser,
       tag: "",
       tagID: "",
     );

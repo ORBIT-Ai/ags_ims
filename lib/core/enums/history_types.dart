@@ -1,5 +1,5 @@
 
-enum NotificationTypes{
+enum HistoryTypes{
   newUser,
   deletedUser,
   addedItem,
