@@ -22,8 +22,10 @@ import 'package:barcode_image/barcode_image.dart';
 class UpdateItem extends StatefulWidget {
   final String itemID;
   final bool isDesktop;
+  final AsyncSnapshot<ItemDetails> itemDetails;
 
-  const UpdateItem({Key key, this.itemID, this.isDesktop}) : super(key: key);
+  const UpdateItem({Key key, this.itemID, this.isDesktop, this.itemDetails})
+      : super(key: key);
 
   @override
   _UpdateItemState createState() => _UpdateItemState();
@@ -44,6 +46,8 @@ class _UpdateItemState extends State<UpdateItem> {
   bool barCodeGenerated = false;
   bool isItemImageChanged = false;
 
+  bool isUploading = false;
+
   TextEditingController itemNameInputController;
   TextEditingController itemPriceInputController;
   TextEditingController itemCountInputController;
@@ -59,6 +63,15 @@ class _UpdateItemState extends State<UpdateItem> {
     itemNameInputController = new TextEditingController();
     itemPriceInputController = new TextEditingController();
     itemCountInputController = new TextEditingController();
+
+    itemNameInputController.text =
+        widget.itemDetails.hasData ? widget.itemDetails.data.itemName : '';
+    itemPriceInputController.text = widget.itemDetails.hasData
+        ? widget.itemDetails.data.itemPrice.toString()
+        : '';
+    itemCountInputController.text = widget.itemDetails.hasData
+        ? widget.itemDetails.data.itemCount.toString()
+        : '';
     super.initState();
   }
 
@@ -70,79 +83,101 @@ class _UpdateItemState extends State<UpdateItem> {
       isMobile = sizingInformation.deviceScreenType == DeviceScreenType.mobile;
       isTablet = sizingInformation.deviceScreenType == DeviceScreenType.tablet;
       return Container(
-        child: FutureBuilder(
-            future: _fireStoreDB.getStocksItem(itemID: widget.itemID),
-            builder: (context, AsyncSnapshot<ItemDetails> itemDetails) {
-              return itemDetails.hasData ? Stack(
+        child: widget.itemDetails.hasData
+            ? Stack(
                 children: [
                   Container(
                     height: MediaQuery.of(context).size.height,
                     child: SingleChildScrollView(
                         child: Container(
-                          padding: EdgeInsets.all(20),
-                          width: MediaQuery.of(context).size.width,
-                          child: isDesktop || isMobile || isTablet
-                              ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: mainContent(context: context, itemDetails: itemDetails),
-                          )
-                              : UI().deviceNotSupported(
+                      padding: EdgeInsets.all(20),
+                      width: MediaQuery.of(context).size.width,
+                      child: isDesktop || isMobile || isTablet
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: mainContent(
+                                  context: context,
+                                  itemDetails: widget.itemDetails),
+                            )
+                          : UI().deviceNotSupported(
                               context: context,
                               isDesktop: isDesktop,
                               content: "Device Not Supported"),
-                        )),
+                    )),
                   ),
                   Positioned(
                     bottom: 20,
                     right: 20,
-                    child: FloatingActionButton(
-                      child: Icon(Icons.cloud_upload_outlined),
-                      onPressed: () {
-                        if (itemNameInputController.text != null &&
-                            itemPriceInputController.text != null &&
-                            itemCountInputController.text != null &&
-                            isItemImageChanged
-                            ? itemImage != null
-                            : null) {
-                          _itemViewModel.updateItem(
-                            context: context,
-                            itemID: itemDetails.data.itemID,
-                            itemName:
-                            itemNameInputController.text.toString().trim(),
-                            itemPrice: int.parse(itemPriceInputController.text
-                                .toString()
-                                .trim()),
-                            newItemImage:
-                            isItemImageChanged == true ? itemImage : null,
-                            itemImage: isItemImageChanged == false
-                                ? itemDetails.data.itemImage
-                                : null,
-                            itemBarcodeImage: itemDetails.data.itemBarcodeImage,
-                            itemCode: itemDetails.data.itemCode,
-                            itemCount: int.parse(itemCountInputController.text
-                                .toString()
-                                .trim()),
-                          );
-                        } else {
-                          _baseUtils.snackBarError(
-                              context: context,
-                              content: "Make sure all fields were filled in.");
-                        }
-                      },
+                    child: Stack(
+                      children: [
+                        FloatingActionButton(
+                          child: Icon(Icons.cloud_upload_outlined),
+                          onPressed: () {
+                            setState(() {
+                              isUploading = true;
+                            });
+                            if (itemNameInputController.text != null &&
+                                    itemPriceInputController.text != null &&
+                                    itemCountInputController.text != null &&
+                                    isItemImageChanged
+                                ? itemImage != null
+                                : itemImage == null) {
+                              _itemViewModel.updateItem(
+                                context: context,
+                                itemID: widget.itemDetails.data.itemID,
+                                itemName: itemNameInputController.text
+                                    .toString()
+                                    .trim(),
+                                itemPrice: int.parse(itemPriceInputController
+                                    .text
+                                    .toString()
+                                    .trim()),
+                                newItemImage: isItemImageChanged == true
+                                    ? itemImage
+                                    : null,
+                                itemImage: isItemImageChanged == false
+                                    ? widget.itemDetails.data.itemImage
+                                    : null,
+                                itemBarcodeImage:
+                                    widget.itemDetails.data.itemBarcodeImage,
+                                itemCode: widget.itemDetails.data.itemCode,
+                                itemCount: int.parse(itemCountInputController
+                                    .text
+                                    .toString()
+                                    .trim()),
+                              );
+                            } else {
+                              _baseUtils.snackBarError(
+                                  context: context,
+                                  content:
+                                      "Make sure all fields were filled in.");
+                            }
+                          },
+                        ),
+                        isUploading
+                            ? Positioned(
+                                left: 5,
+                                right: 5,
+                                top: 5,
+                                bottom: 5,
+                                child: CircularProgressIndicator(
+                                  color: Theme.of(context).primaryColorDark,
+                                ),
+                              )
+                            : Container(),
+                      ],
                     ),
                   ),
                 ],
-              ) : Container();
-            }),
+              )
+            : Container(),
       );
     });
   }
 
-  List<Widget> mainContent({BuildContext context, AsyncSnapshot<ItemDetails> itemDetails}) {
-    itemNameInputController.text = itemDetails.hasData ? itemDetails.data.itemName : '';
-    itemPriceInputController.text = itemDetails.hasData ? itemDetails.data.itemPrice.toString() : '';
-    itemCountInputController.text = itemDetails.hasData ? itemDetails.data.itemCount.toString() : '';
+  List<Widget> mainContent(
+      {BuildContext context, AsyncSnapshot<ItemDetails> itemDetails}) {
     return [
       _ui.headlineLarge(
           context: context,

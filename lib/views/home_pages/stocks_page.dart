@@ -95,15 +95,17 @@ class _StocksPageState extends State<StocksPage> {
             builder: (context, AsyncSnapshot<List<ItemDetails>> items) {
               return items.hasData
                   ? ListView.builder(
-                itemCount: items.data.length,
-                shrinkWrap: true,
-                itemBuilder: (context, i) {
-                  return ItemCard(
+                      itemCount: items.data.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, i) {
+                        return ItemCard(
                           itemID: items.data[i].itemID,
                           isDesktop: isDesktop,
                         );
-                },
-              ): Container();
+                      },
+                    )
+                  : Container();
             }),
       ),
     ];

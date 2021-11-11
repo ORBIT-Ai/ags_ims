@@ -49,8 +49,13 @@ class _ItemCardState extends State<ItemCard> {
                             builder: (context) => HomePage(
                               title: "Item Details",
                               itemID: widget.itemID,
-                              currentPage: ItemDetailedView(isDesktop: widget.isDesktop, itemID: widget.itemID,),
-                            )));
+                              itemDetails: itemDetails,
+                              currentPage: ItemDetailedView(
+                                isDesktop: widget.isDesktop,
+                                itemID: widget.itemID,
+                                itemDetails: itemDetails,
+                              ),
+                            ),));
                   },
                   child: Column(
                     children: [

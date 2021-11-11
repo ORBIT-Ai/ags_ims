@@ -1,4 +1,3 @@
-
 // ignore_for_file: prefer_const_constructors
 
 import 'package:ags_ims/core/models/history.dart';
@@ -13,8 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class HistoryPage extends StatefulWidget {
-    const HistoryPage({Key key}) : super(key: key);
-    final title = "History";
+  const HistoryPage({Key key}) : super(key: key);
+  final title = "History";
 
   @override
   _HistoryPageState createState() => _HistoryPageState();
@@ -36,25 +35,23 @@ class _HistoryPageState extends State<HistoryPage> {
     return ResponsiveBuilder(builder: (context, sizingInformation) {
       isDesktop =
           sizingInformation.deviceScreenType == DeviceScreenType.desktop;
-      isMobile =
-          sizingInformation.deviceScreenType == DeviceScreenType.mobile;
-      isTablet =
-          sizingInformation.deviceScreenType == DeviceScreenType.tablet;
+      isMobile = sizingInformation.deviceScreenType == DeviceScreenType.mobile;
+      isTablet = sizingInformation.deviceScreenType == DeviceScreenType.tablet;
       return SingleChildScrollView(
           child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: isDesktop ? MediaQuery.of(context).size.height : null,
-            child: isDesktop || isMobile || isTablet
-                ? Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: mainContent(context: context),
-            )
-                : UI().deviceNotSupported(
+        width: MediaQuery.of(context).size.width,
+        height: isDesktop ? MediaQuery.of(context).size.height : null,
+        child: isDesktop || isMobile || isTablet
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: mainContent(context: context),
+              )
+            : UI().deviceNotSupported(
                 context: context,
                 isDesktop: isDesktop,
                 content: "Device Not Supported"),
-          ));
+      ));
     });
   }
 
@@ -65,8 +62,7 @@ class _HistoryPageState extends State<HistoryPage> {
         context: context,
         page: "history",
         header: "History",
-        subhead:
-        "View recent activities  in the ecosystem.",
+        subhead: "View recent activities  in the ecosystem.",
         hasButton: false,
         isDesktop: isDesktop,
       ),
@@ -77,15 +73,18 @@ class _HistoryPageState extends State<HistoryPage> {
             builder: (context, AsyncSnapshot<List<History>> histories) {
               return histories.hasData
                   ? ListView.builder(
-                itemCount: histories.data.length,
-                shrinkWrap: true,
-                itemBuilder: (context, i) {
-                  return HistoryCard(
-                    historyID: histories.data[i].historyInfo['historyID'],
-                    isDesktop: isDesktop,
-                  );
-                },
-              ): Container();
+                      itemCount: histories.data.length,
+                      shrinkWrap: true,
+                      reverse: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, i) {
+                        return HistoryCard(
+                          historyID: histories.data[i].historyInfo['historyID'],
+                          isDesktop: isDesktop,
+                        );
+                      },
+                    )
+                  : Container();
             }),
       ),
     ];

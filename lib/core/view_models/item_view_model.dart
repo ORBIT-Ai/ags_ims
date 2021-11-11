@@ -11,6 +11,7 @@ import 'package:ags_ims/services/firestore_db_service.dart';
 import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/views/home_page.dart';
+import 'package:ags_ims/views/home_pages/stocks/item_details.dart';
 import 'package:ags_ims/views/home_pages/stocks_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -150,6 +151,39 @@ class ItemViewModel {
                 )));
       });
     }
+  }
+
+  Future<void> updateItemCount({
+    @required BuildContext context,
+    @required String itemID,
+    @required String itemName,
+    String itemImage,
+    @required String itemBarcodeImage,
+    @required String itemCode,
+    @required int itemPrice,
+    @required int itemCount,
+  }) async {
+    ItemDetails itemDetails = ItemDetails(
+      itemID: itemID,
+      itemName: itemName,
+      itemImage: itemImage,
+      itemBarcodeImage: itemBarcodeImage,
+      itemCode: itemCode,
+      itemPrice: itemPrice,
+      itemCount: itemCount,
+      isOnHand: true,
+      isActive: true,
+      isDeleted: false,
+      isTrashed: false,
+    );
+    _fireStoreDB.updateStocksItem(itemDetails: itemDetails).whenComplete(() {
+      _notificationsViewModel.newHistory(
+        userID: _auth.getCurrentUserID(),
+        historyType: HistoryTypes.updatedItem,
+        tag: itemName,
+        tagID: itemID,
+      );
+    });
   }
 
   Future<void> deleteItem({

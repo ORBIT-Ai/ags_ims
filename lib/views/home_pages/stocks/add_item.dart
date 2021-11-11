@@ -125,15 +125,15 @@ class _AddItemState extends State<AddItem> {
                 ),
                 isUploading
                     ? Positioned(
-                        left: 10,
-                        right: 10,
-                        top: 10,
-                        bottom: 10,
+                        left: 5,
+                        right: 5,
+                        top: 5,
+                        bottom: 5,
                         child: CircularProgressIndicator(
                           color: Theme.of(context).primaryColorDark,
                         ),
                       )
-                    : Container()
+                    : Container(),
               ],
             ),
           ),

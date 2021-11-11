@@ -8,14 +8,17 @@ import 'package:ags_ims/services/firestore_db_service.dart';
 import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
+import 'package:ags_ims/views/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ItemDetailedView extends StatefulWidget {
   final String itemID;
   final bool isDesktop;
+  final AsyncSnapshot<ItemDetails> itemDetails;
 
-  const ItemDetailedView({Key key, this.itemID, this.isDesktop})
+  const ItemDetailedView(
+      {Key key, this.itemID, this.isDesktop, this.itemDetails})
       : super(key: key);
 
   @override
@@ -29,6 +32,16 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
   final _fireStoreDB = locator<FireStoreDBService>();
   final _userProfile = locator<UserProfileViewModel>();
   final _itemViewModel = locator<ItemViewModel>();
+
+  bool isUpdating = false;
+
+  int itemCount = 0;
+  @override
+  void initState() {
+    itemCount =
+        widget.itemDetails.hasData ? widget.itemDetails.data.itemCount : 0;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,15 +92,107 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                         SizedBox(
                           height: 10,
                         ),
-                        _ui.textIcon(
-                          context: context,
-                          content:
-                              '${itemDetails.data.itemCount.toString()} stocks remaining',
-                          icon: MdiIcons.archive,
-                          contentColor: Colors.grey,
-                          iconColor: Colors.grey,
-                          ratio: 'small',
-                          isDesktop: widget.isDesktop,
+                        Row(
+                          children: [
+                            _ui.textIcon(
+                              context: context,
+                              content:
+                                  '${itemCount.toString()} stocks remaining',
+                              icon: MdiIcons.archive,
+                              contentColor: Colors.grey,
+                              iconColor: Colors.grey,
+                              ratio: 'small',
+                              isDesktop: widget.isDesktop,
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            FloatingActionButton.small(
+                              child: Icon(
+                                Icons.add_rounded,
+                                color: isUpdating
+                                    ? Theme.of(context).disabledColor
+                                    : Theme.of(context).primaryColor,
+                              ),
+                              backgroundColor: isUpdating
+                                  ? Theme.of(context).disabledColor
+                                  : Theme.of(context).primaryColorLight,
+                              onPressed: () {
+                                setState(() {
+                                  isUpdating = true;
+                                  itemCount = itemCount + 1;
+                                  _itemViewModel
+                                      .updateItemCount(
+                                    context: context,
+                                    itemID:
+                                    widget.itemDetails.data.itemID,
+                                    itemName: widget
+                                        .itemDetails.data.itemName,
+                                    itemPrice: widget
+                                        .itemDetails.data.itemPrice,
+                                    //newItemImage: widget.itemDetails.data.itemImage,
+                                    itemImage: widget
+                                        .itemDetails.data.itemImage,
+                                    itemBarcodeImage: widget.itemDetails
+                                        .data.itemBarcodeImage,
+                                    itemCode: widget
+                                        .itemDetails.data.itemCode,
+                                    itemCount: itemCount,
+                                  )
+                                      .whenComplete(() {
+                                    setState(() {
+                                      isUpdating = false;
+                                    });
+                                  });
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            FloatingActionButton.small(
+                              child: Icon(
+                                MdiIcons.minus,
+                                color: isUpdating
+                                    ? Theme.of(context).disabledColor
+                                    : Theme.of(context).colorScheme.background,
+                              ),
+                              backgroundColor: isUpdating
+                                  ? Theme.of(context).disabledColor
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .secondaryVariant,
+                              onPressed: () {
+                                setState(() {
+                                  isUpdating = true;
+                                  itemCount = itemCount - 1;
+                                  _itemViewModel
+                                      .updateItemCount(
+                                    context: context,
+                                    itemID:
+                                    widget.itemDetails.data.itemID,
+                                    itemName: widget
+                                        .itemDetails.data.itemName,
+                                    itemPrice: widget
+                                        .itemDetails.data.itemPrice,
+                                    //newItemImage: widget.itemDetails.data.itemImage,
+                                    itemImage: widget
+                                        .itemDetails.data.itemImage,
+                                    itemBarcodeImage: widget.itemDetails
+                                        .data.itemBarcodeImage,
+                                    itemCode: widget
+                                        .itemDetails.data.itemCode,
+                                    itemCount: itemCount,
+                                  )
+                                      .whenComplete(() {
+                                    setState(() {
+                                      isUpdating = false;
+                                    });
+                                  });
+                                });
+                              },
+                            ),
+                          ],
                         ),
                         SizedBox(
                           height: 10,

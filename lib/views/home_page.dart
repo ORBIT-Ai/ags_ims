@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_final_fields, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, prefer_typing_uninitialized_variables
 
+import 'package:ags_ims/core/models/item_details.dart';
 import 'package:ags_ims/core/models/user_details.dart';
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
 import 'package:ags_ims/services/auth_service.dart';
@@ -25,9 +26,15 @@ class HomePage extends StatefulWidget {
   final String title, itemID;
   final Widget currentPage;
   final AsyncSnapshot<UserDetails> userDetails;
+  final AsyncSnapshot<ItemDetails> itemDetails;
 
   const HomePage(
-      {Key key, this.title, this.currentPage, this.userDetails, this.itemID})
+      {Key key,
+      this.title,
+      this.currentPage,
+      this.userDetails,
+      this.itemID,
+      this.itemDetails})
       : super(key: key);
 
   @override
@@ -100,6 +107,7 @@ class _HomePageState extends State<HomePage> {
                                         currentPage: UpdateItem(
                                           isDesktop: isDesktop,
                                           itemID: widget.itemID,
+                                          itemDetails: widget.itemDetails,
                                         ),
                                       )));
                         },
