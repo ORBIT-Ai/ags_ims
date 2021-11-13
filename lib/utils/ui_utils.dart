@@ -942,7 +942,7 @@ class UI {
     String asset = page == "home"
         ? 'home_vector.png'
         : page == "stocks"
-            ? 'stocks_vector.png'
+            ? 'stock_vector.png'
             : page == "sales"
                 ? 'sale_vector.png'
                 : page == "on_hand"

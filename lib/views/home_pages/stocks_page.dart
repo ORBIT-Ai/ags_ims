@@ -81,10 +81,10 @@ class _StocksPageState extends State<StocksPage> {
       SizedBox(height: 15),
       _ui.headerCard(
         context: context,
-        page: "sales",
-        header: "Sales",
+        page: "stocks",
+        header: "Stocks",
         subhead:
-            "Review the items that are present in the warehouse and those that are out-of-stock. Any actions will reflect to the History so others could track what’s happening to the ecosystem.",
+            "Add update or delete a specific item, click a specific item from the list to view its details. Any actions will reflect to the History so others could track what’s happening to the ecosystem.",
         hasButton: false,
         isDesktop: isDesktop,
       ),
