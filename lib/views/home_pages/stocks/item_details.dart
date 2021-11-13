@@ -9,6 +9,7 @@ import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:ags_ims/views/home_page.dart';
+import 'package:ags_ims/views/home_pages/records/records_page.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -227,7 +228,13 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                               label: Text('Records'),
                               icon: Icon(MdiIcons.history),
                               backgroundColor: Theme.of(context).backgroundColor,
-                              onPressed: () {},
+                              onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomePage(
+                                        title: "Records",
+                                        currentPage: RecordsPage(itemID: itemDetails.data.itemID,),
+                                      ))),
                             ),
                             FloatingActionButton.extended(
                               foregroundColor:
