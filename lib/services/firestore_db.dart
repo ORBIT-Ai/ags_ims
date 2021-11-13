@@ -45,4 +45,10 @@ abstract class FireStoreDB{
 
   //Set Notifications
   Future<void> setHistory({History history});
+
+  //Get On Hand Items
+  Future<void> getOnHand();
+
+  //Get Stockout Items
+  Future<void> getStockOut();
 }

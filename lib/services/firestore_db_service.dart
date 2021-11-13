@@ -255,4 +255,30 @@ class FireStoreDBService extends FireStoreDB {
       print("FireStore Status: Success");
     });
   }
+
+  @override
+  Future<List<ItemDetails>> getOnHand() async {
+    CollectionReference collection =
+    _fireStoreDB.collection("items");
+
+    QuerySnapshot doc =
+    await collection.where("isOnHand", isEqualTo: true).get();
+    //print(doc.docs.length);
+    return doc.docs
+        .map((snapshot) => ItemDetails.fromJson(snapshot.data()))
+        .toList();
+  }
+  
+  @override
+  Future<List<ItemDetails>> getStockOut() async {
+    CollectionReference collection =
+    _fireStoreDB.collection("items");
+
+    QuerySnapshot doc =
+    await collection.where("isOnHand", isEqualTo: false).get();
+    //print(doc.docs.length);
+    return doc.docs
+        .map((snapshot) => ItemDetails.fromJson(snapshot.data()))
+        .toList();
+  }
 }
