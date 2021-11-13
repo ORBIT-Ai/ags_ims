@@ -87,14 +87,16 @@ class _HomePageState extends State<HomePage> {
             appBar: AppBar(
               backgroundColor: isDesktop
                   ? Theme.of(context).primaryColor
-                  : Theme.of(context).canvasColor,
+                  : Theme.of(context).primaryColor,
               title: Text(
                 _title,
                 style: TextStyle(
                     color: isDesktop
                         ? Theme.of(context).canvasColor
-                        : Theme.of(context).primaryColor),
+                        : Theme.of(context).canvasColor),
               ),
+              elevation: 12,
+              actionsIconTheme: IconThemeData(color: Theme.of(context).canvasColor),
               actions: [
                 _title == "Item Details"
                     ? IconButton(
@@ -117,7 +119,7 @@ class _HomePageState extends State<HomePage> {
               iconTheme: IconThemeData(
                   color: isDesktop
                       ? Theme.of(context).canvasColor
-                      : Theme.of(context).primaryColor),
+                      : Theme.of(context).canvasColor),
               leading: isTablet || isMobile
                   ? IconButton(
                       icon: Icon(Icons.menu),

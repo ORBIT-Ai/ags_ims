@@ -60,7 +60,7 @@ class _StockOutState extends State<StockOut> {
       SizedBox(height: 15),
       _ui.headerCard(
         context: context,
-        page: "stocks",
+        page: "stock_out",
         header: "Stock Out",
         subhead:
         "Manage items that are currently present in the warehouse.",

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:ags_ims/core/models/history.dart';
 import 'package:ags_ims/core/models/user_details.dart';
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
 import 'package:ags_ims/services/auth_service.dart';
@@ -7,6 +8,11 @@ import 'package:ags_ims/services/firestore_db_service.dart';
 import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
+import 'package:ags_ims/views/home_page.dart';
+import 'package:ags_ims/views/home_pages/history_page.dart';
+import 'package:ags_ims/views/home_pages/sales_page.dart';
+import 'package:ags_ims/views/home_pages/scanner_page.dart';
+import 'package:ags_ims/views/home_pages/stocks_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -115,47 +121,68 @@ class _HomeMainPageState extends State<HomeMainPage> {
 
           return Card(
             margin: EdgeInsets.only(top: 10, right: 10, left: 10),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(18),
-                      topLeft: Radius.circular(18)),
-                  child: Container(
-                    padding: EdgeInsets.all(30),
-                    color: Theme.of(context).colorScheme.primaryVariant,
-                    child: Icon(
-                      icon,
-                      color: Theme.of(context).primaryColor,
-                      size: isDesktop ? 72 : 48,
+            child: GestureDetector(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HomePage(
+                            title: i == 0
+                                ? StocksPage().title
+                                : i == 1
+                                ? SalesPage().title
+                                : i == 2
+                                ? ScannerPage().title
+                                : HistoryPage().title,
+                            currentPage: i == 0
+                                ? StocksPage()
+                                : i == 1
+                                    ? SalesPage()
+                                    : i == 2
+                                        ? ScannerPage()
+                                        : HistoryPage(),
+                          ))),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(18),
+                        topLeft: Radius.circular(18)),
+                    child: Container(
+                      padding: EdgeInsets.all(30),
+                      color: Theme.of(context).colorScheme.primaryVariant,
+                      child: Icon(
+                        icon,
+                        color: Theme.of(context).primaryColor,
+                        size: isDesktop ? 72 : 48,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _ui.headlineMedium(
-                            context: context,
-                            content: title,
-                            color: null,
-                            isDesktop: isDesktop,
-                          ),
-                          _ui.subheadSmall(
-                            context: context,
-                            content: subhead,
-                            color: null,
-                            isDesktop: isDesktop,
-                          ),
-                        ]),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _ui.headlineMedium(
+                              context: context,
+                              content: title,
+                              color: null,
+                              isDesktop: isDesktop,
+                            ),
+                            _ui.subheadSmall(
+                              context: context,
+                              content: subhead,
+                              color: null,
+                              isDesktop: isDesktop,
+                            ),
+                          ]),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

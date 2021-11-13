@@ -71,7 +71,7 @@ class _HistoryCardState extends State<HistoryCard> {
                               userDetails.data.profileUrl,
                               width: widget.isDesktop ? 150 : 100,
                               height: widget.isDesktop ? 150 : 100,
-                              filterQuality: FilterQuality.medium,
+                              filterQuality: FilterQuality.low,
                             ) : Container()
                                 : FutureBuilder(
                               future: _fireStoreDB.getStocksItem(

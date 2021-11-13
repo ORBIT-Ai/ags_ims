@@ -48,7 +48,6 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
     return SingleChildScrollView(
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height + 100,
         padding: EdgeInsets.all(20),
         child: FutureBuilder(
             future: _fireStoreDB.getStocksItem(itemID: widget.itemID),
@@ -225,14 +224,15 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             FloatingActionButton.extended(
-                              label: Text('Add Stock'),
-                              icon: Icon(MdiIcons.plus),
+                              label: Text('Records'),
+                              icon: Icon(MdiIcons.history),
+                              backgroundColor: Theme.of(context).backgroundColor,
                               onPressed: () {},
                             ),
                             FloatingActionButton.extended(
                               foregroundColor:
-                                  Theme.of(context).colorScheme.onPrimary,
-                              backgroundColor: Theme.of(context).primaryColor,
+                                  Theme.of(context).colorScheme.background,
+                              backgroundColor: Theme.of(context).colorScheme.secondaryVariant,
                               label: Text('Delete'),
                               icon: Icon(MdiIcons.delete),
                               onPressed: () {},

@@ -41,9 +41,7 @@ class _ItemCardState extends State<ItemCard> {
           return itemDetails.hasData
               ? GestureDetector(
                   onTap: () {
-                    _baseUtils.snackBarNoProgress(
-                        context: context, content: itemDetails.data.itemCode);
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) => HomePage(
@@ -67,7 +65,7 @@ class _ItemCardState extends State<ItemCard> {
                               itemDetails.data.itemImage,
                               width: widget.isDesktop ? 150 : 100,
                               height: widget.isDesktop ? 150 : 100,
-                              filterQuality: FilterQuality.medium,
+                              filterQuality: FilterQuality.low,
                             ),
                           ),
                           SizedBox(
