@@ -6,6 +6,9 @@ import 'package:ags_ims/services/firestore_db_service.dart';
 import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
+import 'package:ags_ims/views/home_page.dart';
+import 'package:ags_ims/views/home_pages/sales/on_hand.dart';
+import 'package:ags_ims/views/home_pages/sales/stockout.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -34,25 +37,23 @@ class _SalesPageState extends State<SalesPage> {
     return ResponsiveBuilder(builder: (context, sizingInformation) {
       isDesktop =
           sizingInformation.deviceScreenType == DeviceScreenType.desktop;
-      isMobile =
-          sizingInformation.deviceScreenType == DeviceScreenType.mobile;
-      isTablet =
-          sizingInformation.deviceScreenType == DeviceScreenType.tablet;
+      isMobile = sizingInformation.deviceScreenType == DeviceScreenType.mobile;
+      isTablet = sizingInformation.deviceScreenType == DeviceScreenType.tablet;
       return SingleChildScrollView(
           child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: isDesktop ? MediaQuery.of(context).size.height : null,
-            child: isDesktop || isMobile || isTablet
-                ? Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: mainContent(context: context),
-            )
-                : UI().deviceNotSupported(
+        width: MediaQuery.of(context).size.width,
+        height: isDesktop ? MediaQuery.of(context).size.height : null,
+        child: isDesktop || isMobile || isTablet
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: mainContent(context: context),
+              )
+            : UI().deviceNotSupported(
                 context: context,
                 isDesktop: isDesktop,
                 content: "Device Not Supported"),
-          ));
+      ));
     });
   }
 
@@ -62,10 +63,9 @@ class _SalesPageState extends State<SalesPage> {
       _ui.headerCard(
         context: context,
         page: "sales",
-        header:
-        "Sales",
+        header: "Sales",
         subhead:
-        "Review the items that are present in the warehouse and those that are out-of-stock. Any actions will reflect to the History so others could track what’s happening to the ecosystem.",
+            "Review the items that are present in the warehouse and those that are out-of-stock. Any actions will reflect to the History so others could track what’s happening to the ecosystem.",
         hasButton: false,
         isDesktop: isDesktop,
       ),
@@ -77,64 +77,74 @@ class _SalesPageState extends State<SalesPage> {
           final icon = i == 0
               ? MdiIcons.packageVariantClosed
               : i == 1
-              ? MdiIcons.packageVariant
-              : null;
+                  ? MdiIcons.packageVariant
+                  : null;
 
           final title = i == 0
               ? "On Hand"
               : i == 1
-              ? "Stockout"
-              : null;
+                  ? "Stockout"
+                  : null;
 
           final subhead = i == 0
               ? "Manage items that are currently present in the warehouse."
               : i == 1
-              ? "Reviiew those items that aren’t present in the warehouse."
-              : null;
+                  ? "Reviiew those items that aren’t present in the warehouse."
+                  : null;
+
 
           return Card(
             margin: EdgeInsets.only(top: 10, right: 10, left: 10),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(18),
-                      topLeft: Radius.circular(18)),
-                  child: Container(
-                    padding: EdgeInsets.all(30),
-                    color: Theme.of(context).colorScheme.primaryVariant,
-                    child: Icon(
-                      icon,
-                      color: Theme.of(context).primaryColor,
-                      size: isDesktop ? 72 : 48,
+            child: GestureDetector(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HomePage(
+                        title: i == 0 ? "On Hand" : "Stock Out",
+                        currentPage: i == 0 ? OnHand() : StockOut(),
+                      ))),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(18),
+                        topLeft: Radius.circular(18)),
+                    child: Container(
+                      padding: EdgeInsets.all(30),
+                      color: Theme.of(context).colorScheme.primaryVariant,
+                      child: Icon(
+                        icon,
+                        color: Theme.of(context).primaryColor,
+                        size: isDesktop ? 72 : 48,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _ui.headlineMedium(
-                            context: context,
-                            content: title,
-                            color: null,
-                            isDesktop: isDesktop,
-                          ),
-                          _ui.subheadSmall(
-                            context: context,
-                            content: subhead,
-                            color: null,
-                            isDesktop: isDesktop,
-                          ),
-                        ]),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _ui.headlineMedium(
+                              context: context,
+                              content: title,
+                              color: null,
+                              isDesktop: isDesktop,
+                            ),
+                            _ui.subheadSmall(
+                              context: context,
+                              content: subhead,
+                              color: null,
+                              isDesktop: isDesktop,
+                            ),
+                          ]),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

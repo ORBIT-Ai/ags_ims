@@ -164,7 +164,7 @@ class FireStoreDBService extends FireStoreDB {
     _fireStoreDB.collection("items");
 
     QuerySnapshot doc =
-        await collection.get();
+        await collection.where("isActive", isEqualTo: true).get();
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => ItemDetails.fromJson(snapshot.data()))
@@ -275,7 +275,7 @@ class FireStoreDBService extends FireStoreDB {
     _fireStoreDB.collection("items");
 
     QuerySnapshot doc =
-    await collection.where("isOnHand", isEqualTo: false).get();
+    await collection.where("isOnHand", isEqualTo: false).where("itemCount", isEqualTo: 0).get();
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => ItemDetails.fromJson(snapshot.data()))

@@ -76,6 +76,14 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                             content: itemDetails.data.itemName,
                             color: null,
                             isDesktop: widget.isDesktop),
+                        itemDetails.data.isOnHand == true
+                            ? Container()
+                            : _ui.headlineSmall(
+                                context: context,
+                                content: "Out of Stock",
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
+                                isDesktop: widget.isDesktop),
                         SizedBox(
                           height: 10,
                         ),
@@ -117,26 +125,23 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                               backgroundColor: isUpdating
                                   ? Theme.of(context).disabledColor
                                   : Theme.of(context).primaryColorLight,
-                              onPressed: () {
+                              onPressed: !isUpdating ? () {
                                 setState(() {
                                   isUpdating = true;
                                   itemCount = itemCount + 1;
                                   _itemViewModel
                                       .updateItemCount(
                                     context: context,
-                                    itemID:
-                                    widget.itemDetails.data.itemID,
-                                    itemName: widget
-                                        .itemDetails.data.itemName,
-                                    itemPrice: widget
-                                        .itemDetails.data.itemPrice,
+                                    itemID: widget.itemDetails.data.itemID,
+                                    itemName: widget.itemDetails.data.itemName,
+                                    itemPrice:
+                                        widget.itemDetails.data.itemPrice,
                                     //newItemImage: widget.itemDetails.data.itemImage,
-                                    itemImage: widget
-                                        .itemDetails.data.itemImage,
-                                    itemBarcodeImage: widget.itemDetails
-                                        .data.itemBarcodeImage,
-                                    itemCode: widget
-                                        .itemDetails.data.itemCode,
+                                    itemImage:
+                                        widget.itemDetails.data.itemImage,
+                                    itemBarcodeImage: widget
+                                        .itemDetails.data.itemBarcodeImage,
+                                    itemCode: widget.itemDetails.data.itemCode,
                                     itemCount: itemCount,
                                   )
                                       .whenComplete(() {
@@ -145,7 +150,7 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                                     });
                                   });
                                 });
-                              },
+                              } : (){},
                             ),
                             SizedBox(
                               width: 20,
@@ -153,35 +158,31 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                             FloatingActionButton.small(
                               child: Icon(
                                 MdiIcons.minus,
-                                color: isUpdating
+                                color: isUpdating || itemCount == 0
                                     ? Theme.of(context).disabledColor
-                                    : Theme.of(context).colorScheme.background,
+                                    : Theme.of(context).primaryColorDark,
                               ),
-                              backgroundColor: isUpdating
+                              backgroundColor: isUpdating || itemCount == 0
                                   ? Theme.of(context).disabledColor
-                                  : Theme.of(context)
-                                      .colorScheme
-                                      .secondaryVariant,
-                              onPressed: () {
+                                  : Theme.of(context).colorScheme.secondary,
+                              onPressed: !isUpdating || itemCount != 0
+                                  ? () {
                                 setState(() {
                                   isUpdating = true;
                                   itemCount = itemCount - 1;
                                   _itemViewModel
                                       .updateItemCount(
                                     context: context,
-                                    itemID:
-                                    widget.itemDetails.data.itemID,
-                                    itemName: widget
-                                        .itemDetails.data.itemName,
-                                    itemPrice: widget
-                                        .itemDetails.data.itemPrice,
+                                    itemID: widget.itemDetails.data.itemID,
+                                    itemName: widget.itemDetails.data.itemName,
+                                    itemPrice:
+                                        widget.itemDetails.data.itemPrice,
                                     //newItemImage: widget.itemDetails.data.itemImage,
-                                    itemImage: widget
-                                        .itemDetails.data.itemImage,
-                                    itemBarcodeImage: widget.itemDetails
-                                        .data.itemBarcodeImage,
-                                    itemCode: widget
-                                        .itemDetails.data.itemCode,
+                                    itemImage:
+                                        widget.itemDetails.data.itemImage,
+                                    itemBarcodeImage: widget
+                                        .itemDetails.data.itemBarcodeImage,
+                                    itemCode: widget.itemDetails.data.itemCode,
                                     itemCount: itemCount,
                                   )
                                       .whenComplete(() {
@@ -190,7 +191,7 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                                     });
                                   });
                                 });
-                              },
+                              } : (){},
                             ),
                           ],
                         ),
