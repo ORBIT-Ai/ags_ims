@@ -115,6 +115,7 @@ class _AccountPageState extends State<AccountPage> {
                       label: "Email Address",
                       icon: Icons.email_rounded,
                       color: null,
+                      enabled: false,
                       autoFocus: true),
                 ),
                 SizedBox(
@@ -197,6 +198,9 @@ class _AccountPageState extends State<AccountPage> {
               children: [
                 Expanded(
                   child: FloatingActionButton.extended(
+                    onPressed: (){
+                      _userProfile.deleteUserData(context: context, userID: _auth.getCurrentUserID());
+                    },
                     label: Text("Delete Account"),
                     icon: Icon(Icons.delete_rounded),
                     backgroundColor: Theme.of(context).primaryColor,
@@ -217,7 +221,7 @@ class _AccountPageState extends State<AccountPage> {
       Expanded(
         child: FloatingActionButton.extended(
           label: Text("Update Account"),
-          icon: Icon(Icons.exit_to_app_rounded),
+          icon: Icon(Icons.edit_rounded),
           backgroundColor: Theme.of(context).primaryColorLight,
           onPressed: () {
             Navigator.push(
@@ -239,6 +243,9 @@ class _AccountPageState extends State<AccountPage> {
       ),
       Expanded(
         child: FloatingActionButton.extended(
+          onPressed: (){
+            _auth.signOut(context: context);
+          },
           label: Text("Logout Account"),
           icon: Icon(Icons.exit_to_app_rounded),
         ),

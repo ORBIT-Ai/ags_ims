@@ -59,6 +59,15 @@ class _UpdateAccountState extends State<UpdateAccount> {
     idNumberInputController = new TextEditingController();
     pwdInputController = new TextEditingController();
     pwdConfInputController = new TextEditingController();
+
+    if (widget.userDetails.hasData) {
+      emailInputController.text = widget.userDetails.data.emailAddress;
+      fullNameInputController.text = widget.userDetails.data.userName;
+      positionInputController.text = widget.userDetails.data.position;
+      phoneNumberInputController.text =
+          widget.userDetails.data.phoneNumber;
+      idNumberInputController.text = widget.userDetails.data.idNumber;
+    }
     super.initState();
   }
 
@@ -93,14 +102,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
               sizingInformation.deviceScreenType == DeviceScreenType.mobile;
           isTablet =
               sizingInformation.deviceScreenType == DeviceScreenType.tablet;
-          if (widget.userDetails.hasData) {
-            emailInputController.text = widget.userDetails.data.emailAddress;
-            fullNameInputController.text = widget.userDetails.data.userName;
-            positionInputController.text = widget.userDetails.data.position;
-            phoneNumberInputController.text =
-                widget.userDetails.data.phoneNumber;
-            idNumberInputController.text = widget.userDetails.data.idNumber;
-          }
+
           return SingleChildScrollView(
               child: Container(
             width: MediaQuery.of(context).size.width,
@@ -173,17 +175,17 @@ class _UpdateAccountState extends State<UpdateAccount> {
                       child: ClipOval(
                         child: imageFile == null
                             ? Image.network(
-                          widget.userDetails.data.profileUrl,
-                          height: 86,
-                          width: 86,
-                          fit: BoxFit.cover,
-                        )
+                                widget.userDetails.data.profileUrl,
+                                height: 86,
+                                width: 86,
+                                fit: BoxFit.cover,
+                              )
                             : Image.file(
-                          imageFile,
-                          height: 86,
-                          width: 86,
-                          fit: BoxFit.cover,
-                        ),
+                                imageFile,
+                                height: 86,
+                                width: 86,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                       radius: 100,
                     ),
@@ -194,20 +196,20 @@ class _UpdateAccountState extends State<UpdateAccount> {
                 ),
                 Expanded(
                     child: _ui.outlinedButtonIcon(
-                      context: context,
-                      label: "Change Photo",
-                      backgroundColor: Theme.of(context).colorScheme.background,
-                      foregroundColor: Theme.of(context).colorScheme.primary,
-                      icon: Icons.photo_rounded,
-                      function: () async {
-                        imageFile = await _baseUtils.imageProcessor(
-                            context: context, ratioY: 4, ratioX: 4);
-                        setState(() {
-                          _baseUtils.snackBarNoProgress(
-                              context: context, content: "Image Loaded");
-                        });
-                      },
-                    ))
+                  context: context,
+                  label: "Change Photo",
+                  backgroundColor: Theme.of(context).colorScheme.background,
+                  foregroundColor: Theme.of(context).colorScheme.primary,
+                  icon: Icons.photo_rounded,
+                  function: () async {
+                    imageFile = await _baseUtils.imageProcessor(
+                        context: context, ratioY: 4, ratioX: 4);
+                    setState(() {
+                      _baseUtils.snackBarNoProgress(
+                          context: context, content: "Image Loaded");
+                    });
+                  },
+                ))
               ],
             ),
             SizedBox(
@@ -311,33 +313,20 @@ class _UpdateAccountState extends State<UpdateAccount> {
             foregroundColor: Theme.of(context).canvasColor,
             icon: Icons.cloud_upload_rounded,
             function: () {
-              if (_signUpFormKey.currentState.validate() && imageFile != null) {
-                if (pwdInputController.text == pwdConfInputController.text) {
-                  _baseUtils.snackBarProgress(
-                      context: context, content: "Signing Up");
-                  _auth
-                      .signUpWithEmailPassword(
-                    email: emailInputController.text,
-                    password: pwdInputController.text,
-                  )
-                      .then((value) {
-                    if (value.user != null) {
-                      _userProfile.setUserInfo(
-                        context: context,
-                        userID: value.user.uid,
-                        email: value.user.email,
-                        phoneNumber: phoneNumberInputController.text,
-                        position: positionInputController.text,
-                        userName: fullNameInputController.text,
-                        idNumber: idNumberInputController.text,
-                        imageFile: imageFile,
-                      );
-                    }
-                  });
-                } else {
-                  _baseUtils.snackBarError(
-                      context: context, content: "Check your password");
-                }
+              if (_signUpFormKey.currentState.validate()) {
+                _baseUtils.snackBarProgress(
+                    context: context, content: "Updating...");
+                _userProfile.updateAccount(
+                  context: context,
+                  userID: _auth.getCurrentUserID(),
+                  email: emailInputController.text,
+                  phoneNumber: phoneNumberInputController.text,
+                  position: positionInputController.text,
+                  userName: fullNameInputController.text,
+                  idNumber: idNumberInputController.text,
+                  imageFile: imageFile != null ? imageFile : null,
+                  imageUrl: widget.userDetails.data.profileUrl,
+                );
               } else {
                 _baseUtils.snackBarError(
                     context: context, content: "Enter valid credentials");

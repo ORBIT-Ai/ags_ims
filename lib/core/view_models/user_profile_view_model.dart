@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print, prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:ags_ims/core/enums/history_types.dart';
 import 'package:ags_ims/core/models/images.dart';
 import 'package:ags_ims/core/models/user_details.dart';
@@ -10,6 +12,7 @@ import 'package:ags_ims/services/firestore_db_service.dart';
 import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/views/home_page.dart';
+import 'package:ags_ims/views/home_pages/account_page.dart';
 import 'package:ags_ims/views/login_page.dart';
 import 'package:flutter/material.dart';
 
@@ -56,8 +59,8 @@ class UserProfileViewModel {
               tag: "",
               tagID: "",
             );
-            Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => HomePage()));
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
             BaseUtils().snackBarNoProgress(
                 context: context, content: "Registered Successfully");
           });
@@ -85,6 +88,72 @@ class UserProfileViewModel {
       _fireStoreDB.setUserDetails(userDetails: userDetails).whenComplete(() {
         print('USER CREDENTIALS UPDATED SUCCESSFULLY');
       });
+    });
+  }
+
+  Future<void> updateAccount({
+    @required BuildContext context,
+    @required String userID,
+    @required String email,
+    @required String phoneNumber,
+    @required String position,
+    @required String userName,
+    @required String idNumber,
+    File imageFile,
+    String imageUrl,
+  }) async {
+    _fireStoreDB.getUserDetails(userID: userID).then((value) {
+      imageFile != null
+          ? uploadProfilePhoto(
+                  context: context, imageFile: imageFile, userID: userID)
+              .then((value) {
+              final userDetails = UserDetails(
+                userID: userID,
+                emailAddress: email,
+                profileUrl: value,
+                phoneNumber: phoneNumber,
+                position: position,
+                userName: userName,
+                idNumber: idNumber,
+              );
+
+              _fireStoreDB
+                  .updateUserDetails(userDetails: userDetails)
+                  .whenComplete(() {
+                print('USER CREDENTIALS UPDATED SUCCESSFULLY');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomePage(
+                              title: "Account",
+                              currentPage: AccountPage(),
+                            )));
+              });
+            })
+          : Future.microtask(() {
+              final userDetails = UserDetails(
+                userID: userID,
+                emailAddress: email,
+                profileUrl: imageUrl,
+                phoneNumber: phoneNumber,
+                position: position,
+                userName: userName,
+                idNumber: idNumber,
+              );
+
+              _fireStoreDB
+                  .updateUserDetails(userDetails: userDetails)
+                  .whenComplete(() {
+                print('USER CREDENTIALS UPDATED SUCCESSFULLY');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomePage(
+                              title: "Account",
+                              currentPage: AccountPage(),
+                            )));
+              });
+            });
     });
   }
 
@@ -121,13 +190,15 @@ class UserProfileViewModel {
     @required BuildContext context,
     @required String userID,
   }) async {
-    _notificationsViewModel.newHistory(
-      userID: userID,
-      historyType: HistoryTypes.deletedUser,
-      tag: "",
-      tagID: "",
-    );
     _fireStoreDB.deleteUserDetails(userID: userID).whenComplete(() {
+
+      _notificationsViewModel.newHistory(
+        userID: userID,
+        historyType: HistoryTypes.deletedUser,
+        tag: "",
+        tagID: "",
+      );
+
       _auth.deleteAccount().whenComplete(() {
         _auth.signOut().whenComplete(() {
           print("USER ACCOUNT DELETED SUCCESSFULLY");
