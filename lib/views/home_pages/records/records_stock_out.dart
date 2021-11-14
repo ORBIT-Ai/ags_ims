@@ -30,13 +30,12 @@ class _RecordsStockOutState extends State<RecordsStockOut> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topCenter,
-      padding: EdgeInsets.only(bottom: 56),
+      padding: EdgeInsets.only(bottom: 64),
       child: FutureBuilder(
         future: _fireStoreDB.getItemStockOutRecords(itemID: widget.itemID),
         builder: (context, AsyncSnapshot<List<ItemRecords>> itemRecords) {
           return itemRecords.hasData ? ListView.builder(
             shrinkWrap: true,
-            reverse: true,
             itemCount: itemRecords.data.length,
             itemBuilder: (context, i) {
               return itemRecords.data.isNotEmpty ? ItemRecordCard(

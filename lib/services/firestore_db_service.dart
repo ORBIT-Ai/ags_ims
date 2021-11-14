@@ -268,7 +268,7 @@ class FireStoreDBService extends FireStoreDB {
         .doc(itemID)
         .collection("details_records");
 
-    QuerySnapshot doc = await collection.get();
+    QuerySnapshot doc = await collection.orderBy("itemRecordsInfo.recordID", descending: true).get();
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => ItemRecords.fromJson(snapshot.data()))
@@ -311,7 +311,7 @@ class FireStoreDBService extends FireStoreDB {
         .doc(itemID)
         .collection("stock_out_records");
 
-    QuerySnapshot doc = await collection.get();
+    QuerySnapshot doc = await collection.orderBy("itemRecordsInfo.recordID", descending: true).get();
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => ItemRecords.fromJson(snapshot.data()))
@@ -354,7 +354,7 @@ class FireStoreDBService extends FireStoreDB {
         .doc(itemID)
         .collection("re_stock_records");
 
-    QuerySnapshot doc = await collection.get();
+    QuerySnapshot doc = await collection.orderBy("itemRecordsInfo.recordID", descending: true).get();
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => ItemRecords.fromJson(snapshot.data()))

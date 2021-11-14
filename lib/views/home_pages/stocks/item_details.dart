@@ -294,6 +294,7 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                                             title: "Records",
                                             currentPage: RecordsPage(
                                               itemID: itemDetails.data.itemID,
+                                              itemDetails: itemDetails,
                                             ),
                                           ))),
                             ),
