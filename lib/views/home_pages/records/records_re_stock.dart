@@ -29,6 +29,7 @@ class _RecordsReStockState extends State<RecordsReStock> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.topCenter,
       padding: EdgeInsets.only(bottom: 56),
       child: FutureBuilder(
         future: _fireStoreDB.getItemReStockRecords(itemID: widget.itemID),
