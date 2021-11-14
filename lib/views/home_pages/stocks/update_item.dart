@@ -127,13 +127,10 @@ class _UpdateItemState extends State<UpdateItem> {
                                 ? itemImage != null
                                 : itemImage == null) {
                               _itemRecordsViewModel.newRecord(
-                                userID:
-                                _auth.getCurrentUserID(),
-                                recordsType:
-                                RecordTypes.details,
+                                userID: _auth.getCurrentUserID(),
+                                recordsType: RecordTypes.details,
                                 itemID: widget.itemID,
-                                itemName: widget
-                                    .itemDetails.data.itemName,
+                                itemName: widget.itemDetails.data.itemName,
                               );
                               _itemViewModel.updateItem(
                                 context: context,

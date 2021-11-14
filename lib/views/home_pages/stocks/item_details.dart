@@ -145,7 +145,8 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                                           itemName:
                                               widget.itemDetails.data.itemName,
                                           itemID: widget.itemID,
-                                          itemCount: int.parse(targetItemCount.text),
+                                          itemCount:
+                                              int.parse(targetItemCount.text),
                                           totalItemCount: itemCount,
                                         );
                                         _itemViewModel
@@ -209,8 +210,7 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                                         isUpdating = true;
                                         itemCount = itemCount -
                                             int.parse(targetItemCount.text);
-                                        itemCount ==
-                                                0
+                                        itemCount == 0
                                             ? _itemRecordsViewModel.newRecord(
                                                 userID:
                                                     _auth.getCurrentUserID(),
@@ -220,7 +220,7 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                                                 itemName: widget
                                                     .itemDetails.data.itemName,
                                                 itemCount: int.parse(
-                                                        targetItemCount.text),
+                                                    targetItemCount.text),
                                                 totalItemCount: itemCount,
                                               )
                                             : Future.microtask(() => {});
