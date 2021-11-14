@@ -306,7 +306,18 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                                   .secondaryVariant,
                               label: Text('Delete'),
                               icon: Icon(MdiIcons.delete),
-                              onPressed: () {},
+                              onPressed: () {
+                                _itemViewModel.deleteItem(
+                                    context: context,
+                                    itemID: itemDetails.data.itemID,
+                                    itemName: itemDetails.data.itemName,
+                                    itemImage: itemDetails.data.itemImage,
+                                    itemBarcodeImage: itemDetails.data.itemBarcodeImage,
+                                    itemCode: itemDetails.data.itemCode,
+                                    itemPrice: itemDetails.data.itemPrice,
+                                    itemCount: itemCount,
+                                );
+                              },
                             ),
                           ],
                         ),

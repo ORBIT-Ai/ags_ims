@@ -190,79 +190,41 @@ class ItemViewModel {
     @required BuildContext context,
     @required String itemID,
     @required String itemName,
-    File newItemImage,
-    String itemImage,
+    @required String itemImage,
     @required String itemBarcodeImage,
     @required String itemCode,
     @required int itemPrice,
     @required int itemCount,
   }) async {
-    if(newItemImage != null){
-      _cloudStorage
-          .setItemPhoto(itemID: itemID, imageFile: newItemImage)
-          .then((newItemImage) async {
-        ItemDetails itemDetails = ItemDetails(
-          itemID: itemID,
-          itemName: itemName,
-          itemImage: await newItemImage.getDownloadURL(),
-          itemBarcodeImage: itemBarcodeImage,
-          itemCode: itemCode,
-          itemPrice: itemPrice,
-          itemCount: itemCount,
-          isOnHand: false,
-          isActive: false,
-          isDeleted: false,
-          isTrashed: true,
-        );
-        _fireStoreDB.updateStocksItem(itemDetails: itemDetails).whenComplete(() {
-          _notificationsViewModel.newHistory(
-            userID: _auth.getCurrentUserID(),
-            historyType: HistoryTypes.deletedItem,
-            tag: itemName,
-            tagID: itemID,
-          );
-          _baseUtils.snackBarNoProgress(
-              context: context, content: 'Item Successfully Updated');
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => HomePage(
-                    title: 'Stocks',
-                    currentPage: StocksPage(),
-                  )));
-        });
-      });
-    } else {
-      ItemDetails itemDetails = ItemDetails(
-        itemID: itemID,
-        itemName: itemName,
-        itemImage: itemImage,
-        itemBarcodeImage: itemBarcodeImage,
-        itemCode: itemCode,
-        itemPrice: itemPrice,
-        itemCount: itemCount,
-        isOnHand: false,
-        isActive: false,
-        isDeleted: false,
-        isTrashed: true,
+    ItemDetails itemDetails = ItemDetails(
+      itemID: itemID,
+      itemName: itemName,
+      itemImage: itemImage,
+      itemBarcodeImage: itemBarcodeImage,
+      itemCode: itemCode,
+      itemPrice: itemPrice,
+      itemCount: itemCount,
+      isOnHand: false,
+      isActive: false,
+      isDeleted: false,
+      isTrashed: true,
+    );
+    _fireStoreDB.updateStocksItem(itemDetails: itemDetails).whenComplete(() {
+      _notificationsViewModel.newHistory(
+        userID: _auth.getCurrentUserID(),
+        historyType: HistoryTypes.deletedItem,
+        tag: itemName,
+        tagID: itemID,
       );
-      _fireStoreDB.updateStocksItem(itemDetails: itemDetails).whenComplete(() {
-        _notificationsViewModel.newHistory(
-          userID: _auth.getCurrentUserID(),
-          historyType: HistoryTypes.deletedItem,
-          tag: itemName,
-          tagID: itemID,
-        );
-        _baseUtils.snackBarNoProgress(
-            context: context, content: 'Item Successfully Updated');
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => HomePage(
-                  title: 'Stocks',
-                  currentPage: StocksPage(),
-                )));
-      });
-    }
+      _baseUtils.snackBarNoProgress(
+          context: context, content: 'Item Successfully Updated');
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomePage(
+                title: 'Stocks',
+                currentPage: StocksPage(),
+              )));
+    });
   }
 }
