@@ -360,8 +360,7 @@ class _HomePageState extends State<HomePage> {
                   });
                 },
               ),
-              isMobile
-                  ? ListTile(
+              ListTile(
                       tileColor: _title == "Scanner"
                           ? Theme.of(context).primaryColorLight
                           : null,
@@ -397,8 +396,8 @@ class _HomePageState extends State<HomePage> {
                               : Navigator.pop(context);
                         });
                       },
-                    )
-                  : ListTile(
+                    ),
+              ListTile(
                       tileColor: _title == "Print"
                           ? Theme.of(context).primaryColorLight
                           : null,

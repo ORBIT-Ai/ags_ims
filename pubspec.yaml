@@ -75,6 +75,7 @@ dependencies:
   #barcode: ^2.1.0
   barcode_image: ^2.0.0
   flutter_barcode_scanner: ^2.0.0
+  printing: ^5.6.1
 
   #UI
   curved_bottom_navigation: ^1.0.0

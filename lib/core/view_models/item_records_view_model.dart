@@ -51,6 +51,10 @@ class ItemRecordsViewModel {
           description =
               "$senderUserName added $itemCount stocks to $itemName, $totalItemCount stocks remaining.";
           break;
+        case RecordTypes.sold:
+          description =
+              "$senderUserName sold $itemCount stocks from $itemName, $totalItemCount stocks remaining.";
+          break;
         default:
           //No Description
           break;
@@ -81,11 +85,17 @@ class ItemRecordsViewModel {
                   .whenComplete(() {
                   print("RECORDS SUCCESSFULLY ADDED");
                 })
-              : _fireStoreDB
-                  .setItemReStockRecords(itemRecords: itemRecords)
-                  .whenComplete(() {
-                  print("RECORDS SUCCESSFULLY ADDED");
-                });
+              : recordsType == RecordTypes.reStock
+                  ? _fireStoreDB
+                      .setItemReStockRecords(itemRecords: itemRecords)
+                      .whenComplete(() {
+                      print("RECORDS SUCCESSFULLY ADDED");
+                    })
+                  : _fireStoreDB
+                      .setItemSoldRecords(itemRecords: itemRecords)
+                      .whenComplete(() {
+                      print("RECORDS SUCCESSFULLY ADDED");
+                    });
     });
   }
 }

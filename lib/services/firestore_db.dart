@@ -70,4 +70,10 @@ abstract class FireStoreDB{
 
   //Get Item Details Reports
   Future<void> setItemReStockRecords({ItemRecords itemRecords});
+
+  //Get Item Stock Out Reports
+  Future<List<ItemRecords>> getItemSoldRecords({String itemID});
+
+  //Get Item Details Reports
+  Future<void> setItemSoldRecords({ItemRecords itemRecords});
 }

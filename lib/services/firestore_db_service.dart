@@ -388,4 +388,47 @@ class FireStoreDBService extends FireStoreDB {
       print("FireStore Status: Success");
     });
   }
+
+  @override
+  Future<List<ItemRecords>> getItemSoldRecords(
+      {@required String itemID}) async {
+    final CollectionReference collection = _fireStoreDB
+        .collection("items")
+        .doc(itemID)
+        .collection("sold_records");
+
+    QuerySnapshot doc = await collection.orderBy("itemRecordsInfo.recordID", descending: true).get();
+    //print(doc.docs.length);
+    return doc.docs
+        .map((snapshot) => ItemRecords.fromJson(snapshot.data()))
+        .toList();
+  }
+
+  @override
+  Future<void> setItemSoldRecords(
+      {@required ItemRecords itemRecords}) async {
+    final docRef = _fireStoreDB
+        .collection("items")
+        .doc(itemRecords.itemID)
+        .collection("sold_records")
+        .doc(itemRecords.itemRecordsInfo['recordID']);
+
+    _fireStoreDB.runTransaction<void>((transaction) async {
+      var snapshot = await transaction.get<Map<String, dynamic>>(
+        docRef,
+      );
+
+      snapshot.exists
+          ? transaction.update(
+        docRef,
+        itemRecords.toJson(),
+      )
+          : transaction.set(
+        docRef,
+        itemRecords.toJson(),
+      );
+    }).whenComplete(() {
+      print("FireStore Status: Success");
+    });
+  }
 }

@@ -224,6 +224,18 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                                                 totalItemCount: itemCount,
                                               )
                                             : Future.microtask(() => {});
+                                        _itemRecordsViewModel.newRecord(
+                                          userID:
+                                          _auth.getCurrentUserID(),
+                                          recordsType:
+                                          RecordTypes.sold,
+                                          itemID: widget.itemID,
+                                          itemName: widget
+                                              .itemDetails.data.itemName,
+                                          itemCount: int.parse(
+                                              targetItemCount.text),
+                                          totalItemCount: itemCount,
+                                        );
                                         _itemViewModel
                                             .updateItemCount(
                                           context: context,

@@ -10,6 +10,7 @@ import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:ags_ims/views/home_page.dart';
 import 'package:ags_ims/views/home_pages/records/records_details.dart';
 import 'package:ags_ims/views/home_pages/records/records_re_stock.dart';
+import 'package:ags_ims/views/home_pages/records/records_sold.dart';
 import 'package:ags_ims/views/home_pages/records/records_stock_out.dart';
 import 'package:ags_ims/views/home_pages/stocks/item_card.dart';
 import 'package:ags_ims/views/home_pages/stocks/item_details.dart';
@@ -48,46 +49,47 @@ class _RecordsPageState extends State<RecordsPage> {
       isTablet = sizingInformation.deviceScreenType == DeviceScreenType.tablet;
       return SingleChildScrollView(
           child: Stack(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                alignment: Alignment.topCenter,
-                child: isDesktop || isMobile || isTablet
-                    ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: mainContent(context: context),
-                )
-                    : UI().deviceNotSupported(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            alignment: Alignment.topCenter,
+            child: isDesktop || isMobile || isTablet
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: mainContent(context: context),
+                  )
+                : UI().deviceNotSupported(
                     context: context,
                     isDesktop: isDesktop,
                     content: "Device Not Supported"),
-              ),
-              Positioned(
-                  right: 20,
-                  bottom: 100,
-                  child: FloatingActionButton(
-                  onPressed: (){
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomePage(
-                            title: "Item Details",
-                            itemID: widget.itemID,
-                            itemDetails: widget.itemDetails,
-                            currentPage: ItemDetailedView(
-                              isDesktop: isDesktop,
-                              itemID: widget.itemID,
-                              itemDetails: widget.itemDetails,
-                            ),
-                          ),));
-                  },
-                  child: Icon(Icons.arrow_back_rounded),
-                ),
-              ),
-            ],
-          ));
+          ),
+          Positioned(
+            right: 20,
+            bottom: 100,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomePage(
+                        title: "Item Details",
+                        itemID: widget.itemID,
+                        itemDetails: widget.itemDetails,
+                        currentPage: ItemDetailedView(
+                          isDesktop: isDesktop,
+                          itemID: widget.itemID,
+                          itemDetails: widget.itemDetails,
+                        ),
+                      ),
+                    ));
+              },
+              child: Icon(Icons.arrow_back_rounded),
+            ),
+          ),
+        ],
+      ));
     });
   }
 
@@ -98,7 +100,7 @@ class _RecordsPageState extends State<RecordsPage> {
         height: MediaQuery.of(context).size.height,
         alignment: Alignment.topCenter,
         child: DefaultTabController(
-          length: 3,
+          length: 4,
           child: Scaffold(
               appBar: TabBar(
                 tabs: [
@@ -107,6 +109,7 @@ class _RecordsPageState extends State<RecordsPage> {
                   Tab(
                       text: "Re-stock",
                       icon: Icon(MdiIcons.packageVariantClosed)),
+                  Tab(text: "Sold", icon: Icon(MdiIcons.shopping)),
                 ],
               ),
               body: Column(
@@ -124,6 +127,10 @@ class _RecordsPageState extends State<RecordsPage> {
                           isDesktop: isDesktop,
                         ),
                         RecordsReStock(
+                          itemID: widget.itemID,
+                          isDesktop: isDesktop,
+                        ),
+                        RecordsSold(
                           itemID: widget.itemID,
                           isDesktop: isDesktop,
                         ),
