@@ -44,10 +44,10 @@ class ItemRecordsViewModel {
           description = "$senderUserName updated $itemName.";
           break;
         case RecordTypes.stockOut:
-          description = "$itemName has been out of stock.";
+          description = "$itemName reduced by $itemCount and has been out of stock.";
           break;
         case RecordTypes.reStock:
-          description = "$senderUserName added $itemCount to $itemName, $totalItemCount remaining.";
+          description = "$senderUserName added $itemCount stock/s to $itemName, $totalItemCount stocks remaining.";
           break;
         default:
           //No Description

@@ -3,7 +3,9 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:ags_ims/core/enums/record_types.dart';
 import 'package:ags_ims/core/models/item_details.dart';
+import 'package:ags_ims/core/view_models/item_records_view_model.dart';
 import 'package:ags_ims/core/view_models/item_view_model.dart';
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
 import 'package:ags_ims/services/auth_service.dart';
@@ -38,6 +40,7 @@ class _UpdateItemState extends State<UpdateItem> {
   final _fireStoreDB = locator<FireStoreDBService>();
   final _userProfile = locator<UserProfileViewModel>();
   final _itemViewModel = locator<ItemViewModel>();
+  final _itemRecordsViewModel = locator<ItemRecordsViewModel>();
 
   bool isDesktop;
   bool isMobile;
@@ -123,6 +126,15 @@ class _UpdateItemState extends State<UpdateItem> {
                                     isItemImageChanged
                                 ? itemImage != null
                                 : itemImage == null) {
+                              _itemRecordsViewModel.newRecord(
+                                userID:
+                                _auth.getCurrentUserID(),
+                                recordsType:
+                                RecordTypes.details,
+                                itemID: widget.itemID,
+                                itemName: widget
+                                    .itemDetails.data.itemName,
+                              );
                               _itemViewModel.updateItem(
                                 context: context,
                                 itemID: widget.itemDetails.data.itemID,
