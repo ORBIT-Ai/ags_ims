@@ -213,6 +213,7 @@ class _SignUpPageState extends State<SignUpPage> {
               height: 15,
             ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
@@ -241,7 +242,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ],
             ),
             SizedBox(
-              height: 15,
+              height: 0,
             ),
             _ui.textFormField(
                 context: context,
@@ -253,37 +254,53 @@ class _SignUpPageState extends State<SignUpPage> {
             SizedBox(
               height: 15,
             ),
-            Row(
+            imageFile != null ? Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
-                  child: Container(
-                    width: 48,
-                    height: 48,
-                    child: CircleAvatar(
-                      backgroundColor: Theme.of(context).primaryColorLight,
-                      child: ClipOval(
-                        child: imageFile == null
-                            ? Container(
-                                height: 48,
-                                width: 48,
-                                child: Icon(
-                                  Icons.person,
-                                  size: 18,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              )
-                            : Image.file(
-                                imageFile,
-                                height: 48,
-                                width: 48,
-                                fit: BoxFit.cover,
-                              ),
+                Stack(
+                  children: [
+                    SizedBox(
+                      child: Container(
+                        width: 48,
+                        height: 48,
+                        child: CircleAvatar(
+                          backgroundColor: Theme.of(context).primaryColorLight,
+                          child: ClipOval(
+                            child: imageFile == null
+                                ? Container(
+                                    height: 48,
+                                    width: 48,
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 18,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                  )
+                                : Image.file(
+                                    imageFile,
+                                    height: 48,
+                                    width: 48,
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                          radius: 100,
+                        ),
                       ),
-                      radius: 100,
                     ),
-                  ),
+                    signingUp
+                        ? Positioned(
+                            left: 5,
+                            right: 5,
+                            top: 5,
+                            bottom: 5,
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).primaryColorLight,
+                            ),
+                          )
+                        : Container(),
+                  ],
                 ),
                 SizedBox(
                   width: 15,
@@ -305,10 +322,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   },
                 ))
               ],
-            ),
-            SizedBox(
-              height: 15,
-            ),
+            ) : Container(),
             _ui.textFormFieldPassword(
               context: context,
               controller: pwdInputController,
@@ -354,7 +368,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   List<Widget> controlsButtons(BuildContext context) {
     return [
-      Expanded(
+      !signingUp ? Expanded(
         child: _ui.elevatedButtonIcon(
             context: context,
             label: 'Proceed',
@@ -362,7 +376,7 @@ class _SignUpPageState extends State<SignUpPage> {
             foregroundColor: Theme.of(context).canvasColor,
             icon: Icons.person_add_outlined,
             function: () {
-              if (_signUpFormKey.currentState.validate() && imageFile != null) {
+              if (_signUpFormKey.currentState.validate()) {
                 if (pwdInputController.text == pwdConfInputController.text) {
                   _baseUtils.snackBarProgress(
                       context: context, content: "Signing Up");
@@ -383,6 +397,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         idNumber: idNumberInputController.text,
                         imageFile: imageFile,
                       );
+                      setState(() {
+                        signingUp == true;
+                      });
                     }
                   });
                 } else {
@@ -394,7 +411,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     context: context, content: "Enter valid credentials");
               }
             }),
-      ),
+      ) : Container(),
     ];
   }
 }

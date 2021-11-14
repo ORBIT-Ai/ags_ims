@@ -46,6 +46,11 @@ class UserProfileViewModel {
 
       _fireStoreDB.setUserDetails(userDetails: userDetails).whenComplete(() {
         print('USER CREDENTIALS ADDED SUCCESSFULLY');
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
+        BaseUtils().snackBarNoProgress(
+            context: context, content: "Registered Successfully");
+        /*
         uploadProfilePhoto(
           context: context,
           imageFile: imageFile,
@@ -65,6 +70,7 @@ class UserProfileViewModel {
                 context: context, content: "Registered Successfully");
           });
         });
+         */
       });
     });
   }
@@ -189,21 +195,22 @@ class UserProfileViewModel {
   Future<void> deleteUserData({
     @required BuildContext context,
     @required String userID,
+    @required String email,
+    @required String password,
   }) async {
-    _fireStoreDB.deleteUserDetails(userID: userID).whenComplete(() {
-
-      _notificationsViewModel.newHistory(
-        userID: userID,
-        historyType: HistoryTypes.deletedUser,
-        tag: "",
-        tagID: "",
-      );
-
-      _auth.deleteAccount().whenComplete(() {
-        _auth.signOut().whenComplete(() {
-          print("USER ACCOUNT DELETED SUCCESSFULLY");
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => LoginPage()));
+    _notificationsViewModel.newHistory(
+      userID: userID,
+      historyType: HistoryTypes.deletedUser,
+      tag: "",
+      tagID: "",
+    ).whenComplete(() {
+      _fireStoreDB.deleteUserDetails(userID: userID).whenComplete(() async {
+        _auth.deleteAccount(email: email, password: password).whenComplete(() {
+          _auth.signOut(context: context).whenComplete(() {
+            print("USER ACCOUNT DELETED SUCCESSFULLY");
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginPage()));
+          });
         });
       });
     });

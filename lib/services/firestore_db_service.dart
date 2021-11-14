@@ -75,6 +75,7 @@ class FireStoreDBService extends FireStoreDB {
   Future<void> deleteUserDetails({@required userID}) {
     final DocumentReference docRef =
         _fireStoreDB.collection("users").doc(userID);
+
     return _auth.getCurrentUser() != null
         ? docRef.get().then((DocumentSnapshot documentSnapshot) {
             return documentSnapshot.exists
@@ -88,12 +89,6 @@ class FireStoreDBService extends FireStoreDB {
 
   @override
   Future<void> setProfilePhoto({@required Images profilePhoto}) async {
-    final docRef = _fireStoreDB
-        .collection("users")
-        .doc(profilePhoto.userID)
-        .collection("profile_images")
-        .doc(profilePhoto.imageID);
-
     final userInfoRef =
         _fireStoreDB.collection("users").doc(profilePhoto.userID);
 
@@ -107,21 +102,6 @@ class FireStoreDBService extends FireStoreDB {
               "profileUrl": profilePhoto.url,
             })
           : print('User Info not Exists');
-    }).whenComplete(() {
-      print("FireStore Status: Success");
-    });
-
-    _fireStoreDB.runTransaction<void>((transaction) async {
-      var snapshot = await transaction.get<Map<String, dynamic>>(
-        docRef,
-      );
-
-      snapshot.exists
-          ? print('Profile Photo Exists')
-          : transaction.set(
-              docRef,
-              profilePhoto.toJson(),
-            );
     }).whenComplete(() {
       print("FireStore Status: Success");
     });

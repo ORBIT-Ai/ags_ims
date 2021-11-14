@@ -8,6 +8,7 @@ import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:ags_ims/views/home_page.dart';
+import 'package:ags_ims/views/home_pages/account/account_delete.dart';
 import 'package:ags_ims/views/home_pages/update_account.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -199,7 +200,14 @@ class _AccountPageState extends State<AccountPage> {
                 Expanded(
                   child: FloatingActionButton.extended(
                     onPressed: (){
-                      _userProfile.deleteUserData(context: context, userID: _auth.getCurrentUserID());
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomePage(
+                                title: "Account Deletion",
+                                currentPage: AccountDelete(),
+                                userDetails: userDetails,
+                              )));
                     },
                     label: Text("Delete Account"),
                     icon: Icon(Icons.delete_rounded),

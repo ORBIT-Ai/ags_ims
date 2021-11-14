@@ -26,9 +26,16 @@ class Auth {
     return user != null ? uid : null;
   }
 
-  Future<void> deleteAccount() async {
+  Future<void> deleteAccount(
+      {@required String email, @required String password}) async {
     User user = FirebaseAuth.instance.currentUser;
-    user != null ? user.delete() : print("NO USER AUTHENTICATED");
+
+    AuthCredential credentials =
+        EmailAuthProvider.credential(email: email, password: password);
+    print(user);
+    UserCredential result =
+        await user.reauthenticateWithCredential(credentials);
+    result.user.delete();
   }
 
   Future<void> signOut({@required BuildContext context}) async {

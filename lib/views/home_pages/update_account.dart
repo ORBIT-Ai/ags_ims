@@ -173,7 +173,17 @@ class _UpdateAccountState extends State<UpdateAccount> {
                     child: CircleAvatar(
                       backgroundColor: Theme.of(context).primaryColorLight,
                       child: ClipOval(
-                        child: imageFile == null
+                        child: widget.userDetails.data.profileUrl == null && imageFile == null ?
+                        Container(
+                          height: 86,
+                          width: 86,
+                          child: Icon(
+                            Icons.person,
+                            size: 48,
+                            color:
+                            Theme.of(context).colorScheme.primary,
+                          ),
+                        ) : widget.userDetails.data.profileUrl != null
                             ? Image.network(
                                 widget.userDetails.data.profileUrl,
                                 height: 86,
@@ -216,6 +226,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
               height: 15,
             ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
@@ -248,6 +259,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
               height: 15,
             ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
@@ -275,9 +287,6 @@ class _UpdateAccountState extends State<UpdateAccount> {
                 ),
               ],
             ),
-            SizedBox(
-              height: 15,
-            ),
             _ui.textFormField(
                 context: context,
                 controller: idNumberInputController,
@@ -286,7 +295,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
                 icon: Icons.person_pin_rounded,
                 color: null),
             SizedBox(
-              height: 20,
+              height: 40,
             ),
             isMobile
                 ? Row(
