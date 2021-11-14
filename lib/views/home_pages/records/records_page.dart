@@ -78,9 +78,9 @@ class _RecordsPageState extends State<RecordsPage> {
           ),
           body: TabBarView(
             children: [
-              RecordsDetails(itemID: widget.itemID,),
-              RecordsStockOut(itemID: widget.itemID,),
-              RecordsReStock(itemID: widget.itemID,),
+              RecordsDetails(itemID: widget.itemID, isDesktop: isDesktop,),
+              RecordsStockOut(itemID: widget.itemID, isDesktop: isDesktop,),
+              RecordsReStock(itemID: widget.itemID, isDesktop: isDesktop,),
             ],
           ),
         ),
