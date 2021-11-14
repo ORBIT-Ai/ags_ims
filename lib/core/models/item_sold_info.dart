@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class ItemRecordsInfo {
+class ItemSoldInfo {
   final String recordID;
   final String description;
   final String date;
@@ -9,8 +9,9 @@ class ItemRecordsInfo {
   final String itemName;
   final int itemCount;
   final int itemPrice;
+  final int itemTotalAmount;
 
-  ItemRecordsInfo({
+  ItemSoldInfo({
     @required this.recordID,
     @required this.description,
     @required this.date,
@@ -19,9 +20,10 @@ class ItemRecordsInfo {
     @required this.itemName,
     @required this.itemCount,
     @required this.itemPrice,
+    @required this.itemTotalAmount,
   });
 
-  ItemRecordsInfo.fromJson(Map<String, dynamic> json)
+  ItemSoldInfo.fromJson(Map<String, dynamic> json)
       : this(
           recordID: json['recordID'] as String,
           description: json['description'] as String,
@@ -31,6 +33,7 @@ class ItemRecordsInfo {
           itemName: json['itemName'] as String,
           itemCount: json['itemCount'] as int,
           itemPrice: json['itemPrice'] as int,
+          itemTotalAmount: json['itemTotalAmount'] as int,
         );
 
   toJson() {
@@ -43,6 +46,7 @@ class ItemRecordsInfo {
       'itemName': itemName,
       'itemCount': itemCount,
       'itemPrice': itemPrice,
+      'itemTotalAmount': itemTotalAmount,
     };
   }
 }

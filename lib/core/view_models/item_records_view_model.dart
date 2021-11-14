@@ -6,6 +6,8 @@ import 'package:ags_ims/core/models/history.dart';
 import 'package:ags_ims/core/models/history_info.dart';
 import 'package:ags_ims/core/models/item_records.dart';
 import 'package:ags_ims/core/models/item_records_info.dart';
+import 'package:ags_ims/core/models/item_sold.dart';
+import 'package:ags_ims/core/models/item_sold_info.dart';
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/cloud_storage_service.dart';
 import 'package:ags_ims/services/firestore_db_service.dart';
@@ -25,7 +27,8 @@ class ItemRecordsViewModel {
       @required String itemID,
       int itemCount,
       int totalItemCount,
-      String itemName}) async {
+      String itemName,
+      int itemPrice}) async {
     final recordID = _baseUtils.timeStamp();
 
     String date = _baseUtils.currentDate();
@@ -70,6 +73,8 @@ class ItemRecordsViewModel {
           time: time,
           type: recordsType.toString().split('.').last,
           itemName: itemName,
+          itemCount: itemCount,
+          itemPrice: itemPrice,
         ).toJson(),
       );
 
@@ -96,6 +101,50 @@ class ItemRecordsViewModel {
                       .whenComplete(() {
                       print("RECORDS SUCCESSFULLY ADDED");
                     });
+    });
+  }
+
+  Future<void> soldItem(
+      {@required String userID,
+      @required RecordTypes recordsType,
+      @required String itemID,
+      int itemCount,
+      int totalItemCount,
+      String itemName,
+      int itemPrice,
+      int totalAmount}) async {
+    final recordID = _baseUtils.timeStamp();
+
+    String date = _baseUtils.currentDate();
+    String time = _baseUtils.currentTime();
+
+    String description;
+    String senderUserName, receiverUserName;
+
+    await _fireStoreDB
+        .getUserDetails(userID: userID)
+        .then((senderUserDetails) async {
+      senderUserName = senderUserDetails.userName;
+
+      ItemSold itemSold = ItemSold(
+        userID: userID,
+        itemID: itemID,
+        itemRecordsInfo: ItemSoldInfo(
+          recordID: recordID,
+          description: description,
+          date: date,
+          time: time,
+          type: recordsType.toString().split('.').last,
+          itemName: itemName,
+          itemCount: itemCount,
+          itemPrice: itemPrice,
+          itemTotalAmount: totalAmount,
+        ).toJson(),
+      );
+
+      _fireStoreDB.setItemSold(itemSold: itemSold).whenComplete(() {
+        print("RECORDS SUCCESSFULLY ADDED");
+      });
     });
   }
 }

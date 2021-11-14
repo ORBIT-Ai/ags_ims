@@ -1,4 +1,3 @@
-
 // ignore_for_file: prefer_const_constructors
 
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
@@ -8,7 +7,7 @@ import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:ags_ims/views/home_page.dart';
-import 'package:ags_ims/views/home_pages/print/print_preview_page.dart';
+import 'package:ags_ims/views/home_pages/print/daily_inventory_report.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -41,19 +40,19 @@ class _PrintPageState extends State<PrintPage> {
       isTablet = sizingInformation.deviceScreenType == DeviceScreenType.tablet;
       return SingleChildScrollView(
           child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: isDesktop ? MediaQuery.of(context).size.height : null,
-            child: isDesktop || isMobile || isTablet
-                ? Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: mainContent(context: context),
-            )
-                : UI().deviceNotSupported(
+        width: MediaQuery.of(context).size.width,
+        height: isDesktop ? MediaQuery.of(context).size.height : null,
+        child: isDesktop || isMobile || isTablet
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: mainContent(context: context),
+              )
+            : UI().deviceNotSupported(
                 context: context,
                 isDesktop: isDesktop,
                 content: "Device Not Supported"),
-          ));
+      ));
     });
   }
 
@@ -63,10 +62,8 @@ class _PrintPageState extends State<PrintPage> {
       _ui.headerCard(
         context: context,
         page: "print",
-        header:
-        "Print",
-        subhead:
-        "Export or print daily, weekly, monthly and annual reports.",
+        header: "Print",
+        subhead: "Export or print daily, weekly, monthly and annual reports.",
         hasButton: false,
         isDesktop: isDesktop,
       ),
@@ -78,41 +75,47 @@ class _PrintPageState extends State<PrintPage> {
           final icon = i == 0
               ? MdiIcons.calendarToday
               : i == 1
-              ? MdiIcons.calendarWeek
-              : i == 2
-              ? MdiIcons.calendarMonth
-              : i == 3
-              ? MdiIcons.calendarEnd
-              : null;
+                  ? MdiIcons.calendarWeek
+                  : i == 2
+                      ? MdiIcons.calendarMonth
+                      : i == 3
+                          ? MdiIcons.calendarEnd
+                          : null;
 
           final title = i == 0
               ? "Daily"
               : i == 1
-              ? "Weekly"
-              : i == 2
-              ? "Monthly"
-              : i == 3
-              ? "Annual"
-              : null;
+                  ? "Weekly"
+                  : i == 2
+                      ? "Monthly"
+                      : i == 3
+                          ? "Annual"
+                          : null;
 
           final subhead = i == 0
               ? "Export or print daily reports."
               : i == 1
-              ? "Export or print weekly reports."
-              : i == 2
-              ? "Export or print monthly reports."
-              : i == 3
-              ? "Export or print annual reports."
-              : null;
+                  ? "Export or print weekly reports."
+                  : i == 2
+                      ? "Export or print monthly reports."
+                      : i == 3
+                          ? "Export or print annual reports."
+                          : null;
 
           return GestureDetector(
             onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => HomePage(
-                      title: i == 0 ? "Daily Report" : i == 1 ? "Weekly Report" : i == 2 ? "Monthly Report" : "Annual Report",
-                      currentPage: PrintPreviewPage(),
-                    ))),
+                          title: i == 0
+                              ? "Daily Report"
+                              : i == 1
+                                  ? "Weekly Report"
+                                  : i == 2
+                                      ? "Monthly Report"
+                                      : "Annual Report",
+                          currentPage: DailyInventoryReport(),
+                        ))),
             child: Card(
               margin: EdgeInsets.only(top: 10, right: 10, left: 10),
               child: Row(

@@ -3,6 +3,7 @@ import 'package:ags_ims/core/models/images.dart';
 import 'package:ags_ims/core/models/item_details.dart';
 import 'package:ags_ims/core/models/history.dart';
 import 'package:ags_ims/core/models/item_records.dart';
+import 'package:ags_ims/core/models/item_sold.dart';
 import 'package:ags_ims/core/models/user_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -76,4 +77,10 @@ abstract class FireStoreDB{
 
   //Get Item Details Reports
   Future<void> setItemSoldRecords({ItemRecords itemRecords});
+
+  //Get Item Sold Reports
+  Future<List<ItemSold>> getItemSold();
+
+  //Get Item Sold Reports
+  Future<void> setItemSold({ItemSold itemSold});
 }

@@ -140,15 +140,17 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                                         itemCount = itemCount +
                                             int.parse(targetItemCount.text);
                                         _itemRecordsViewModel.newRecord(
-                                          userID: _auth.getCurrentUserID(),
-                                          recordsType: RecordTypes.reStock,
-                                          itemName:
-                                              widget.itemDetails.data.itemName,
-                                          itemID: widget.itemID,
-                                          itemCount:
-                                              int.parse(targetItemCount.text),
-                                          totalItemCount: itemCount,
-                                        );
+                                            userID: _auth.getCurrentUserID(),
+                                            recordsType: RecordTypes.reStock,
+                                            itemName: widget
+                                                .itemDetails.data.itemName,
+                                            itemID: widget.itemID,
+                                            itemCount:
+                                                int.parse(targetItemCount.text),
+                                            totalItemCount: itemCount,
+                                            itemPrice: widget
+                                                .itemDetails.data.itemPrice);
+
                                         _itemViewModel
                                             .updateItemCount(
                                           context: context,
@@ -225,16 +227,29 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                                               )
                                             : Future.microtask(() => {});
                                         _itemRecordsViewModel.newRecord(
-                                          userID:
-                                          _auth.getCurrentUserID(),
-                                          recordsType:
-                                          RecordTypes.sold,
+                                            userID: _auth.getCurrentUserID(),
+                                            recordsType: RecordTypes.sold,
+                                            itemID: widget.itemID,
+                                            itemName: widget
+                                                .itemDetails.data.itemName,
+                                            itemCount:
+                                                int.parse(targetItemCount.text),
+                                            totalItemCount: itemCount,
+                                            itemPrice: widget
+                                                .itemDetails.data.itemPrice);
+                                        _itemRecordsViewModel.soldItem(
+                                          userID: _auth.getCurrentUserID(),
+                                          recordsType: RecordTypes.sold,
                                           itemID: widget.itemID,
-                                          itemName: widget
-                                              .itemDetails.data.itemName,
-                                          itemCount: int.parse(
-                                              targetItemCount.text),
+                                          itemName:
+                                              widget.itemDetails.data.itemName,
+                                          itemCount:
+                                              int.parse(targetItemCount.text),
                                           totalItemCount: itemCount,
+                                          itemPrice:
+                                              widget.itemDetails.data.itemPrice,
+                                          totalAmount: int.parse(targetItemCount.text) *
+                                              widget.itemDetails.data.itemPrice,
                                         );
                                         _itemViewModel
                                             .updateItemCount(
@@ -320,14 +335,15 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                               icon: Icon(MdiIcons.delete),
                               onPressed: () {
                                 _itemViewModel.deleteItem(
-                                    context: context,
-                                    itemID: itemDetails.data.itemID,
-                                    itemName: itemDetails.data.itemName,
-                                    itemImage: itemDetails.data.itemImage,
-                                    itemBarcodeImage: itemDetails.data.itemBarcodeImage,
-                                    itemCode: itemDetails.data.itemCode,
-                                    itemPrice: itemDetails.data.itemPrice,
-                                    itemCount: itemCount,
+                                  context: context,
+                                  itemID: itemDetails.data.itemID,
+                                  itemName: itemDetails.data.itemName,
+                                  itemImage: itemDetails.data.itemImage,
+                                  itemBarcodeImage:
+                                      itemDetails.data.itemBarcodeImage,
+                                  itemCode: itemDetails.data.itemCode,
+                                  itemPrice: itemDetails.data.itemPrice,
+                                  itemCount: itemCount,
                                 );
                               },
                             ),

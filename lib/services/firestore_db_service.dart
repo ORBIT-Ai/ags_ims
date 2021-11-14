@@ -4,6 +4,7 @@ import 'package:ags_ims/core/models/images.dart';
 import 'package:ags_ims/core/models/item_details.dart';
 import 'package:ags_ims/core/models/history.dart';
 import 'package:ags_ims/core/models/item_records.dart';
+import 'package:ags_ims/core/models/item_sold.dart';
 import 'package:ags_ims/core/models/user_details.dart';
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/firestore_db.dart';
@@ -426,6 +427,44 @@ class FireStoreDBService extends FireStoreDB {
           : transaction.set(
         docRef,
         itemRecords.toJson(),
+      );
+    }).whenComplete(() {
+      print("FireStore Status: Success");
+    });
+  }
+
+  @override
+  Future<List<ItemSold>> getItemSold() async {
+    final CollectionReference collection = _fireStoreDB
+        .collection("sold");
+
+    QuerySnapshot doc = await collection.get();
+    //print(doc.docs.length);
+    return doc.docs
+        .map((snapshot) => ItemSold.fromJson(snapshot.data()))
+        .toList();
+  }
+
+  @override
+  Future<void> setItemSold(
+      {@required ItemSold itemSold}) async {
+    final docRef = _fireStoreDB
+        .collection("sold")
+        .doc(itemSold.itemID);
+
+    _fireStoreDB.runTransaction<void>((transaction) async {
+      var snapshot = await transaction.get<Map<String, dynamic>>(
+        docRef,
+      );
+
+      snapshot.exists
+          ? transaction.update(
+        docRef,
+        itemSold.toJson(),
+      )
+          : transaction.set(
+        docRef,
+        itemSold.toJson(),
       );
     }).whenComplete(() {
       print("FireStore Status: Success");
