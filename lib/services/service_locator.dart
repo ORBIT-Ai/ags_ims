@@ -1,4 +1,5 @@
 
+import 'package:ags_ims/core/view_models/item_records_view_model.dart';
 import 'package:ags_ims/core/view_models/item_view_model.dart';
 import 'package:ags_ims/core/view_models/history_view_model.dart';
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
@@ -20,4 +21,5 @@ void setUpLocator() {
   locator.registerLazySingleton<UserProfileViewModel>(() => UserProfileViewModel());
   locator.registerLazySingleton<ItemViewModel>(() => ItemViewModel());
   locator.registerLazySingleton<HistoryViewModel>(() => HistoryViewModel());
+  locator.registerLazySingleton<ItemRecordsViewModel>(() => ItemRecordsViewModel());
 }

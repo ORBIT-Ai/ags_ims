@@ -1,6 +1,8 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, unnecessary_new
 
+import 'package:ags_ims/core/enums/record_types.dart';
 import 'package:ags_ims/core/models/item_details.dart';
+import 'package:ags_ims/core/view_models/item_records_view_model.dart';
 import 'package:ags_ims/core/view_models/item_view_model.dart';
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
 import 'package:ags_ims/services/auth_service.dart';
@@ -33,12 +35,17 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
   final _fireStoreDB = locator<FireStoreDBService>();
   final _userProfile = locator<UserProfileViewModel>();
   final _itemViewModel = locator<ItemViewModel>();
+  final _itemRecordsViewModel = locator<ItemRecordsViewModel>();
 
   bool isUpdating = false;
 
   int itemCount = 0;
+
+  TextEditingController targetItemCount = new TextEditingController();
+
   @override
   void initState() {
+    targetItemCount.text = 1.toString();
     itemCount =
         widget.itemDetails.hasData ? widget.itemDetails.data.itemCount : 0;
     super.initState();
@@ -125,35 +132,63 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                               backgroundColor: isUpdating
                                   ? Theme.of(context).disabledColor
                                   : Theme.of(context).primaryColorLight,
-                              onPressed: !isUpdating ? () {
-                                setState(() {
-                                  isUpdating = true;
-                                  itemCount = itemCount + 1;
-                                  _itemViewModel
-                                      .updateItemCount(
-                                    context: context,
-                                    itemID: widget.itemDetails.data.itemID,
-                                    itemName: widget.itemDetails.data.itemName,
-                                    itemPrice:
-                                        widget.itemDetails.data.itemPrice,
-                                    //newItemImage: widget.itemDetails.data.itemImage,
-                                    itemImage:
-                                        widget.itemDetails.data.itemImage,
-                                    itemBarcodeImage: widget
-                                        .itemDetails.data.itemBarcodeImage,
-                                    itemCode: widget.itemDetails.data.itemCode,
-                                    itemCount: itemCount,
-                                  )
-                                      .whenComplete(() {
-                                    setState(() {
-                                      isUpdating = false;
-                                    });
-                                  });
-                                });
-                              } : (){},
+                              onPressed: !isUpdating &&
+                                      int.parse(targetItemCount.text) >= 1
+                                  ? () {
+                                      setState(() {
+                                        isUpdating = true;
+                                        itemCount = itemCount +
+                                            int.parse(targetItemCount.text);
+                                        _itemRecordsViewModel.newRecord(
+                                          userID: _auth.getCurrentUserID(),
+                                          recordsType: RecordTypes.reStock,
+                                          itemName:
+                                              widget.itemDetails.data.itemName,
+                                          itemID: widget.itemID,
+                                          itemCount: int.parse(targetItemCount.text),
+                                          totalItemCount: itemCount,
+                                        );
+                                        _itemViewModel
+                                            .updateItemCount(
+                                          context: context,
+                                          itemID:
+                                              widget.itemDetails.data.itemID,
+                                          itemName:
+                                              widget.itemDetails.data.itemName,
+                                          itemPrice:
+                                              widget.itemDetails.data.itemPrice,
+                                          //newItemImage: widget.itemDetails.data.itemImage,
+                                          itemImage:
+                                              widget.itemDetails.data.itemImage,
+                                          itemBarcodeImage: widget.itemDetails
+                                              .data.itemBarcodeImage,
+                                          itemCode:
+                                              widget.itemDetails.data.itemCode,
+                                          itemCount: itemCount,
+                                        )
+                                            .whenComplete(() {
+                                          setState(() {
+                                            isUpdating = false;
+                                          });
+                                        });
+                                      });
+                                    }
+                                  : () {},
                             ),
                             SizedBox(
-                              width: 20,
+                              width: 10,
+                            ),
+                            Container(
+                                width: 30,
+                                child: TextField(
+                                  controller: targetItemCount,
+                                  autofocus: false,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  keyboardType: TextInputType.number,
+                                )),
+                            SizedBox(
+                              width: 10,
                             ),
                             FloatingActionButton.small(
                               child: Icon(
@@ -165,33 +200,56 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                               backgroundColor: isUpdating || itemCount == 0
                                   ? Theme.of(context).disabledColor
                                   : Theme.of(context).colorScheme.secondary,
-                              onPressed: !isUpdating || itemCount != 0
+                              onPressed: !isUpdating ||
+                                      itemCount != 0 &&
+                                          int.parse(targetItemCount.text) <=
+                                              itemCount
                                   ? () {
-                                setState(() {
-                                  isUpdating = true;
-                                  itemCount = itemCount - 1;
-                                  _itemViewModel
-                                      .updateItemCount(
-                                    context: context,
-                                    itemID: widget.itemDetails.data.itemID,
-                                    itemName: widget.itemDetails.data.itemName,
-                                    itemPrice:
-                                        widget.itemDetails.data.itemPrice,
-                                    //newItemImage: widget.itemDetails.data.itemImage,
-                                    itemImage:
-                                        widget.itemDetails.data.itemImage,
-                                    itemBarcodeImage: widget
-                                        .itemDetails.data.itemBarcodeImage,
-                                    itemCode: widget.itemDetails.data.itemCode,
-                                    itemCount: itemCount,
-                                  )
-                                      .whenComplete(() {
-                                    setState(() {
-                                      isUpdating = false;
-                                    });
-                                  });
-                                });
-                              } : (){},
+                                      setState(() {
+                                        isUpdating = true;
+                                        itemCount = itemCount -
+                                            int.parse(targetItemCount.text);
+                                        itemCount ==
+                                                0
+                                            ? _itemRecordsViewModel.newRecord(
+                                                userID:
+                                                    _auth.getCurrentUserID(),
+                                                recordsType:
+                                                    RecordTypes.stockOut,
+                                                itemID: widget.itemID,
+                                                itemName: widget
+                                                    .itemDetails.data.itemName,
+                                                itemCount: int.parse(
+                                                        targetItemCount.text),
+                                                totalItemCount: itemCount,
+                                              )
+                                            : Future.microtask(() => {});
+                                        _itemViewModel
+                                            .updateItemCount(
+                                          context: context,
+                                          itemID:
+                                              widget.itemDetails.data.itemID,
+                                          itemName:
+                                              widget.itemDetails.data.itemName,
+                                          itemPrice:
+                                              widget.itemDetails.data.itemPrice,
+                                          //newItemImage: widget.itemDetails.data.itemImage,
+                                          itemImage:
+                                              widget.itemDetails.data.itemImage,
+                                          itemBarcodeImage: widget.itemDetails
+                                              .data.itemBarcodeImage,
+                                          itemCode:
+                                              widget.itemDetails.data.itemCode,
+                                          itemCount: itemCount,
+                                        )
+                                            .whenComplete(() {
+                                          setState(() {
+                                            isUpdating = false;
+                                          });
+                                        });
+                                      });
+                                    }
+                                  : () {},
                             ),
                           ],
                         ),
@@ -227,19 +285,24 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                             FloatingActionButton.extended(
                               label: Text('Records'),
                               icon: Icon(MdiIcons.history),
-                              backgroundColor: Theme.of(context).backgroundColor,
+                              backgroundColor:
+                                  Theme.of(context).backgroundColor,
                               onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => HomePage(
-                                        title: "Records",
-                                        currentPage: RecordsPage(itemID: itemDetails.data.itemID,),
-                                      ))),
+                                            title: "Records",
+                                            currentPage: RecordsPage(
+                                              itemID: itemDetails.data.itemID,
+                                            ),
+                                          ))),
                             ),
                             FloatingActionButton.extended(
                               foregroundColor:
                                   Theme.of(context).colorScheme.background,
-                              backgroundColor: Theme.of(context).colorScheme.secondaryVariant,
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .secondaryVariant,
                               label: Text('Delete'),
                               icon: Icon(MdiIcons.delete),
                               onPressed: () {},

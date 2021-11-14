@@ -6,8 +6,7 @@ class ItemRecordsInfo {
   final String date;
   final String time;
   final String type;
-  final String tag;
-  final String tagID;
+  final String itemName;
 
   ItemRecordsInfo({
     @required this.recordID,
@@ -15,19 +14,17 @@ class ItemRecordsInfo {
     @required this.date,
     @required this.time,
     @required this.type,
-    @required this.tag,
-    @required this.tagID,
+    @required this.itemName,
   });
 
   ItemRecordsInfo.fromJson(Map<String, dynamic> json)
       : this(
-    recordID: json['recordID'] as String,
+          recordID: json['recordID'] as String,
           description: json['description'] as String,
           date: json['date'] as String,
           time: json['time'] as String,
           type: json['type'] as String,
-          tag: json['tag'] as String,
-          tagID: json['tagID'] as String,
+          itemName: json['itemName'] as String,
         );
 
   toJson() {
@@ -37,8 +34,7 @@ class ItemRecordsInfo {
       'date': date,
       'time': time,
       'type': type,
-      'tag': tag,
-      'tagID': tagID,
+      'itemName': itemName,
     };
   }
 }

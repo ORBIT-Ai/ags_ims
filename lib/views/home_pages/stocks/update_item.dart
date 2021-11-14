@@ -220,6 +220,7 @@ class _UpdateItemState extends State<UpdateItem> {
           label: "Item Count",
           icon: MdiIcons.numericPositive1,
           color: null,
+          enabled: false,
           autoFocus: false),
       SizedBox(
         height: 15,
