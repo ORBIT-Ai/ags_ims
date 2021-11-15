@@ -9,6 +9,7 @@ import 'package:ags_ims/services/firestore_db_service.dart';
 import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -141,7 +142,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
       ),
       Container(
         width: isDesktop
-            ? MediaQuery.of(context).size.width / 1.5
+            ? MediaQuery.of(context).size.width / 1.6
             : MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.only(
@@ -176,7 +177,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
     return [
       Container(
         width: isDesktop
-            ? MediaQuery.of(context).size.width / 4
+            ? MediaQuery.of(context).size.width / 4.2
             : MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Column(
@@ -197,7 +198,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
             SizedBox(
               height: 30,
             ),
-            Row(
+            !kIsWeb ? Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -257,7 +258,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
                   },
                 ))
               ],
-            ),
+            ) : Container(),
           ],
         ),
       ),
@@ -267,7 +268,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
       ),
       Container(
         width: isDesktop
-            ? MediaQuery.of(context).size.width / 4
+            ? MediaQuery.of(context).size.width / 4.2
             : MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Column(

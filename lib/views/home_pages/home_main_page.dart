@@ -10,6 +10,7 @@ import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:ags_ims/views/home_page.dart';
 import 'package:ags_ims/views/home_pages/history_page.dart';
+import 'package:ags_ims/views/home_pages/print_page.dart';
 import 'package:ags_ims/views/home_pages/sales_page.dart';
 import 'package:ags_ims/views/home_pages/scanner_page.dart';
 import 'package:ags_ims/views/home_pages/stocks_page.dart';
@@ -136,14 +137,14 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                 : i == 1
                                     ? SalesPage().title
                                     : i == 2
-                                        ? ScannerPage().title
+                                        ? PrintPage().title
                                         : HistoryPage().title,
                             currentPage: i == 0
                                 ? StocksPage()
                                 : i == 1
                                     ? SalesPage()
                                     : i == 2
-                                        ? ScannerPage()
+                                        ? PrintPage()
                                         : HistoryPage(),
                           ))),
               child: Row(

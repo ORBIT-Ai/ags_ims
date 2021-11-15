@@ -10,6 +10,7 @@ import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:ags_ims/views/home_page.dart';
 import 'package:ags_ims/views/home_pages/stocks/add_item.dart';
 import 'package:ags_ims/views/home_pages/stocks/item_card.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -60,7 +61,7 @@ class _StocksPageState extends State<StocksPage> {
                     isDesktop: isDesktop,
                     content: "Device Not Supported"),
           )),
-          Positioned(
+          !kIsWeb ? Positioned(
             bottom: 20,
             right: 20,
             child: FloatingActionButton(
@@ -75,7 +76,7 @@ class _StocksPageState extends State<StocksPage> {
                             )));
               },
             ),
-          ),
+          ) : Container(),
         ],
       );
     });

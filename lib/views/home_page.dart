@@ -19,6 +19,7 @@ import 'package:ags_ims/views/home_pages/scanner_page.dart';
 import 'package:ags_ims/views/home_pages/stocks/item_details.dart';
 import 'package:ags_ims/views/home_pages/stocks/update_item.dart';
 import 'package:ags_ims/views/home_pages/stocks_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -171,7 +172,7 @@ class _HomePageState extends State<HomePage> {
       elevation: 12,
       actionsIconTheme: IconThemeData(color: Theme.of(context).canvasColor),
       actions: [
-        _title == "Item Details"
+        _title == "Item Details" && !kIsWeb
             ? IconButton(
                 onPressed: () {
                   Navigator.push(
