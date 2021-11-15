@@ -16,17 +16,17 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as print_widget;
 import 'package:printing/printing.dart';
 
-class WeeklyInventoryReport extends StatefulWidget {
-  const WeeklyInventoryReport({
+class AnnualInventoryReport extends StatefulWidget {
+  const AnnualInventoryReport({
     Key key,
   }) : super(key: key);
-  final String title = "Weekly Inventory Report";
+  final String title = "Annual Inventory Report";
 
   @override
-  _WeeklyInventoryReportState createState() => _WeeklyInventoryReportState();
+  _AnnualInventoryReportState createState() => _AnnualInventoryReportState();
 }
 
-class _WeeklyInventoryReportState extends State<WeeklyInventoryReport> {
+class _AnnualInventoryReportState extends State<AnnualInventoryReport> {
   final _ui = locator<UI>();
   final _auth = locator<Auth>();
   final _baseUtils = locator<BaseUtils>();
@@ -42,7 +42,7 @@ class _WeeklyInventoryReportState extends State<WeeklyInventoryReport> {
 
   @override
   void initState() {
-    _fireStoreDB.getItemSold(collectiveTerm: "weekly").then((soldValue) {
+    _fireStoreDB.getItemSold(collectiveTerm: "annual").then((soldValue) {
       for (int i = 0; i < soldValue.length; i++) {
         if (soldValue != null) {
           setState(() {
@@ -86,7 +86,7 @@ class _WeeklyInventoryReportState extends State<WeeklyInventoryReport> {
                         ? Container(
                             child: FutureBuilder(
                                 future: _fireStoreDB.getItemSold(
-                                    collectiveTerm: "weekly"),
+                                    collectiveTerm: "annual"),
                                 builder: (context,
                                     AsyncSnapshot<List<ItemSold>> itemSold) {
                                   return PdfPreview(
@@ -95,7 +95,7 @@ class _WeeklyInventoryReportState extends State<WeeklyInventoryReport> {
                                     canDebug: false,
                                     build: (format) => generatePdf(
                                         format,
-                                        "Weekly Stocks Report",
+                                        "Annual Stocks Report",
                                         itemDetails,
                                         userDetails,
                                         itemSold),
@@ -137,7 +137,7 @@ class _WeeklyInventoryReportState extends State<WeeklyInventoryReport> {
                     print_widget.TableRow(children: [
                       headlineRow(
                           text:
-                              "Date: ${DateFormat.MMMM().format(DateTime.now())} ${_baseUtils.currentWeek().first} - ${_baseUtils.currentWeek().last}, ${_baseUtils.currentYear()}"),
+                              "Date: Year ${_baseUtils.currentYear()}"),
                     ]),
                     print_widget.TableRow(children: [
                       headlineRow(text: "Encoded by: AGS IMS"),
