@@ -8,6 +8,7 @@ import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:ags_ims/views/home_page.dart';
 import 'package:ags_ims/views/home_pages/print/daily_inventory_report.dart';
+import 'package:ags_ims/views/home_pages/print/weekly_inventory_report.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -114,7 +115,13 @@ class _PrintPageState extends State<PrintPage> {
                                   : i == 2
                                       ? "Monthly Report"
                                       : "Annual Report",
-                          currentPage: DailyInventoryReport(),
+                          currentPage: i == 0
+                              ? DailyInventoryReport()
+                              : i == 1
+                                  ? WeeklyInventoryReport()
+                                  : i == 2
+                                      ? DailyInventoryReport()
+                                      : DailyInventoryReport(),
                         ))),
             child: Card(
               margin: EdgeInsets.only(top: 10, right: 10, left: 10),

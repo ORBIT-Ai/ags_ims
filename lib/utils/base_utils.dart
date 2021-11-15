@@ -243,7 +243,7 @@ class BaseUtils {
     for(int i=0; i <= 6 ; i++){
       int start = now.subtract(Duration(days: 6)).day;
       weekDays.add(start + i);
-      print("WEEKLY ${start + i}");
+      //print("WEEKLY ${start + i}");
     }
     return weekDays;
   }

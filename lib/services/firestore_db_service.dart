@@ -443,17 +443,39 @@ class FireStoreDBService extends FireStoreDB {
   Future<List<ItemSold>> getItemSold({@required collectiveTerm}) async {
     final CollectionReference collection = _fireStoreDB.collection("sold");
 
-    QuerySnapshot doc = await collection
-        .where("itemRecordsInfo.date.month",
-            isEqualTo:
-                collectiveTerm == "daily" ? BaseUtils().currentMonth() : null)
-        .where("itemRecordsInfo.date.day",
-            isEqualTo:
-                collectiveTerm == "daily" ? BaseUtils().currentDay() : null)
-        .where("itemRecordsInfo.date.year",
-            isEqualTo:
-                collectiveTerm == "daily" ? BaseUtils().currentYear() : null)
-        .get();
+    QuerySnapshot doc;
+    if(collectiveTerm == "daily" || collectiveTerm == "monthly" || collectiveTerm == "yearly"){
+      doc = await collection
+          .where("itemRecordsInfo.date.month",
+          isEqualTo: collectiveTerm == "daily" || collectiveTerm == "monthly"
+              ? BaseUtils().currentMonth()
+              : null)
+          .where("itemRecordsInfo.date.day",
+          isEqualTo:
+          collectiveTerm == "daily" ? BaseUtils().currentDay() : null)
+          .where("itemRecordsInfo.date.year",
+          isEqualTo: collectiveTerm == "yearly" || collectiveTerm == "monthly"
+              ? BaseUtils().currentYear()
+              : null)
+          .get();
+    } else {
+      DateTime now = DateTime.now();
+      List<int> weekDays = [];
+      for(int i=0; i <= 6 ; i++){
+        int start = now.subtract(Duration(days: 6)).day;
+        weekDays.add(start + i);
+      }
+      print("WEEKDAYS: ${weekDays.toString()}");
+      doc = await collection
+          .where("itemRecordsInfo.date.day",
+          whereIn: weekDays)
+          .where("itemRecordsInfo.date.month",
+          isEqualTo: BaseUtils().currentMonth())
+          .where("itemRecordsInfo.date.year",
+          isEqualTo: BaseUtils().currentYear())
+          .get();
+    }
+
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => ItemSold.fromJson(snapshot.data()))
