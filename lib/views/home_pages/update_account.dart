@@ -166,7 +166,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
   List<Widget> form() {
     return [
       Container(
-        width: MediaQuery.of(context).size.width / 1.4,
+        width: MediaQuery.of(context).size.width / 3,
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
