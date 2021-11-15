@@ -48,7 +48,7 @@ class _PrintPageState extends State<PrintPage> {
         child: isDesktop || isMobile || isTablet
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: mainContent(context: context),
               )
             : UI().deviceNotSupported(

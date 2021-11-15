@@ -44,7 +44,7 @@ class _HelpPageState extends State<HelpPage> {
             child: isDesktop || isMobile || isTablet
                 ? Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: mainContent(context: context),
             )
                 : UI().deviceNotSupported(

@@ -101,27 +101,28 @@ class _SignUpPageState extends State<SignUpPage> {
                 sizingInformation.deviceScreenType == DeviceScreenType.mobile;
             isTablet =
                 sizingInformation.deviceScreenType == DeviceScreenType.tablet;
-            return SingleChildScrollView(
-                child: Container(
+            return Container(
               width: MediaQuery.of(context).size.width,
-              height: isDesktop ? MediaQuery.of(context).size.height : null,
-              child: isDesktop
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: mainContent(context: context),
-                    )
-                  : isMobile || isTablet
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: mainContent(context: context),
-                        )
-                      : UI().deviceNotSupported(
-                          context: context,
-                          isDesktop: isDesktop,
-                          content: "Device Not Supported"),
-            ));
+              height: MediaQuery.of(context).size.height,
+              child: SingleChildScrollView(
+                child: isDesktop
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: mainContent(context: context),
+                      )
+                    : isMobile || isTablet
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: mainContent(context: context),
+                          )
+                        : UI().deviceNotSupported(
+                            context: context,
+                            isDesktop: isDesktop,
+                            content: "Device Not Supported"),
+              ),
+            );
           }),
         ),
       ),
@@ -146,7 +147,7 @@ class _SignUpPageState extends State<SignUpPage> {
           padding: EdgeInsets.all(20),
           child: Image.asset(
             "assets/images/register_vector.png",
-            fit: BoxFit.contain,
+            fit: BoxFit.cover,
           ),
         ),
       ),
@@ -254,75 +255,81 @@ class _SignUpPageState extends State<SignUpPage> {
             SizedBox(
               height: 15,
             ),
-            imageFile != null ? Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    SizedBox(
-                      child: Container(
-                        width: 48,
-                        height: 48,
-                        child: CircleAvatar(
-                          backgroundColor: Theme.of(context).primaryColorLight,
-                          child: ClipOval(
-                            child: imageFile == null
-                                ? Container(
-                                    height: 48,
-                                    width: 48,
-                                    child: Icon(
-                                      Icons.person,
-                                      size: 18,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                    ),
-                                  )
-                                : Image.file(
-                                    imageFile,
-                                    height: 48,
-                                    width: 48,
-                                    fit: BoxFit.cover,
-                                  ),
-                          ),
-                          radius: 100,
-                        ),
-                      ),
-                    ),
-                    signingUp
-                        ? Positioned(
-                            left: 5,
-                            right: 5,
-                            top: 5,
-                            bottom: 5,
-                            child: CircularProgressIndicator(
-                              color: Theme.of(context).primaryColorLight,
+            imageFile != null
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Stack(
+                        children: [
+                          SizedBox(
+                            child: Container(
+                              width: 48,
+                              height: 48,
+                              child: CircleAvatar(
+                                backgroundColor:
+                                    Theme.of(context).primaryColorLight,
+                                child: ClipOval(
+                                  child: imageFile == null
+                                      ? Container(
+                                          height: 48,
+                                          width: 48,
+                                          child: Icon(
+                                            Icons.person,
+                                            size: 18,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                        )
+                                      : Image.file(
+                                          imageFile,
+                                          height: 48,
+                                          width: 48,
+                                          fit: BoxFit.cover,
+                                        ),
+                                ),
+                                radius: 100,
+                              ),
                             ),
-                          )
-                        : Container(),
-                  ],
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                Expanded(
-                    child: _ui.outlinedButtonIcon(
-                  context: context,
-                  label: imageFile != null ? "Change Image" : "Add Profile",
-                  backgroundColor: Theme.of(context).colorScheme.background,
-                  foregroundColor: Theme.of(context).colorScheme.primary,
-                  icon: Icons.photo_rounded,
-                  function: () async {
-                    imageFile = await _baseUtils.imageProcessor(
-                        context: context, ratioY: 4, ratioX: 4);
-                    setState(() {
-                      _baseUtils.snackBarNoProgress(
-                          context: context, content: "Image Loaded");
-                    });
-                  },
-                ))
-              ],
-            ) : Container(),
+                          ),
+                          signingUp
+                              ? Positioned(
+                                  left: 5,
+                                  right: 5,
+                                  top: 5,
+                                  bottom: 5,
+                                  child: CircularProgressIndicator(
+                                    color: Theme.of(context).primaryColorLight,
+                                  ),
+                                )
+                              : Container(),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Expanded(
+                          child: _ui.outlinedButtonIcon(
+                        context: context,
+                        label:
+                            imageFile != null ? "Change Image" : "Add Profile",
+                        backgroundColor:
+                            Theme.of(context).colorScheme.background,
+                        foregroundColor: Theme.of(context).colorScheme.primary,
+                        icon: Icons.photo_rounded,
+                        function: () async {
+                          imageFile = await _baseUtils.imageProcessor(
+                              context: context, ratioY: 4, ratioX: 4);
+                          setState(() {
+                            _baseUtils.snackBarNoProgress(
+                                context: context, content: "Image Loaded");
+                          });
+                        },
+                      ))
+                    ],
+                  )
+                : Container(),
             _ui.textFormFieldPassword(
               context: context,
               controller: pwdInputController,
@@ -356,9 +363,15 @@ class _SignUpPageState extends State<SignUpPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: controlsButtons(context),
                   )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: controlsButtons(context),
+                : Container(
+                    width: isDesktop
+                        ? MediaQuery.of(context).size.width / 3.0
+                        : MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: controlsButtons(context),
+                    ),
                   ),
           ],
         ),
@@ -368,50 +381,53 @@ class _SignUpPageState extends State<SignUpPage> {
 
   List<Widget> controlsButtons(BuildContext context) {
     return [
-      !signingUp ? Expanded(
-        child: _ui.elevatedButtonIcon(
-            context: context,
-            label: 'Proceed',
-            backgroundColor: Theme.of(context).primaryColor,
-            foregroundColor: Theme.of(context).canvasColor,
-            icon: Icons.person_add_outlined,
-            function: () {
-              if (_signUpFormKey.currentState.validate()) {
-                if (pwdInputController.text == pwdConfInputController.text) {
-                  _baseUtils.snackBarProgress(
-                      context: context, content: "Signing Up");
-                  _auth
-                      .signUpWithEmailPassword(
-                    email: emailInputController.text,
-                    password: pwdInputController.text,
-                  )
-                      .then((value) {
-                    if (value.user != null) {
-                      _userProfile.setUserInfo(
-                        context: context,
-                        userID: value.user.uid,
-                        email: value.user.email,
-                        phoneNumber: phoneNumberInputController.text,
-                        position: positionInputController.text,
-                        userName: fullNameInputController.text,
-                        idNumber: idNumberInputController.text,
-                        imageFile: imageFile,
-                      );
-                      setState(() {
-                        signingUp == true;
-                      });
+      !signingUp
+          ? Expanded(
+              child: _ui.elevatedButtonIcon(
+                  context: context,
+                  label: 'Proceed',
+                  backgroundColor: Theme.of(context).primaryColor,
+                  foregroundColor: Theme.of(context).canvasColor,
+                  icon: Icons.person_add_outlined,
+                  function: () {
+                    if (_signUpFormKey.currentState.validate()) {
+                      if (pwdInputController.text ==
+                          pwdConfInputController.text) {
+                        _baseUtils.snackBarProgress(
+                            context: context, content: "Signing Up");
+                        _auth
+                            .signUpWithEmailPassword(
+                          email: emailInputController.text,
+                          password: pwdInputController.text,
+                        )
+                            .then((value) {
+                          if (value.user != null) {
+                            _userProfile.setUserInfo(
+                              context: context,
+                              userID: value.user.uid,
+                              email: value.user.email,
+                              phoneNumber: phoneNumberInputController.text,
+                              position: positionInputController.text,
+                              userName: fullNameInputController.text,
+                              idNumber: idNumberInputController.text,
+                              imageFile: imageFile,
+                            );
+                            setState(() {
+                              signingUp == true;
+                            });
+                          }
+                        });
+                      } else {
+                        _baseUtils.snackBarError(
+                            context: context, content: "Check your password");
+                      }
+                    } else {
+                      _baseUtils.snackBarError(
+                          context: context, content: "Enter valid credentials");
                     }
-                  });
-                } else {
-                  _baseUtils.snackBarError(
-                      context: context, content: "Check your password");
-                }
-              } else {
-                _baseUtils.snackBarError(
-                    context: context, content: "Enter valid credentials");
-              }
-            }),
-      ) : Container(),
+                  }),
+            )
+          : Container(),
     ];
   }
 }

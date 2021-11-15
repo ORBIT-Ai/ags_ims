@@ -50,7 +50,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
         child: isDesktop || isMobile || isTablet
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: mainContent(context: context),
               )
             : UI().deviceNotSupported(
@@ -63,7 +63,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
 
   List<Widget> mainContent({BuildContext context}) {
     return [
-      SizedBox(height: 15),
+      SizedBox(height: isDesktop ? 5 : 15),
       FutureBuilder(
           future: _fireStoreDB.getUserDetails(userID: _auth.getCurrentUserID()),
           builder: (context, AsyncSnapshot<UserDetails> userDetails) {
@@ -189,7 +189,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: isDesktop ? 2 : 1, childAspectRatio: 4 / 1.5),
       ),
-      SizedBox(height: 10),
+      isDesktop ? Container() : SizedBox(height: 10),
     ];
   }
 }

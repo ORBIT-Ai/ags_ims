@@ -46,7 +46,7 @@ class _SalesPageState extends State<SalesPage> {
         child: isDesktop || isMobile || isTablet
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: mainContent(context: context),
               )
             : UI().deviceNotSupported(
@@ -92,7 +92,6 @@ class _SalesPageState extends State<SalesPage> {
                   ? "Reviiew those items that aren’t present in the warehouse."
                   : null;
 
-
           return Card(
             margin: EdgeInsets.only(top: 10, right: 10, left: 10),
             child: GestureDetector(
@@ -100,9 +99,9 @@ class _SalesPageState extends State<SalesPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => HomePage(
-                        title: i == 0 ? "On Hand" : "Stock Out",
-                        currentPage: i == 0 ? OnHand() : StockOut(),
-                      ))),
+                            title: i == 0 ? "On Hand" : "Stock Out",
+                            currentPage: i == 0 ? OnHand() : StockOut(),
+                          ))),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.center,

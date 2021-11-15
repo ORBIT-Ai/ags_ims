@@ -1,20 +1,26 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, use_key_in_widget_constructors, avoid_print
 
+import 'dart:io';
+
 import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/theme_styles.dart';
 import 'package:ags_ims/views/splashscreen.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:firebase_app_check_web/firebase_app_check_web.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp().then((value) {
+  final ags_ims_app = await Firebase.initializeApp().then((value){
     print('FIREBASE INITIALIZATION || APP ID:: ${value.options.appId}');
   });
-  FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.instance;
-  await firebaseAppCheck.activate(
-      webRecaptchaSiteKey: '6LfFbacbAAAAAKJ2PIU8EEUtdz0vUwqUBEPRalMM');
+  if (kIsWeb) {
+    final appCheckWeb = new FirebaseAppCheckWeb(app: ags_ims_app);
+    await appCheckWeb.activate(webRecaptchaSiteKey: '6LfCcjcdAAAAAH97dbFHQidJUpwtAHcAeqgPHoup');
+  } else {
+    //await FirebaseAppCheck.instance.activate(webRecaptchaSiteKey: '6LfCcjcdAAAAAH97dbFHQidJUpwtAHcAeqgPHoup');
+  }
   runApp(MyApp());
 }
 

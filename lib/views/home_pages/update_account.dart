@@ -64,8 +64,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
       emailInputController.text = widget.userDetails.data.emailAddress;
       fullNameInputController.text = widget.userDetails.data.userName;
       positionInputController.text = widget.userDetails.data.position;
-      phoneNumberInputController.text =
-          widget.userDetails.data.phoneNumber;
+      phoneNumberInputController.text = widget.userDetails.data.phoneNumber;
       idNumberInputController.text = widget.userDetails.data.idNumber;
     }
     super.initState();
@@ -116,7 +115,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
                 : isMobile || isTablet
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: mainContent(context: context),
                       )
                     : UI().deviceNotSupported(
@@ -141,10 +140,35 @@ class _UpdateAccountState extends State<UpdateAccount> {
             : MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(
             left: 40, right: 40, top: 0, bottom: isDesktop ? 0 : 40),
+        child: isDesktop
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: isDesktop
+                    ? CrossAxisAlignment.start
+                    : CrossAxisAlignment.center,
+                children: form(),
+              )
+            : Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: isDesktop
+                      ? CrossAxisAlignment.start
+                      : CrossAxisAlignment.start,
+                  children: form(),
+                ),
+              ),
+      ),
+    ];
+  }
+
+  List<Widget> form() {
+    return [
+      Container(
+        width: MediaQuery.of(context).size.width / 1.4,
+        height: MediaQuery.of(context).size.height,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment:
-              isDesktop ? CrossAxisAlignment.start : CrossAxisAlignment.start,
           children: [
             _ui.headlineLarge(
                 context: context,
@@ -173,29 +197,30 @@ class _UpdateAccountState extends State<UpdateAccount> {
                     child: CircleAvatar(
                       backgroundColor: Theme.of(context).primaryColorLight,
                       child: ClipOval(
-                        child: widget.userDetails.data.profileUrl == null && imageFile == null ?
-                        Container(
-                          height: 86,
-                          width: 86,
-                          child: Icon(
-                            Icons.person,
-                            size: 48,
-                            color:
-                            Theme.of(context).colorScheme.primary,
-                          ),
-                        ) : widget.userDetails.data.profileUrl != null
-                            ? Image.network(
-                                widget.userDetails.data.profileUrl,
+                        child: widget.userDetails.data.profileUrl == null &&
+                                imageFile == null
+                            ? Container(
                                 height: 86,
                                 width: 86,
-                                fit: BoxFit.cover,
+                                child: Icon(
+                                  Icons.person,
+                                  size: 48,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
                               )
-                            : Image.file(
-                                imageFile,
-                                height: 86,
-                                width: 86,
-                                fit: BoxFit.cover,
-                              ),
+                            : widget.userDetails.data.profileUrl != null
+                                ? Image.network(
+                                    widget.userDetails.data.profileUrl,
+                                    height: 86,
+                                    width: 86,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.file(
+                                    imageFile,
+                                    height: 86,
+                                    width: 86,
+                                    fit: BoxFit.cover,
+                                  ),
                       ),
                       radius: 100,
                     ),
@@ -222,9 +247,17 @@ class _UpdateAccountState extends State<UpdateAccount> {
                 ))
               ],
             ),
-            SizedBox(
-              height: 15,
-            ),
+          ],
+        ),
+      ),
+      SizedBox(
+        height: 15,
+      ),
+      Container(
+        width: MediaQuery.of(context).size.width / 2,
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -302,9 +335,13 @@ class _UpdateAccountState extends State<UpdateAccount> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: controlsButtons(context),
                   )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: controlsButtons(context),
+                : Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: controlsButtons(context),
+                    ),
                   ),
           ],
         ),

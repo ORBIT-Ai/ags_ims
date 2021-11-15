@@ -60,9 +60,6 @@ class _LoginPageState extends State<LoginPage> {
     return WillPopScope(
       onWillPop: () => _baseUtils.closeApp(context),
       child: Scaffold(
-        extendBody: true,
-        extendBodyBehindAppBar:
-            true, //this ensures that the body is drawn behind the navigation bar as well
         body: Form(
           key: _loginFormKey,
           child: ResponsiveBuilder(builder: (context, sizingInformation) {
@@ -72,27 +69,28 @@ class _LoginPageState extends State<LoginPage> {
                 sizingInformation.deviceScreenType == DeviceScreenType.mobile;
             isTablet =
                 sizingInformation.deviceScreenType == DeviceScreenType.tablet;
-            return SingleChildScrollView(
-                child: Container(
+            return Container(
               width: MediaQuery.of(context).size.width,
-              height: isDesktop ? MediaQuery.of(context).size.height : null,
-              child: isDesktop
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: mainContent(context: context),
-                    )
-                  : isMobile || isTablet
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: mainContent(context: context),
-                        )
-                      : UI().deviceNotSupported(
-                          context: context,
-                          isDesktop: isDesktop,
-                          content: "Device Not Supported"),
-            ));
+              height: MediaQuery.of(context).size.height,
+              child: SingleChildScrollView(
+                child: isDesktop
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: mainContent(context: context),
+                      )
+                    : isMobile || isTablet
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: mainContent(context: context),
+                          )
+                        : UI().deviceNotSupported(
+                            context: context,
+                            isDesktop: isDesktop,
+                            content: "Device Not Supported"),
+              ),
+            );
           }),
         ),
       ),
@@ -117,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
           padding: EdgeInsets.all(20),
           child: Image.asset(
             "assets/images/login_vector.png",
-            fit: BoxFit.contain,
+            fit: BoxFit.cover,
           ),
         ),
       ),
@@ -129,6 +127,7 @@ class _LoginPageState extends State<LoginPage> {
         width: isDesktop
             ? MediaQuery.of(context).size.width / 3.0
             : MediaQuery.of(context).size.width,
+        height: isDesktop ? MediaQuery.of(context).size.height : null,
         padding: EdgeInsets.only(
             left: 40, right: 40, top: 0, bottom: isDesktop ? 0 : 0),
         child: Column(
@@ -182,9 +181,15 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: controlsButtons(context),
                   )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: controlsButtons(context),
+                : Container(
+                    width: isDesktop
+                        ? MediaQuery.of(context).size.width / 3.0
+                        : MediaQuery.of(context).size.width,
+                    height: 100,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: controlsButtons(context),
+                    ),
                   ),
           ],
         ),
@@ -211,9 +216,11 @@ class _LoginPageState extends State<LoginPage> {
                             signingIn = true;
                           })
                         });
-                _baseUtils.snackBarProgress(context: context,content: "Logging In");
+                _baseUtils.snackBarProgress(
+                    context: context, content: "Logging In");
               } else {
-                _baseUtils.snackBarError(context: context,content: "Enter valid credentials");
+                _baseUtils.snackBarError(
+                    context: context, content: "Enter valid credentials");
               }
             }),
       ),

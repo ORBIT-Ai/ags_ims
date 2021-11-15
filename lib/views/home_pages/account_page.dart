@@ -68,21 +68,23 @@ class _AccountPageState extends State<AccountPage> {
                 phoneNumberInputController.text = userDetails.data.phoneNumber;
                 idNumberInputController.text = userDetails.data.idNumber;
               }
-              return SingleChildScrollView(
-                  child: SizedBox(
+              return Container(
                 width: MediaQuery.of(context).size.width,
-                height: isDesktop ? MediaQuery.of(context).size.height : null,
-                child: isDesktop || isMobile || isTablet
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: mainContent(context: context, userDetails: userDetails),
-                      )
-                    : UI().deviceNotSupported(
-                        context: context,
-                        isDesktop: isDesktop,
-                        content: "Device Not Supported"),
-              ));
+                height: MediaQuery.of(context).size.height,
+                child: SingleChildScrollView(
+                  child: isDesktop || isMobile || isTablet
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: mainContent(
+                              context: context, userDetails: userDetails),
+                        )
+                      : UI().deviceNotSupported(
+                          context: context,
+                          isDesktop: isDesktop,
+                          content: "Device Not Supported"),
+                ),
+              );
             }),
       );
     });
@@ -91,7 +93,7 @@ class _AccountPageState extends State<AccountPage> {
   List<Widget> mainContent(
       {BuildContext context, AsyncSnapshot<UserDetails> userDetails}) {
     return [
-      SizedBox(height: 15),
+      SizedBox(height: isDesktop ? 5 : 15),
       _ui.headerCard(
         context: context,
         page: "account",
@@ -188,34 +190,42 @@ class _AccountPageState extends State<AccountPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: controlsButtons(context, userDetails),
                   )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: controlsButtons(context, userDetails),
+                : Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 112,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: controlsButtons(context, userDetails),
+                    ),
                   ),
             SizedBox(
               height: 15,
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: FloatingActionButton.extended(
-                    onPressed: (){
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => HomePage(
-                                title: "Account Deletion",
-                                currentPage: AccountDelete(),
-                                userDetails: userDetails,
-                              )));
-                    },
-                    label: Text("Delete Account"),
-                    icon: Icon(Icons.delete_rounded),
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Theme.of(context).primaryColorLight,
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: FloatingActionButton.extended(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePage(
+                                      title: "Account Deletion",
+                                      currentPage: AccountDelete(),
+                                      userDetails: userDetails,
+                                    )));
+                      },
+                      label: Text("Delete Account"),
+                      icon: Icon(Icons.delete_rounded),
+                      backgroundColor: Theme.of(context).primaryColor,
+                      foregroundColor: Theme.of(context).primaryColorLight,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
@@ -251,7 +261,7 @@ class _AccountPageState extends State<AccountPage> {
       ),
       Expanded(
         child: FloatingActionButton.extended(
-          onPressed: (){
+          onPressed: () {
             _auth.signOut(context: context);
           },
           label: Text("Logout Account"),

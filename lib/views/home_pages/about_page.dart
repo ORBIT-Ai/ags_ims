@@ -43,7 +43,7 @@ class _AboutPageState extends State<AboutPage> {
         child: isDesktop || isMobile || isTablet
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: mainContent(context: context),
               )
             : UI().deviceNotSupported(
@@ -56,7 +56,7 @@ class _AboutPageState extends State<AboutPage> {
 
   List<Widget> mainContent({BuildContext context}) {
     return [
-      SizedBox(height: 15),
+      SizedBox(height: isDesktop ? 5 : 15),
       _ui.headerCard(
         context: context,
         page: "about",
@@ -143,7 +143,10 @@ class _AboutPageState extends State<AboutPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/images/orbitai_logo.png', scale: 10,),
+          Image.asset(
+            'assets/images/orbitai_logo.png',
+            scale: 10,
+          ),
           SizedBox(width: 10),
           _ui.headlineSmall(
               context: context,
@@ -152,7 +155,7 @@ class _AboutPageState extends State<AboutPage> {
               isDesktop: isDesktop),
         ],
       ),
-      SizedBox(height: 50),
+      SizedBox(height: isDesktop ? 5 : 15),
     ];
   }
 }

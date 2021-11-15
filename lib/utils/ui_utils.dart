@@ -305,7 +305,7 @@ class UI {
       style: TextStyle(
         fontSize: !isDesktop
             ? Theme.of(context).textTheme.headline3.fontSize
-            : Theme.of(context).textTheme.headline1.fontSize,
+            : Theme.of(context).textTheme.headline2.fontSize,
         color: color,
       ),
       maxLines: 5,
@@ -326,7 +326,7 @@ class UI {
       style: TextStyle(
         fontSize: !isDesktop
             ? Theme.of(context).textTheme.headline5.fontSize
-            : Theme.of(context).textTheme.headline3.fontSize,
+            : Theme.of(context).textTheme.headline4.fontSize,
         color: color,
       ),
       maxLines: 5,
@@ -347,7 +347,7 @@ class UI {
       style: TextStyle(
         fontSize: !isDesktop
             ? Theme.of(context).textTheme.subtitle1.fontSize
-            : Theme.of(context).textTheme.headline4.fontSize,
+            : Theme.of(context).textTheme.headline6.fontSize,
         color: color,
       ),
       maxLines: null,
@@ -966,7 +966,7 @@ class UI {
       margin: EdgeInsets.only(bottom: 0, left: 10, right: 10),
       color: Theme.of(context).canvasColor,
       child: Padding(
-        padding: EdgeInsets.only(top: 0, right: 20, left: 20, bottom: 20),
+        padding: EdgeInsets.all(isDesktop ? 40 : 20),
         child: Column(
           crossAxisAlignment: isDesktop
               ? CrossAxisAlignment.stretch

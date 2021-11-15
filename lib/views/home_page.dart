@@ -96,7 +96,8 @@ class _HomePageState extends State<HomePage> {
                         : Theme.of(context).canvasColor),
               ),
               elevation: 12,
-              actionsIconTheme: IconThemeData(color: Theme.of(context).canvasColor),
+              actionsIconTheme:
+                  IconThemeData(color: Theme.of(context).canvasColor),
               actions: [
                 _title == "Item Details"
                     ? IconButton(
@@ -141,6 +142,7 @@ class _HomePageState extends State<HomePage> {
                             ? drawerContent(context, deviceType)
                             : Container(),
                         Container(
+                          padding: EdgeInsets.all(isDesktop ? 20 : 0),
                           width: MediaQuery.of(context).size.width / 1.3,
                           child: _currentPage,
                         )
@@ -361,79 +363,79 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               ListTile(
-                      tileColor: _title == "Scanner"
-                          ? Theme.of(context).primaryColorLight
-                          : null,
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.camera_rounded,
-                            color: _title == "Scanner"
-                                ? Theme.of(context).primaryColor
-                                : Colors.grey,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            ScannerPage().title,
-                            style: TextStyle(
-                              color: _title == "Scanner"
-                                  ? Theme.of(context).primaryColor
-                                  : null,
-                            ),
-                          )
-                        ],
-                      ),
-                      onTap: () {
-                        setState(() {
-                          _currentPage = ScannerPage();
-                          _title = ScannerPage().title;
-                          _appBarIcon = Icons.group_rounded;
-                          _deviceType == "desktop"
-                              ? Container()
-                              : Navigator.pop(context);
-                        });
-                      },
+                tileColor: _title == "Scanner"
+                    ? Theme.of(context).primaryColorLight
+                    : null,
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.camera_rounded,
+                      color: _title == "Scanner"
+                          ? Theme.of(context).primaryColor
+                          : Colors.grey,
                     ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      ScannerPage().title,
+                      style: TextStyle(
+                        color: _title == "Scanner"
+                            ? Theme.of(context).primaryColor
+                            : null,
+                      ),
+                    )
+                  ],
+                ),
+                onTap: () {
+                  setState(() {
+                    _currentPage = ScannerPage();
+                    _title = ScannerPage().title;
+                    _appBarIcon = Icons.group_rounded;
+                    _deviceType == "desktop"
+                        ? Container()
+                        : Navigator.pop(context);
+                  });
+                },
+              ),
               ListTile(
-                      tileColor: _title == "Print"
-                          ? Theme.of(context).primaryColorLight
-                          : null,
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.print_rounded,
-                            color: _title == "Print"
-                                ? Theme.of(context).primaryColor
-                                : Colors.grey,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            PrintPage().title,
-                            style: TextStyle(
-                              color: _title == "Print"
-                                  ? Theme.of(context).primaryColor
-                                  : null,
-                            ),
-                          )
-                        ],
-                      ),
-                      onTap: () {
-                        setState(() {
-                          _currentPage = PrintPage();
-                          _title = PrintPage().title;
-                          _appBarIcon = Icons.group_rounded;
-                          _deviceType == "desktop"
-                              ? Container()
-                              : Navigator.pop(context);
-                        });
-                      },
+                tileColor: _title == "Print"
+                    ? Theme.of(context).primaryColorLight
+                    : null,
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.print_rounded,
+                      color: _title == "Print"
+                          ? Theme.of(context).primaryColor
+                          : Colors.grey,
                     ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      PrintPage().title,
+                      style: TextStyle(
+                        color: _title == "Print"
+                            ? Theme.of(context).primaryColor
+                            : null,
+                      ),
+                    )
+                  ],
+                ),
+                onTap: () {
+                  setState(() {
+                    _currentPage = PrintPage();
+                    _title = PrintPage().title;
+                    _appBarIcon = Icons.group_rounded;
+                    _deviceType == "desktop"
+                        ? Container()
+                        : Navigator.pop(context);
+                  });
+                },
+              ),
               ListTile(
                 tileColor: _title == "History"
                     ? Theme.of(context).primaryColorLight

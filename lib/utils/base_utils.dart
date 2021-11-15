@@ -1,6 +1,5 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors, avoid_print
 
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
