@@ -209,7 +209,7 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
                           tableRow(
                               text:
                                   '${(itemDetails.data[i].itemCount * itemDetails.data[i].itemPrice).toString()}'),
-                          itemSold != null ? print_widget.ListView.builder(
+                          itemSold.hasData ? print_widget.ListView.builder(
                             itemCount: itemSold.data.length,
                             itemBuilder: (context, j) {
                               return itemSold.data.indexWhere((element) =>
@@ -238,7 +238,7 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
                                   : print_widget.Container();
                             },
                           ) : print_widget.Container(),
-                          itemSold != null ? print_widget.ListView.builder(
+                          itemSold.hasData ? print_widget.ListView.builder(
                             itemCount: itemSold.data.length,
                             itemBuilder: (context, j) {
                               return itemSold.data.indexWhere((element) =>

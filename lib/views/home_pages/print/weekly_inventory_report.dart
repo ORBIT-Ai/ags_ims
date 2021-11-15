@@ -20,7 +20,7 @@ class WeeklyInventoryReport extends StatefulWidget {
   const WeeklyInventoryReport({
     Key key,
   }) : super(key: key);
-  final String title = "Daily Inventory Report";
+  final String title = "Weekly Inventory Report";
 
   @override
   _WeeklyInventoryReportState createState() => _WeeklyInventoryReportState();
