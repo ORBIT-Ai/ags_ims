@@ -106,6 +106,11 @@ class _UpdateAccountState extends State<UpdateAccount> {
               child: Container(
             width: MediaQuery.of(context).size.width,
             height: isDesktop ? MediaQuery.of(context).size.height : null,
+            padding: EdgeInsets.only(
+                left: isDesktop ? 20 : 0,
+                right: isDesktop ? 20 : 0,
+                top: isDesktop ? 100 : 0,
+                bottom: isDesktop ? 20 : 0),
             child: isDesktop
                 ? Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -131,15 +136,19 @@ class _UpdateAccountState extends State<UpdateAccount> {
   List<Widget> mainContent({BuildContext context}) {
     return [
       SizedBox(
-        width: 40,
-        height: 40,
+        width: isDesktop ? 100 : 40,
+        height: isDesktop ? 100 : 40,
       ),
       Container(
         width: isDesktop
-            ? MediaQuery.of(context).size.width / 3.0
+            ? MediaQuery.of(context).size.width / 1.5
             : MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.only(
-            left: 40, right: 40, top: 0, bottom: isDesktop ? 0 : 40),
+            left: isDesktop ? 0 : 40,
+            right: isDesktop ? 0 : 40,
+            top: 0,
+            bottom: isDesktop ? 0 : 40),
         child: isDesktop
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -166,7 +175,9 @@ class _UpdateAccountState extends State<UpdateAccount> {
   List<Widget> form() {
     return [
       Container(
-        width: MediaQuery.of(context).size.width / 3,
+        width: isDesktop
+            ? MediaQuery.of(context).size.width / 4
+            : MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
@@ -252,9 +263,12 @@ class _UpdateAccountState extends State<UpdateAccount> {
       ),
       SizedBox(
         height: 15,
+        width: isDesktop ? 50 : 20,
       ),
       Container(
-        width: MediaQuery.of(context).size.width / 2,
+        width: isDesktop
+            ? MediaQuery.of(context).size.width / 4
+            : MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
@@ -328,7 +342,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
                 icon: Icons.person_pin_rounded,
                 color: null),
             SizedBox(
-              height: 40,
+              height: isDesktop ? 30 : 40,
             ),
             isMobile
                 ? Row(

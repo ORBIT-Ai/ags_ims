@@ -56,7 +56,7 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
     return SingleChildScrollView(
       child: Container(
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(widget.isDesktop ? 100 : 20),
         child: FutureBuilder(
             future: _fireStoreDB.getStocksItem(itemID: widget.itemID),
             builder: (context, AsyncSnapshot<ItemDetails> itemDetails) {
@@ -248,8 +248,10 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                                           totalItemCount: itemCount,
                                           itemPrice:
                                               widget.itemDetails.data.itemPrice,
-                                          totalAmount: int.parse(targetItemCount.text) *
-                                              widget.itemDetails.data.itemPrice,
+                                          totalAmount:
+                                              int.parse(targetItemCount.text) *
+                                                  widget.itemDetails.data
+                                                      .itemPrice,
                                         );
                                         _itemViewModel
                                             .updateItemCount(

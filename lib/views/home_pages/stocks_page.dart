@@ -42,8 +42,13 @@ class _StocksPageState extends State<StocksPage> {
       return Stack(
         children: [
           SingleChildScrollView(
-              child: SizedBox(
+              child: Container(
             width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.only(
+                left: isDesktop ? 20 : 0,
+                right: isDesktop ? 20 : 0,
+                top: isDesktop ? 20 : 0,
+                bottom: isDesktop ? 20 : 0),
             child: isDesktop || isMobile || isTablet
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.center,

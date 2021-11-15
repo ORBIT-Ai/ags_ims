@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       Container(
         width: isDesktop
-            ? MediaQuery.of(context).size.width / 3.0
+            ? MediaQuery.of(context).size.width / 2.5
             : MediaQuery.of(context).size.width,
         height: isDesktop ? MediaQuery.of(context).size.height : null,
         padding: EdgeInsets.only(

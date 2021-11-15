@@ -93,8 +93,8 @@ class _UpdateItemState extends State<UpdateItem> {
                     height: MediaQuery.of(context).size.height,
                     child: SingleChildScrollView(
                         child: Container(
-                      padding: EdgeInsets.all(20),
                       width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.all(widget.isDesktop ? 100 : 20),
                       child: isDesktop || isMobile || isTablet
                           ? Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,4 +1,3 @@
-
 // ignore_for_file: prefer_const_constructors
 
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
@@ -38,20 +37,25 @@ class _HelpPageState extends State<HelpPage> {
       isMobile = sizingInformation.deviceScreenType == DeviceScreenType.mobile;
       isTablet = sizingInformation.deviceScreenType == DeviceScreenType.tablet;
       return SingleChildScrollView(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: isDesktop ? MediaQuery.of(context).size.height : null,
-            child: isDesktop || isMobile || isTablet
-                ? Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: mainContent(context: context),
-            )
-                : UI().deviceNotSupported(
+          child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: isDesktop ? MediaQuery.of(context).size.height : null,
+        padding: EdgeInsets.only(
+            left: isDesktop ? 20 : 0,
+            right: isDesktop ? 20 : 0,
+            top: isDesktop ? 20 : 0,
+            bottom: isDesktop ? 20 : 0),
+        child: isDesktop || isMobile || isTablet
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: mainContent(context: context),
+              )
+            : UI().deviceNotSupported(
                 context: context,
                 isDesktop: isDesktop,
                 content: "Device Not Supported"),
-          ));
+      ));
     });
   }
 
@@ -61,10 +65,9 @@ class _HelpPageState extends State<HelpPage> {
       _ui.headerCard(
         context: context,
         page: "help",
-        header:
-        "Help",
+        header: "Help",
         subhead:
-        "Learn how to use the different features and functionality of the ecosystem.",
+            "Learn how to use the different features and functionality of the ecosystem.",
         hasButton: false,
         isDesktop: isDesktop,
       ),
@@ -76,32 +79,32 @@ class _HelpPageState extends State<HelpPage> {
           final icon = i == 0
               ? MdiIcons.archive
               : i == 1
-              ? MdiIcons.shopping
-              : i == 2
-              ? MdiIcons.printer
-              : i == 3
-              ? MdiIcons.history
-              : null;
+                  ? MdiIcons.shopping
+                  : i == 2
+                      ? MdiIcons.printer
+                      : i == 3
+                          ? MdiIcons.history
+                          : null;
 
           final title = i == 0
               ? "Stocks"
               : i == 1
-              ? "Sales"
-              : i == 2
-              ? "Print"
-              : i == 3
-              ? "History"
-              : null;
+                  ? "Sales"
+                  : i == 2
+                      ? "Print"
+                      : i == 3
+                          ? "History"
+                          : null;
 
           final subhead = i == 0
               ? "Learn how to Add, Update and Delete items in the stocks."
               : i == 1
-              ? "Learn how to review the items that are present in the warehouse and those that are out-of-stock."
-              : i == 2
-              ? "Learn how to  export or print daily, weekly, monthly and annual reports."
-              : i == 3
-              ? "Learn how to  view recent actions made by other employees within the ecosystem."
-              : null;
+                  ? "Learn how to review the items that are present in the warehouse and those that are out-of-stock."
+                  : i == 2
+                      ? "Learn how to  export or print daily, weekly, monthly and annual reports."
+                      : i == 3
+                          ? "Learn how to  view recent actions made by other employees within the ecosystem."
+                          : null;
 
           return Card(
             margin: EdgeInsets.only(top: 10, right: 10, left: 10),

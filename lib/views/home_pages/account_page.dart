@@ -71,6 +71,11 @@ class _AccountPageState extends State<AccountPage> {
               return Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
+                padding: EdgeInsets.only(
+                    left: isDesktop ? 20 : 0,
+                    right: isDesktop ? 20 : 0,
+                    top: isDesktop ? 20 : 0,
+                    bottom: isDesktop ? 20 : 0),
                 child: SingleChildScrollView(
                   child: isDesktop || isMobile || isTablet
                       ? Column(

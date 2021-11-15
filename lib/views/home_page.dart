@@ -20,6 +20,7 @@ import 'package:ags_ims/views/home_pages/stocks/item_details.dart';
 import 'package:ags_ims/views/home_pages/stocks/update_item.dart';
 import 'package:ags_ims/views/home_pages/stocks_page.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class HomePage extends StatefulWidget {
@@ -84,50 +85,14 @@ class _HomePageState extends State<HomePage> {
                   : "tablet";
           return Scaffold(
             key: _homeFormKey,
-            appBar: AppBar(
-              backgroundColor: isDesktop
-                  ? Theme.of(context).primaryColor
-                  : Theme.of(context).primaryColor,
-              title: Text(
-                _title,
-                style: TextStyle(
-                    color: isDesktop
-                        ? Theme.of(context).canvasColor
-                        : Theme.of(context).canvasColor),
-              ),
-              elevation: 12,
-              actionsIconTheme:
-                  IconThemeData(color: Theme.of(context).canvasColor),
-              actions: [
-                _title == "Item Details"
-                    ? IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomePage(
-                                        title: "Update Item",
-                                        currentPage: UpdateItem(
-                                          isDesktop: isDesktop,
-                                          itemID: widget.itemID,
-                                          itemDetails: widget.itemDetails,
-                                        ),
-                                      )));
-                        },
-                        icon: Icon(Icons.edit_rounded))
-                    : Container()
-              ],
-              iconTheme: IconThemeData(
-                  color: isDesktop
-                      ? Theme.of(context).canvasColor
-                      : Theme.of(context).canvasColor),
-              leading: isTablet || isMobile
-                  ? IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () => _homeFormKey.currentState.openDrawer(),
-                    )
-                  : Icon(_appBarIcon),
-            ),
+            appBar: isMobile
+                ? appBar()
+                : AppBar(
+                    toolbarHeight: 0,
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    shadowColor: Colors.transparent,
+                  ),
             drawer: isTablet || isMobile
                 ? drawerContent(context, deviceType)
                 : Container(),
@@ -142,9 +107,26 @@ class _HomePageState extends State<HomePage> {
                             ? drawerContent(context, deviceType)
                             : Container(),
                         Container(
-                          padding: EdgeInsets.all(isDesktop ? 20 : 0),
+                          padding: EdgeInsets.only(
+                              left: isDesktop ? 0 : 0,
+                              right: isDesktop ? 0 : 0,
+                              top: isDesktop ? 0 : 0,
+                              bottom: isDesktop ? 0 : 0),
                           width: MediaQuery.of(context).size.width / 1.3,
-                          child: _currentPage,
+                          height: MediaQuery.of(context).size.height,
+                          child: Stack(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(top: 56),
+                                child: _currentPage,
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.3,
+                                height: 56,
+                                child: isDesktop ? appBar() : Container(),
+                              ),
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -170,6 +152,53 @@ class _HomePageState extends State<HomePage> {
           );
         }),
       ),
+    );
+  }
+
+  Widget appBar() {
+    return AppBar(
+      toolbarHeight: 56,
+      backgroundColor: isDesktop
+          ? Theme.of(context).primaryColor
+          : Theme.of(context).primaryColor,
+      title: Text(
+        _title,
+        style: TextStyle(
+            color: isDesktop
+                ? Theme.of(context).canvasColor
+                : Theme.of(context).canvasColor),
+      ),
+      elevation: 12,
+      actionsIconTheme: IconThemeData(color: Theme.of(context).canvasColor),
+      actions: [
+        _title == "Item Details"
+            ? IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomePage(
+                                title: "Update Item",
+                                currentPage: UpdateItem(
+                                  isDesktop: isDesktop,
+                                  itemID: widget.itemID,
+                                  itemDetails: widget.itemDetails,
+                                ),
+                              )));
+                },
+                icon: Icon(Icons.edit_rounded))
+            : Container()
+      ],
+      iconTheme: IconThemeData(
+          color: isDesktop
+              ? Theme.of(context).canvasColor
+              : Theme.of(context).canvasColor),
+      leading: isTablet || isMobile
+          ? IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () => _homeFormKey.currentState.openDrawer(),
+            )
+          : Icon(_appBarIcon),
     );
   }
 
@@ -217,7 +246,7 @@ class _HomePageState extends State<HomePage> {
                                       setState(() {
                                         _currentPage = AccountPage();
                                         _title = AccountPage().title;
-                                        _appBarIcon = Icons.dashboard_rounded;
+                                        _appBarIcon = Icons.person_rounded;
                                         _deviceType == "desktop"
                                             ? Container()
                                             : Navigator.pop(context);
@@ -281,7 +310,7 @@ class _HomePageState extends State<HomePage> {
                   setState(() {
                     _currentPage = HomeMainPage();
                     _title = HomeMainPage().title;
-                    _appBarIcon = Icons.dashboard_rounded;
+                    _appBarIcon = Icons.home_rounded;
                     _deviceType == "desktop"
                         ? Container()
                         : Navigator.pop(context);
@@ -318,7 +347,7 @@ class _HomePageState extends State<HomePage> {
                   setState(() {
                     _currentPage = StocksPage();
                     _title = StocksPage().title;
-                    _appBarIcon = Icons.account_box_rounded;
+                    _appBarIcon = Icons.archive_rounded;
                     _deviceType == "desktop"
                         ? Container()
                         : Navigator.pop(context);
@@ -355,50 +384,52 @@ class _HomePageState extends State<HomePage> {
                   setState(() {
                     _currentPage = SalesPage();
                     _title = SalesPage().title;
-                    _appBarIcon = Icons.group_rounded;
+                    _appBarIcon = Icons.shopping_bag_rounded;
                     _deviceType == "desktop"
                         ? Container()
                         : Navigator.pop(context);
                   });
                 },
               ),
-              ListTile(
-                tileColor: _title == "Scanner"
-                    ? Theme.of(context).primaryColorLight
-                    : null,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.camera_rounded,
-                      color: _title == "Scanner"
-                          ? Theme.of(context).primaryColor
-                          : Colors.grey,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      ScannerPage().title,
-                      style: TextStyle(
-                        color: _title == "Scanner"
-                            ? Theme.of(context).primaryColor
-                            : null,
+              isMobile
+                  ? ListTile(
+                      tileColor: _title == "Scanner"
+                          ? Theme.of(context).primaryColorLight
+                          : null,
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.camera_rounded,
+                            color: _title == "Scanner"
+                                ? Theme.of(context).primaryColor
+                                : Colors.grey,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            ScannerPage().title,
+                            style: TextStyle(
+                              color: _title == "Scanner"
+                                  ? Theme.of(context).primaryColor
+                                  : null,
+                            ),
+                          )
+                        ],
                       ),
+                      onTap: () {
+                        setState(() {
+                          _currentPage = ScannerPage();
+                          _title = ScannerPage().title;
+                          _appBarIcon = MdiIcons.barcodeScan;
+                          _deviceType == "desktop"
+                              ? Container()
+                              : Navigator.pop(context);
+                        });
+                      },
                     )
-                  ],
-                ),
-                onTap: () {
-                  setState(() {
-                    _currentPage = ScannerPage();
-                    _title = ScannerPage().title;
-                    _appBarIcon = Icons.group_rounded;
-                    _deviceType == "desktop"
-                        ? Container()
-                        : Navigator.pop(context);
-                  });
-                },
-              ),
+                  : Container(),
               ListTile(
                 tileColor: _title == "Print"
                     ? Theme.of(context).primaryColorLight
@@ -429,7 +460,7 @@ class _HomePageState extends State<HomePage> {
                   setState(() {
                     _currentPage = PrintPage();
                     _title = PrintPage().title;
-                    _appBarIcon = Icons.group_rounded;
+                    _appBarIcon = Icons.print_rounded;
                     _deviceType == "desktop"
                         ? Container()
                         : Navigator.pop(context);
@@ -466,7 +497,7 @@ class _HomePageState extends State<HomePage> {
                   setState(() {
                     _currentPage = HistoryPage();
                     _title = HistoryPage().title;
-                    _appBarIcon = Icons.group_rounded;
+                    _appBarIcon = Icons.history_rounded;
                     _deviceType == "desktop"
                         ? Container()
                         : Navigator.pop(context);
@@ -503,7 +534,7 @@ class _HomePageState extends State<HomePage> {
                   setState(() {
                     _currentPage = HelpPage();
                     _title = HelpPage().title;
-                    _appBarIcon = Icons.group_rounded;
+                    _appBarIcon = Icons.help_rounded;
                     _deviceType == "desktop"
                         ? Container()
                         : Navigator.pop(context);
@@ -540,7 +571,7 @@ class _HomePageState extends State<HomePage> {
                   setState(() {
                     _currentPage = AboutPage();
                     _title = AboutPage().title;
-                    _appBarIcon = Icons.group_rounded;
+                    _appBarIcon = Icons.info_rounded;
                     _deviceType == "desktop"
                         ? Container()
                         : Navigator.pop(context);

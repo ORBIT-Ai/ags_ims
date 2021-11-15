@@ -44,9 +44,14 @@ class _HomeMainPageState extends State<HomeMainPage> {
       isMobile = sizingInformation.deviceScreenType == DeviceScreenType.mobile;
       isTablet = sizingInformation.deviceScreenType == DeviceScreenType.tablet;
       return SingleChildScrollView(
-          child: SizedBox(
+          child: Container(
         width: MediaQuery.of(context).size.width,
         height: isDesktop ? MediaQuery.of(context).size.height : null,
+        padding: EdgeInsets.only(
+            left: isDesktop ? 20 : 0,
+            right: isDesktop ? 20 : 0,
+            top: isDesktop ? 20 : 0,
+            bottom: isDesktop ? 20 : 0),
         child: isDesktop || isMobile || isTablet
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -129,10 +134,10 @@ class _HomeMainPageState extends State<HomeMainPage> {
                             title: i == 0
                                 ? StocksPage().title
                                 : i == 1
-                                ? SalesPage().title
-                                : i == 2
-                                ? ScannerPage().title
-                                : HistoryPage().title,
+                                    ? SalesPage().title
+                                    : i == 2
+                                        ? ScannerPage().title
+                                        : HistoryPage().title,
                             currentPage: i == 0
                                 ? StocksPage()
                                 : i == 1

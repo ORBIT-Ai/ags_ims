@@ -42,9 +42,14 @@ class _PrintPageState extends State<PrintPage> {
       isMobile = sizingInformation.deviceScreenType == DeviceScreenType.mobile;
       isTablet = sizingInformation.deviceScreenType == DeviceScreenType.tablet;
       return SingleChildScrollView(
-          child: SizedBox(
+          child: Container(
         width: MediaQuery.of(context).size.width,
         height: isDesktop ? MediaQuery.of(context).size.height : null,
+        padding: EdgeInsets.only(
+            left: isDesktop ? 20 : 0,
+            right: isDesktop ? 20 : 0,
+            top: isDesktop ? 20 : 0,
+            bottom: isDesktop ? 20 : 0),
         child: isDesktop || isMobile || isTablet
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

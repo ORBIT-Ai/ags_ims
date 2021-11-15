@@ -157,7 +157,7 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
       Container(
         width: isDesktop
-            ? MediaQuery.of(context).size.width / 3.0
+            ? MediaQuery.of(context).size.width / 2.5
             : MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(
             left: 40, right: 40, top: 0, bottom: isDesktop ? 0 : 40),
