@@ -1,10 +1,9 @@
 import 'package:flutter/foundation.dart';
 
 class ItemSoldInfo {
-  final String recordID;
+  final String soldID;
   final String description;
-  final String date;
-  final String time;
+  final Map<String, dynamic> date;
   final String type;
   final String itemName;
   final int itemCount;
@@ -12,10 +11,9 @@ class ItemSoldInfo {
   final int itemTotalAmount;
 
   ItemSoldInfo({
-    @required this.recordID,
+    @required this.soldID,
     @required this.description,
     @required this.date,
-    @required this.time,
     @required this.type,
     @required this.itemName,
     @required this.itemCount,
@@ -25,10 +23,9 @@ class ItemSoldInfo {
 
   ItemSoldInfo.fromJson(Map<String, dynamic> json)
       : this(
-          recordID: json['recordID'] as String,
+          soldID: json['soldID'] as String,
           description: json['description'] as String,
-          date: json['date'] as String,
-          time: json['time'] as String,
+          date: json['date'] as Map<String, dynamic>,
           type: json['type'] as String,
           itemName: json['itemName'] as String,
           itemCount: json['itemCount'] as int,
@@ -38,10 +35,9 @@ class ItemSoldInfo {
 
   toJson() {
     return {
-      'recordID': recordID,
+      'soldID': soldID,
       'description': description,
       'date': date,
-      'time': time,
       'type': type,
       'itemName': itemName,
       'itemCount': itemCount,

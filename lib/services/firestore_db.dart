@@ -1,4 +1,3 @@
-
 import 'package:ags_ims/core/models/images.dart';
 import 'package:ags_ims/core/models/item_details.dart';
 import 'package:ags_ims/core/models/history.dart';
@@ -7,8 +6,7 @@ import 'package:ags_ims/core/models/item_sold.dart';
 import 'package:ags_ims/core/models/user_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-abstract class FireStoreDB{
-
+abstract class FireStoreDB {
   //Get User Details
   Future<UserDetails> getUserDetails({String userID});
 
@@ -79,7 +77,7 @@ abstract class FireStoreDB{
   Future<void> setItemSoldRecords({ItemRecords itemRecords});
 
   //Get Item Sold Reports
-  Future<List<ItemSold>> getItemSold();
+  Future<List<ItemSold>> getItemSold({String collectiveTerm});
 
   //Get Item Sold Reports
   Future<void> setItemSold({ItemSold itemSold});

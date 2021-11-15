@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_new, prefer_const_constructors
+// ignore_for_file: unnecessary_new, prefer_const_constructors, avoid_print
 
 import 'dart:ffi';
 import 'dart:io';
@@ -237,6 +237,39 @@ class BaseUtils {
     return time;
   }
 
+  List<int> currentWeek(){
+    DateTime now = DateTime.now();
+    List<int> weekDays = [];
+    for(int i=0; i <= 6 ; i++){
+      int start = now.subtract(Duration(days: 6)).day;
+      weekDays.add(start + i);
+      print("WEEKLY ${start + i}");
+    }
+    return weekDays;
+  }
+
+  String currentMonth(){
+    DateTime now = DateTime.now();
+    DateTime date = DateTime(now.year, now.month, now.day);
+
+    String month = now.month.toString();
+    return month;
+  }
+
+  int currentDay(){
+    DateTime now = DateTime.now();
+
+    int day = now.day;
+    return day;
+  }
+
+  int currentYear(){
+    DateTime now = DateTime.now();
+
+    int year = now.year;
+    return year;
+  }
+
   String timeStamp() {
     String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
     return timestamp;
@@ -306,4 +339,5 @@ class BaseUtils {
       backgroundColor: Theme.of(context).colorScheme.error,
     ));
   }
+
 }

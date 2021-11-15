@@ -2,6 +2,7 @@
 import 'dart:typed_data';
 
 import 'package:ags_ims/core/models/item_details.dart';
+import 'package:ags_ims/core/models/item_sold.dart';
 import 'package:ags_ims/core/models/user_details.dart';
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
 import 'package:ags_ims/services/auth_service.dart';
@@ -33,20 +34,33 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
 
   final doc = print_widget.Document();
 
-  int totalAmount = 0;
-  int perItemTotalAmount = 0;
+  int totalSoldAmount = 0;
+  int totalStockAmount = 0;
+  int soldAmount = 0;
   int sold = 0;
 
   @override
   void initState() {
-    _fireStoreDB.getItemSold().then((soldValue) {
-      for (int i = 0; i < soldValue.length ; i++) {
-        if(soldValue != null){
+    _fireStoreDB.getItemSold(collectiveTerm: "daily").then((soldValue) {
+      for (int i = 0; i < soldValue.length; i++) {
+        if (soldValue != null) {
           setState(() {
             sold = sold + soldValue[i].itemRecordsInfo['itemCount'];
-            print("SOLD $sold");
-            totalAmount = totalAmount + soldValue[i].itemRecordsInfo['itemTotalAmount'];
-            print("Total Amount $totalAmount");
+            print("SOLD: $sold");
+            totalSoldAmount = totalSoldAmount +
+                soldValue[i].itemRecordsInfo['itemTotalAmount'];
+            print("TOTAL SOLD AMOUNT: $totalSoldAmount");
+          });
+        }
+      }
+    });
+    _fireStoreDB.getStocks().then((stockValue) {
+      for (int i = 0; i < stockValue.length; i++) {
+        if (stockValue != null) {
+          setState(() {
+            totalStockAmount = totalStockAmount +
+                (stockValue[i].itemCount * stockValue[i].itemPrice);
+            print("Total Amount $totalStockAmount");
           });
         }
       }
@@ -68,15 +82,24 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
                   builder:
                       (context, AsyncSnapshot<List<ItemDetails>> itemDetails) {
                     return itemDetails.hasData
-                        ? PdfPreview(
-                            canChangeOrientation: false,
-                            canChangePageFormat: false,
-                            canDebug: false,
-                            build: (format) => generatePdf(
-                                format,
-                                "Daily Stocks Report",
-                                itemDetails,
-                                userDetails),
+                        ? Container(
+                            child: FutureBuilder(
+                                future: _fireStoreDB.getItemSold(
+                                    collectiveTerm: "daily"),
+                                builder: (context,
+                                    AsyncSnapshot<List<ItemSold>> itemSold) {
+                                  return PdfPreview(
+                                    canChangeOrientation: false,
+                                    canChangePageFormat: false,
+                                    canDebug: false,
+                                    build: (format) => generatePdf(
+                                        format,
+                                        "Daily Stocks Report",
+                                        itemDetails,
+                                        userDetails,
+                                        itemSold),
+                                  );
+                                }),
                           )
                         : Container();
                   }),
@@ -89,7 +112,8 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
       PdfPageFormat format,
       String title,
       AsyncSnapshot<List<ItemDetails>> itemDetails,
-      AsyncSnapshot<UserDetails> userDetails) async {
+      AsyncSnapshot<UserDetails> userDetails,
+      AsyncSnapshot<List<ItemSold>> itemSold) async {
     final doc = print_widget.Document();
 
     doc.addPage(print_widget.Page(
@@ -98,7 +122,10 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
           return print_widget.Container(
               child: print_widget.Column(
             children: [
-              print_widget.Text(widget.title),
+              print_widget.Text(
+                widget.title,
+                style: print_widget.TextStyle(fontSize: 18),
+              ),
               print_widget.SizedBox(
                 height: 20,
               ),
@@ -110,8 +137,23 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
                       headlineRow(text: "Date: ${_baseUtils.currentDate()}"),
                     ]),
                     print_widget.TableRow(children: [
+                      headlineRow(text: "Encoded by: AGS IMS"),
+                    ]),
+                  ]),
+              print_widget.SizedBox(
+                height: 20,
+              ),
+              print_widget.Table(
+                  defaultVerticalAlignment:
+                      print_widget.TableCellVerticalAlignment.full,
+                  children: [
+                    print_widget.TableRow(children: [
                       headlineRow(
-                          text: "Encoded by: ${userDetails.data.userName}"),
+                          text:
+                              "Total Amount Sold: PHP ${totalSoldAmount.toString()}"),
+                      headlineRow(
+                          text:
+                              "Total Value Stock IN Hand: PHP ${totalStockAmount.toString()}"),
                     ]),
                   ]),
               print_widget.SizedBox(
@@ -124,6 +166,8 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
                     2: print_widget.FlexColumnWidth(1),
                     3: print_widget.FlexColumnWidth(1),
                     4: print_widget.FlexColumnWidth(1),
+                    5: print_widget.FlexColumnWidth(1),
+                    6: print_widget.FlexColumnWidth(1),
                   },
                   border: print_widget.TableBorder.all(width: 1),
                   children: [
@@ -133,11 +177,14 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
                       headerRow(text: "Item Price"),
                       headerRow(text: "Quantity IN Stock"),
                       headerRow(text: "Value Stock IN Hand"),
+                      headerRow(text: "Purchased"),
+                      headerRow(text: "Purchased Amount"),
                     ]),
                   ]),
               print_widget.ListView.builder(
                 itemCount: itemDetails.data.length,
                 itemBuilder: (context, i) {
+                  int soldTotal = 0;
                   return print_widget.Table(
                       columnWidths: {
                         0: print_widget.FlexColumnWidth(1),
@@ -145,6 +192,8 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
                         2: print_widget.FlexColumnWidth(1),
                         3: print_widget.FlexColumnWidth(1),
                         4: print_widget.FlexColumnWidth(1),
+                        5: print_widget.FlexColumnWidth(1),
+                        6: print_widget.FlexColumnWidth(1),
                       },
                       border: print_widget.TableBorder.all(width: 1),
                       children: [
@@ -160,6 +209,64 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
                           tableRow(
                               text:
                                   '${(itemDetails.data[i].itemCount * itemDetails.data[i].itemPrice).toString()}'),
+                          itemSold != null ? print_widget.ListView.builder(
+                            itemCount: itemSold.data.length,
+                            itemBuilder: (context, j) {
+                              return itemSold.data.indexWhere((element) =>
+                                          itemSold.data[j].itemID ==
+                                          itemDetails.data[i].itemID) >=
+                                      0
+                                  ? print_widget.Table(
+                                  columnWidths: {
+                                    0: print_widget.FlexColumnWidth(1),
+                                  },
+                                  border:
+                                  print_widget.TableBorder.all(width: 1),
+                                children: [
+                                  print_widget.TableRow(
+                                    verticalAlignment: print_widget.TableCellVerticalAlignment.middle,
+                                    children: [
+                                      print_widget.Center(
+                                        child: tableRow(text: (itemSold.data
+                                        [j]
+                                            .itemRecordsInfo["itemCount"]).toString())
+                                      )
+                                    ]
+                                  )
+                                ]
+                              )
+                                  : print_widget.Container();
+                            },
+                          ) : print_widget.Container(),
+                          itemSold != null ? print_widget.ListView.builder(
+                            itemCount: itemSold.data.length,
+                            itemBuilder: (context, j) {
+                              return itemSold.data.indexWhere((element) =>
+                              itemSold.data[j].itemID ==
+                                  itemDetails.data[i].itemID) >=
+                                  0
+                                  ? print_widget.Table(
+                                  columnWidths: {
+                                    0: print_widget.FlexColumnWidth(1),
+                                  },
+                                  border:
+                                  print_widget.TableBorder.all(width: 1),
+                                  children: [
+                                    print_widget.TableRow(
+                                        verticalAlignment: print_widget.TableCellVerticalAlignment.middle,
+                                        children: [
+                                          print_widget.Center(
+                                              child: tableRow(text: (itemSold.data
+                                              [j]
+                                                  .itemRecordsInfo["itemTotalAmount"]).toString())
+                                          )
+                                        ]
+                                    )
+                                  ]
+                              )
+                                  : print_widget.Container();
+                            },
+                          ) : print_widget.Container(),
                         ]),
                       ]);
                 },
@@ -173,11 +280,16 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
                   children: [
                     print_widget.TableRow(children: [
                       headlineRow(
-                          text:
-                              "Total Amount Sold: PHP ${totalAmount.toString()}"),
+                          text: "Date Printed: ${_baseUtils.currentDate()}"),
                       headlineRow(
                           text:
-                              "Total Value Stock IN Hand: ${userDetails.data.userName}"),
+                              "User Account Name: ${userDetails.data.userName}"),
+                    ]),
+                    print_widget.TableRow(children: [
+                      headlineRow(
+                          text: "Time Printed: ${_baseUtils.currentTime()}"),
+                      headlineRow(
+                          text: "Position: ${userDetails.data.position}"),
                     ]),
                   ]),
             ],

@@ -9,6 +9,7 @@ import 'package:ags_ims/core/models/user_details.dart';
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/firestore_db.dart';
 import 'package:ags_ims/services/service_locator.dart';
+import 'package:ags_ims/utils/base_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -269,7 +270,9 @@ class FireStoreDBService extends FireStoreDB {
         .doc(itemID)
         .collection("details_records");
 
-    QuerySnapshot doc = await collection.orderBy("itemRecordsInfo.recordID", descending: true).get();
+    QuerySnapshot doc = await collection
+        .orderBy("itemRecordsInfo.recordID", descending: true)
+        .get();
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => ItemRecords.fromJson(snapshot.data()))
@@ -312,7 +315,9 @@ class FireStoreDBService extends FireStoreDB {
         .doc(itemID)
         .collection("stock_out_records");
 
-    QuerySnapshot doc = await collection.orderBy("itemRecordsInfo.recordID", descending: true).get();
+    QuerySnapshot doc = await collection
+        .orderBy("itemRecordsInfo.recordID", descending: true)
+        .get();
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => ItemRecords.fromJson(snapshot.data()))
@@ -355,7 +360,9 @@ class FireStoreDBService extends FireStoreDB {
         .doc(itemID)
         .collection("re_stock_records");
 
-    QuerySnapshot doc = await collection.orderBy("itemRecordsInfo.recordID", descending: true).get();
+    QuerySnapshot doc = await collection
+        .orderBy("itemRecordsInfo.recordID", descending: true)
+        .get();
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => ItemRecords.fromJson(snapshot.data()))
@@ -378,13 +385,13 @@ class FireStoreDBService extends FireStoreDB {
 
       snapshot.exists
           ? transaction.update(
-        docRef,
-        itemRecords.toJson(),
-      )
+              docRef,
+              itemRecords.toJson(),
+            )
           : transaction.set(
-        docRef,
-        itemRecords.toJson(),
-      );
+              docRef,
+              itemRecords.toJson(),
+            );
     }).whenComplete(() {
       print("FireStore Status: Success");
     });
@@ -393,12 +400,12 @@ class FireStoreDBService extends FireStoreDB {
   @override
   Future<List<ItemRecords>> getItemSoldRecords(
       {@required String itemID}) async {
-    final CollectionReference collection = _fireStoreDB
-        .collection("items")
-        .doc(itemID)
-        .collection("sold_records");
+    final CollectionReference collection =
+        _fireStoreDB.collection("items").doc(itemID).collection("sold_records");
 
-    QuerySnapshot doc = await collection.orderBy("itemRecordsInfo.recordID", descending: true).get();
+    QuerySnapshot doc = await collection
+        .orderBy("itemRecordsInfo.recordID", descending: true)
+        .get();
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => ItemRecords.fromJson(snapshot.data()))
@@ -406,8 +413,7 @@ class FireStoreDBService extends FireStoreDB {
   }
 
   @override
-  Future<void> setItemSoldRecords(
-      {@required ItemRecords itemRecords}) async {
+  Future<void> setItemSoldRecords({@required ItemRecords itemRecords}) async {
     final docRef = _fireStoreDB
         .collection("items")
         .doc(itemRecords.itemID)
@@ -421,24 +427,33 @@ class FireStoreDBService extends FireStoreDB {
 
       snapshot.exists
           ? transaction.update(
-        docRef,
-        itemRecords.toJson(),
-      )
+              docRef,
+              itemRecords.toJson(),
+            )
           : transaction.set(
-        docRef,
-        itemRecords.toJson(),
-      );
+              docRef,
+              itemRecords.toJson(),
+            );
     }).whenComplete(() {
       print("FireStore Status: Success");
     });
   }
 
   @override
-  Future<List<ItemSold>> getItemSold() async {
-    final CollectionReference collection = _fireStoreDB
-        .collection("sold");
+  Future<List<ItemSold>> getItemSold({@required collectiveTerm}) async {
+    final CollectionReference collection = _fireStoreDB.collection("sold");
 
-    QuerySnapshot doc = await collection.get();
+    QuerySnapshot doc = await collection
+        .where("itemRecordsInfo.date.month",
+            isEqualTo:
+                collectiveTerm == "daily" ? BaseUtils().currentMonth() : null)
+        .where("itemRecordsInfo.date.day",
+            isEqualTo:
+                collectiveTerm == "daily" ? BaseUtils().currentDay() : null)
+        .where("itemRecordsInfo.date.year",
+            isEqualTo:
+                collectiveTerm == "daily" ? BaseUtils().currentYear() : null)
+        .get();
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => ItemSold.fromJson(snapshot.data()))
@@ -446,11 +461,9 @@ class FireStoreDBService extends FireStoreDB {
   }
 
   @override
-  Future<void> setItemSold(
-      {@required ItemSold itemSold}) async {
-    final docRef = _fireStoreDB
-        .collection("sold")
-        .doc(itemSold.itemID);
+  Future<void> setItemSold({@required ItemSold itemSold}) async {
+    final docRef =
+        _fireStoreDB.collection("sold").doc(itemSold.itemRecordsInfo['soldID']);
 
     _fireStoreDB.runTransaction<void>((transaction) async {
       var snapshot = await transaction.get<Map<String, dynamic>>(
@@ -459,13 +472,13 @@ class FireStoreDBService extends FireStoreDB {
 
       snapshot.exists
           ? transaction.update(
-        docRef,
-        itemSold.toJson(),
-      )
+              docRef,
+              itemSold.toJson(),
+            )
           : transaction.set(
-        docRef,
-        itemSold.toJson(),
-      );
+              docRef,
+              itemSold.toJson(),
+            );
     }).whenComplete(() {
       print("FireStore Status: Success");
     });

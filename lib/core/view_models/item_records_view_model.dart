@@ -2,6 +2,7 @@
 
 import 'package:ags_ims/core/enums/history_types.dart';
 import 'package:ags_ims/core/enums/record_types.dart';
+import 'package:ags_ims/core/models/date.dart';
 import 'package:ags_ims/core/models/history.dart';
 import 'package:ags_ims/core/models/history_info.dart';
 import 'package:ags_ims/core/models/item_records.dart';
@@ -113,7 +114,7 @@ class ItemRecordsViewModel {
       String itemName,
       int itemPrice,
       int totalAmount}) async {
-    final recordID = _baseUtils.timeStamp();
+    final soldID = _baseUtils.timeStamp();
 
     String date = _baseUtils.currentDate();
     String time = _baseUtils.currentTime();
@@ -130,10 +131,14 @@ class ItemRecordsViewModel {
         userID: userID,
         itemID: itemID,
         itemRecordsInfo: ItemSoldInfo(
-          recordID: recordID,
+          soldID: soldID,
           description: description,
-          date: date,
-          time: time,
+          date: Date(
+            time: time,
+            month: _baseUtils.currentMonth(),
+            day: _baseUtils.currentDay(),
+            year: _baseUtils.currentYear(),
+          ).toJson(),
           type: recordsType.toString().split('.').last,
           itemName: itemName,
           itemCount: itemCount,
@@ -143,7 +148,7 @@ class ItemRecordsViewModel {
       );
 
       _fireStoreDB.setItemSold(itemSold: itemSold).whenComplete(() {
-        print("RECORDS SUCCESSFULLY ADDED");
+        print("SOLD SUCCESSFULLY ADDED");
       });
     });
   }
