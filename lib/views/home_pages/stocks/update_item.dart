@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new, sized_box_for_whitespace
 
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:ags_ims/core/enums/record_types.dart';
 import 'package:ags_ims/core/models/item_details.dart';

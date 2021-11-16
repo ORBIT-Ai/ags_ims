@@ -1,7 +1,6 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors, avoid_print
 
 import 'dart:io';
-import 'dart:html' as html;
 import 'dart:typed_data';
 
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
@@ -9,12 +8,12 @@ import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:ags_ims/views/login_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_picker_web/image_picker_web.dart';
 import 'package:intl/intl.dart';
 import 'package:photofilters/filters/preset_filters.dart';
 import 'package:photofilters/widgets/photo_filter.dart';
@@ -214,6 +213,7 @@ class BaseUtils {
     return croppedFile;
   }
 
+  /*
   Future<html.File> imageProcessorWeb(
       {@required BuildContext context,
         @required double ratioY,
@@ -229,6 +229,7 @@ class BaseUtils {
 
     return imageFile;
   }
+   */
 
   bool isPortrait(BuildContext context) {
     bool portrait;

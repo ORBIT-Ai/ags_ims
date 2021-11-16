@@ -72,6 +72,7 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                             child: Image.network(
                               itemDetails.data.itemImage,
                               filterQuality: FilterQuality.high,
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),

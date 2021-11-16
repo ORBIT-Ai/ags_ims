@@ -1,0 +1,23 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "sold",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "itemRecordsInfo.date.month",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "itemRecordsInfo.date.day",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "itemRecordsInfo.date.year",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
