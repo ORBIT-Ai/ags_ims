@@ -1,3 +1,4 @@
+import 'package:ags_ims/core/models/employee_id.dart';
 import 'package:ags_ims/core/models/images.dart';
 import 'package:ags_ims/core/models/item_details.dart';
 import 'package:ags_ims/core/models/history.dart';
@@ -7,6 +8,10 @@ import 'package:ags_ims/core/models/user_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class FireStoreDB {
+
+  //Get All Employee ID
+  Future<List<EmployeeID>> getEmployeeID();
+
   //Get User Details
   Future<UserDetails> getUserDetails({String userID});
 

@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:ags_ims/core/models/employee_id.dart';
 import 'package:ags_ims/core/models/images.dart';
 import 'package:ags_ims/core/models/item_details.dart';
 import 'package:ags_ims/core/models/history.dart';
@@ -16,6 +17,18 @@ import 'package:flutter/material.dart';
 class FireStoreDBService extends FireStoreDB {
   final _fireStoreDB = FirebaseFirestore.instance;
   final _auth = locator<Auth>();
+
+  @override
+  Future<List<EmployeeID>> getEmployeeID() async {
+    CollectionReference collection = _fireStoreDB.collection("employee_id");
+
+    QuerySnapshot doc =
+    await collection.get();
+    //print(doc.docs.length);
+    return doc.docs
+        .map((snapshot) => EmployeeID.fromJson(snapshot.data()))
+        .toList();
+  }
 
   @override
   Future<UserDetails> getUserDetails({@required String userID}) {
