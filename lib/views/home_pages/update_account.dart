@@ -179,9 +179,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
         width: isDesktop
             ? MediaQuery.of(context).size.width / 4.2
             : MediaQuery.of(context).size.width,
-        height: isDesktop
-            ? MediaQuery.of(context).size.height
-            : null,
+        height: isDesktop ? MediaQuery.of(context).size.height : null,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -201,67 +199,74 @@ class _UpdateAccountState extends State<UpdateAccount> {
             SizedBox(
               height: 30,
             ),
-            !kIsWeb ? Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  child: Container(
-                    width: 86,
-                    height: 86,
-                    child: CircleAvatar(
-                      backgroundColor: Theme.of(context).primaryColorLight,
-                      child: ClipOval(
-                        child: widget.userDetails.data.profileUrl == null &&
-                                imageFile == null
-                            ? Container(
-                                height: 86,
-                                width: 86,
-                                child: Icon(
-                                  Icons.person,
-                                  size: 48,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              )
-                            : widget.userDetails.data.profileUrl != null
-                                ? Image.network(
-                                    widget.userDetails.data.profileUrl,
-                                    height: 86,
-                                    width: 86,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Image.file(
-                                    imageFile,
-                                    height: 86,
-                                    width: 86,
-                                    fit: BoxFit.cover,
-                                  ),
+            !kIsWeb
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        child: Container(
+                          width: 86,
+                          height: 86,
+                          child: CircleAvatar(
+                            backgroundColor:
+                                Theme.of(context).primaryColorLight,
+                            child: ClipOval(
+                              child: widget.userDetails.data.profileUrl ==
+                                          null &&
+                                      imageFile == null
+                                  ? Container(
+                                      height: 86,
+                                      width: 86,
+                                      child: Icon(
+                                        Icons.person,
+                                        size: 48,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
+                                    )
+                                  : widget.userDetails.data.profileUrl != null
+                                      ? Image.network(
+                                          widget.userDetails.data.profileUrl,
+                                          height: 86,
+                                          width: 86,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image.file(
+                                          imageFile,
+                                          height: 86,
+                                          width: 86,
+                                          fit: BoxFit.cover,
+                                        ),
+                            ),
+                            radius: 100,
+                          ),
+                        ),
                       ),
-                      radius: 100,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                Expanded(
-                    child: _ui.outlinedButtonIcon(
-                  context: context,
-                  label: "Change Photo",
-                  backgroundColor: Theme.of(context).colorScheme.background,
-                  foregroundColor: Theme.of(context).colorScheme.primary,
-                  icon: Icons.photo_rounded,
-                  function: () async {
-                    imageFile = await _baseUtils.imageProcessor(
-                        context: context, ratioY: 4, ratioX: 4);
-                    setState(() {
-                      _baseUtils.snackBarNoProgress(
-                          context: context, content: "Image Loaded");
-                    });
-                  },
-                ))
-              ],
-            ) : Container(),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Expanded(
+                          child: _ui.outlinedButtonIcon(
+                        context: context,
+                        label: "Change Photo",
+                        backgroundColor:
+                            Theme.of(context).colorScheme.background,
+                        foregroundColor: Theme.of(context).colorScheme.primary,
+                        icon: Icons.photo_rounded,
+                        function: () async {
+                          imageFile = await _baseUtils.imageProcessor(
+                              context: context, ratioY: 4, ratioX: 4);
+                          setState(() {
+                            _baseUtils.snackBarNoProgress(
+                                context: context, content: "Image Loaded");
+                          });
+                        },
+                      ))
+                    ],
+                  )
+                : Container(),
           ],
         ),
       ),
@@ -339,12 +344,14 @@ class _UpdateAccountState extends State<UpdateAccount> {
               ],
             ),
             _ui.textFormField(
-                context: context,
-                controller: idNumberInputController,
-                keyboardType: TextInputType.text,
-                label: "ID Number",
-                icon: Icons.person_pin_rounded,
-                color: null),
+              context: context,
+              controller: idNumberInputController,
+              keyboardType: TextInputType.text,
+              label: "ID Number",
+              icon: Icons.person_pin_rounded,
+              color: Theme.of(context).disabledColor,
+              enabled: false,
+            ),
             SizedBox(
               height: isDesktop ? 30 : 40,
             ),

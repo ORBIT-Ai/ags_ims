@@ -44,7 +44,7 @@ class _AboutPageState extends State<AboutPage> {
             left: isDesktop ? 20 : 0,
             right: isDesktop ? 20 : 0,
             top: isDesktop ? 20 : 0,
-            bottom: isDesktop ? 20 : 0),
+            bottom: isDesktop ? 20 : 20),
         child: isDesktop || isMobile || isTablet
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
