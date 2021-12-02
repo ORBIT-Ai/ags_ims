@@ -1,7 +1,8 @@
-// ignore_for_file: unnecessary_new, sized_box_for_whitespace, prefer_const_constructors
+// ignore_for_file: unnecessary_new, sized_box_for_whitespace, prefer_const_constructors, avoid_print
 
 import 'dart:io';
 
+import 'package:ags_ims/core/view_models/employee_id_view_model.dart';
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/firestore_db_service.dart';
@@ -26,6 +27,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _baseUtils = locator<BaseUtils>();
   final _fireStoreDB = locator<FireStoreDBService>();
   final _userProfile = locator<UserProfileViewModel>();
+  final _employeeIDViewModel = locator<EmployeeIDViewModel>();
 
   TextEditingController emailInputController;
   TextEditingController fullNameInputController;
@@ -57,6 +59,7 @@ class _SignUpPageState extends State<SignUpPage> {
     idNumberInputController = new TextEditingController();
     pwdInputController = new TextEditingController();
     pwdConfInputController = new TextEditingController();
+
     super.initState();
   }
 
@@ -391,36 +394,67 @@ class _SignUpPageState extends State<SignUpPage> {
                   icon: Icons.person_add_outlined,
                   function: () {
                     if (_signUpFormKey.currentState.validate()) {
-                      if (pwdInputController.text ==
-                          pwdConfInputController.text) {
-                        _baseUtils.snackBarProgress(
-                            context: context, content: "Signing Up");
-                        _auth
-                            .signUpWithEmailPassword(
-                          email: emailInputController.text,
-                          password: pwdInputController.text,
-                        )
-                            .then((value) {
-                          if (value.user != null) {
-                            _userProfile.setUserInfo(
-                              context: context,
-                              userID: value.user.uid,
-                              email: value.user.email,
-                              phoneNumber: phoneNumberInputController.text,
-                              position: positionInputController.text,
-                              userName: fullNameInputController.text,
-                              idNumber: idNumberInputController.text,
-                              imageFile: imageFile,
-                            );
-                            setState(() {
-                              signingUp == true;
-                            });
+                      _employeeIDViewModel
+                          .isEmployeeIDValid(employeeID: idNumberInputController.text)
+                          .then((isValid) {
+                        _employeeIDViewModel
+                            .isEmployeeIDExists(employeeID: idNumberInputController.text)
+                            .then((isExist) {
+                          print("EMPLOYEE ID VALIDITY: $isValid");
+                          print("EMPLOYEE ID EXIST: $isExist");
+
+                          if (pwdInputController.text ==
+                              pwdConfInputController.text) {
+                            if (isValid && !isExist) {
+                              _baseUtils.snackBarProgress(
+                                  context: context, content: "Signing Up");
+                              _auth
+                                  .signUpWithEmailPassword(
+                                context: context,
+                                email: emailInputController.text,
+                                password: pwdInputController.text,
+                              )
+                                  .then((value) {
+                                if(value != null){
+                                  if (value.user != null) {
+                                    _userProfile.setUserInfo(
+                                      context: context,
+                                      userID: value.user.uid,
+                                      email: value.user.email,
+                                      phoneNumber:
+                                      phoneNumberInputController.text,
+                                      position: positionInputController.text,
+                                      userName: fullNameInputController.text,
+                                      idNumber: idNumberInputController.text,
+                                      imageFile: imageFile,
+                                    );
+                                    setState(() {
+                                      signingUp == true;
+                                    });
+                                  }
+                                }
+                              });
+                            } else if (!isValid) {
+                              _baseUtils.snackBarError(
+                                  context: context,
+                                  content: "ID Number is not valid");
+                            } else if (isExist) {
+                              _baseUtils.snackBarError(
+                                  context: context,
+                                  content:
+                                      "Other employee uses this ID Number");
+                            } else {
+                              _baseUtils.snackBarError(
+                                  context: context,
+                                  content: "Check your ID Number");
+                            }
+                          } else {
+                            _baseUtils.snackBarError(
+                                context: context,
+                                content: "Check your password");
                           }
                         });
-                      } else {
-                        _baseUtils.snackBarError(
-                            context: context, content: "Check your password");
-                      }
+                      });
                     } else {
                       _baseUtils.snackBarError(
                           context: context, content: "Enter valid credentials");

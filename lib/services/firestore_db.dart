@@ -12,6 +12,9 @@ abstract class FireStoreDB {
   //Get All Employee ID
   Future<List<EmployeeID>> getEmployeeID();
 
+  //Get All Users
+  Future<List<UserDetails>> getUsers();
+
   //Get User Details
   Future<UserDetails> getUserDetails({String userID});
 

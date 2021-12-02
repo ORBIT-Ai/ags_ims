@@ -74,13 +74,17 @@ class Auth {
   }
 
   Future<UserCredential> signUpWithEmailPassword(
-      {@required String email, @required String password}) {
+      {@required BuildContext context,
+      @required String email,
+      @required String password}) {
     return FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((currentUser) {
       return currentUser;
     }).catchError((e) {
-      print("ERROR SETTING UP CREDENTIALS: ${e.details}");
+      print("ERROR SETTING UP CREDENTIALS: $e");
+      BaseUtils().errorDialog(
+          context, "Unable to sign up, try using other email address.");
     });
   }
 }

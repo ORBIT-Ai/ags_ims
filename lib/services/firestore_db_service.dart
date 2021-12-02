@@ -31,6 +31,18 @@ class FireStoreDBService extends FireStoreDB {
   }
 
   @override
+  Future<List<UserDetails>> getUsers() async {
+    CollectionReference collection = _fireStoreDB.collection("users");
+
+    QuerySnapshot doc =
+    await collection.get();
+    //print(doc.docs.length);
+    return doc.docs
+        .map((snapshot) => UserDetails.fromJson(snapshot.data()))
+        .toList();
+  }
+
+  @override
   Future<UserDetails> getUserDetails({@required String userID}) {
     final DocumentReference docRef =
         _fireStoreDB.collection("users").doc(userID);
