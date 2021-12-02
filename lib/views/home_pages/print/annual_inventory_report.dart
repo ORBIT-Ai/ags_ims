@@ -42,7 +42,7 @@ class _AnnualInventoryReportState extends State<AnnualInventoryReport> {
 
   @override
   void initState() {
-    _fireStoreDB.getItemSold(collectiveTerm: "annual").then((soldValue) {
+    _fireStoreDB.getItemSold(collectiveTerm: "yearly").then((soldValue) {
       for (int i = 0; i < soldValue.length; i++) {
         if (soldValue != null) {
           setState(() {
@@ -86,7 +86,7 @@ class _AnnualInventoryReportState extends State<AnnualInventoryReport> {
                         ? Container(
                             child: FutureBuilder(
                                 future: _fireStoreDB.getItemSold(
-                                    collectiveTerm: "annual"),
+                                    collectiveTerm: "yearly"),
                                 builder: (context,
                                     AsyncSnapshot<List<ItemSold>> itemSold) {
                                   return PdfPreview(

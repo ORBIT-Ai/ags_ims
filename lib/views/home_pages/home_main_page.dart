@@ -9,6 +9,7 @@ import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:ags_ims/views/home_page.dart';
+import 'package:ags_ims/views/home_pages/about_page.dart';
 import 'package:ags_ims/views/home_pages/history_page.dart';
 import 'package:ags_ims/views/home_pages/print_page.dart';
 import 'package:ags_ims/views/home_pages/sales_page.dart';
@@ -87,7 +88,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
       GridView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: 4,
+        itemCount: 5,
         itemBuilder: (context, i) {
           final icon = i == 0
               ? Icons.archive_rounded
@@ -99,7 +100,9 @@ class _HomeMainPageState extends State<HomeMainPage> {
                           : Icons.camera_rounded
                       : i == 3
                           ? Icons.history_rounded
-                          : null;
+                          : isDesktop
+                              ? null
+                              : Icons.info_rounded;
 
           final title = i == 0
               ? "Stocks"
@@ -111,7 +114,9 @@ class _HomeMainPageState extends State<HomeMainPage> {
                           : "Scanner"
                       : i == 3
                           ? "History"
-                          : null;
+                          : isDesktop
+                              ? null
+                              : "About";
 
           final subhead = i == 0
               ? "Add, Update and Delete items in the stocks."
@@ -123,7 +128,9 @@ class _HomeMainPageState extends State<HomeMainPage> {
                           : "Scan barcodes from specific items and get its details."
                       : i == 3
                           ? "View recent actions made by other employees within the ecosystem."
-                          : null;
+                          : isDesktop
+                              ? null
+                              : "View information about the software.";
 
           return Card(
             margin: EdgeInsets.only(top: 10, right: 10, left: 10),
@@ -137,15 +144,23 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                 : i == 1
                                     ? SalesPage().title
                                     : i == 2
-                                        ? PrintPage().title
-                                        : HistoryPage().title,
+                                        ? isDesktop
+                                            ? PrintPage().title
+                                            : ScannerPage().title
+                                        : i == 3
+                                            ? HistoryPage().title
+                                            : AboutPage().title,
                             currentPage: i == 0
                                 ? StocksPage()
                                 : i == 1
                                     ? SalesPage()
                                     : i == 2
-                                        ? PrintPage()
-                                        : HistoryPage(),
+                                        ? isDesktop
+                                            ? PrintPage()
+                                            : ScannerPage()
+                                        : i == 3
+                                            ? HistoryPage()
+                                            : AboutPage(),
                           ))),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -39,111 +39,146 @@ class _HistoryCardState extends State<HistoryCard> {
           future: _fireStoreDB.getHistory(historyID: widget.historyID),
           builder: (context, AsyncSnapshot<History> historyDetails) {
             String historyType = "";
-            if(historyDetails.hasData){
+            if (historyDetails.hasData) {
               historyType = historyDetails.data.historyInfo['type'];
             }
 
-            return historyDetails.hasData ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  child: FutureBuilder(
-                    future: _fireStoreDB.getUserDetails(
-                        userID: historyDetails.data.userID),
-                    builder: (context,
-                        AsyncSnapshot<UserDetails> userDetails) {
-                      return Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: historyType ==
-                                HistoryTypes.newUser
-                                    .toString()
-                                    .split('.')
-                                    .last ||
-                                historyType ==
-                                    HistoryTypes.deletedUser
-                                        .toString()
-                                        .split('.')
-                                        .last
-                                ? userDetails.hasData ? Image.network(
-                              userDetails.data.profileUrl,
-                              width: widget.isDesktop ? 150 : 100,
-                              height: widget.isDesktop ? 150 : 100,
-                              filterQuality: FilterQuality.low,
-                            ) : Container()
-                                : FutureBuilder(
-                              future: _fireStoreDB.getStocksItem(
-                                  itemID: historyDetails
-                                      .data.historyInfo['tagID']),
-                              builder: (context,
-                                  AsyncSnapshot<ItemDetails> itemDetails) {
-                                return itemDetails.hasData ? Image.network(
-                                  itemDetails.data.itemImage,
-                                  width: widget.isDesktop ? 150 : 100,
-                                  height: widget.isDesktop ? 150 : 100,
-                                  filterQuality: FilterQuality.medium,
-                                ) : Container();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: widget.isDesktop ? 600 : 200,
-                                child: _ui.headlineSmall(
-                                    context: context,
-                                    content: historyDetails.data.historyInfo['description'],
-                                    color: null,
-                                    isDesktop: widget.isDesktop),
-                              ),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              widget.isDesktop ? Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: historyInfoWidgets(historyType: historyType, userDetails: userDetails, historyDetails: historyDetails),
-                              ) : Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: historyInfoWidgets(historyType: historyType, userDetails: userDetails, historyDetails: historyDetails),
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-                Divider(),
-              ],
-            ) : Container();
+            return historyDetails.hasData
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: FutureBuilder(
+                          future: _fireStoreDB.getUserDetails(
+                              userID: historyDetails.data.userID),
+                          builder: (context,
+                              AsyncSnapshot<UserDetails> userDetails) {
+                            return Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: historyType ==
+                                              HistoryTypes.newUser
+                                                  .toString()
+                                                  .split('.')
+                                                  .last ||
+                                          historyType ==
+                                              HistoryTypes.deletedUser
+                                                  .toString()
+                                                  .split('.')
+                                                  .last
+                                      ? userDetails.hasData
+                                          ? Image.network(
+                                              userDetails.data.profileUrl,
+                                              width:
+                                                  widget.isDesktop ? 150 : 100,
+                                              height:
+                                                  widget.isDesktop ? 150 : 100,
+                                              filterQuality: FilterQuality.low,
+                                            )
+                                          : Image.asset(
+                                    "assets/images/sample_profile.jpg",
+                                    width:
+                                    widget.isDesktop ? 150 : 100,
+                                    height:
+                                    widget.isDesktop ? 150 : 100,
+                                    filterQuality: FilterQuality.low,
+                                    colorBlendMode: BlendMode.modulate,
+                                    color: Colors.white,
+                                  )
+                                      : FutureBuilder(
+                                          future: _fireStoreDB.getStocksItem(
+                                              itemID: historyDetails
+                                                  .data.historyInfo['tagID']),
+                                          builder: (context,
+                                              AsyncSnapshot<ItemDetails>
+                                                  itemDetails) {
+                                            return itemDetails.hasData
+                                                ? Image.network(
+                                                    itemDetails.data.itemImage,
+                                                    width: widget.isDesktop
+                                                        ? 150
+                                                        : 100,
+                                                    height: widget.isDesktop
+                                                        ? 150
+                                                        : 100,
+                                                    filterQuality:
+                                                        FilterQuality.medium,
+                                                  )
+                                                : Container();
+                                          },
+                                        ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: widget.isDesktop ? 600 : 200,
+                                      child: _ui.headlineSmall(
+                                          context: context,
+                                          content: historyDetails
+                                              .data.historyInfo['description'],
+                                          color: null,
+                                          isDesktop: widget.isDesktop),
+                                    ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    widget.isDesktop
+                                        ? Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: historyInfoWidgets(
+                                                historyType: historyType,
+                                                userDetails: userDetails,
+                                                historyDetails: historyDetails),
+                                          )
+                                        : Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: historyInfoWidgets(
+                                                historyType: historyType,
+                                                userDetails: userDetails,
+                                                historyDetails: historyDetails),
+                                          ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                      Divider(),
+                    ],
+                  )
+                : Container();
           }),
     );
   }
 
-  List<Widget> historyInfoWidgets({@required historyType, @required AsyncSnapshot<UserDetails> userDetails, @required AsyncSnapshot<History> historyDetails}){
+  List<Widget> historyInfoWidgets(
+      {@required historyType,
+      @required AsyncSnapshot<UserDetails> userDetails,
+      @required AsyncSnapshot<History> historyDetails}) {
     return [
-      historyType ==
-          HistoryTypes.itemStockOut
-              .toString()
-              .split('.')
-              .last ? _ui.textIcon(
-        context: context,
-        content:
-        userDetails.hasData ? userDetails.data.userName : "",
-        icon: Icons.person_rounded,
-        contentColor: Colors.grey,
-        iconColor: Theme.of(context).primaryColor,
-        ratio: 'small',
-        isDesktop: widget.isDesktop,
-      ) : Container(),
+      historyType == HistoryTypes.itemStockOut.toString().split('.').last
+          ? _ui.textIcon(
+              context: context,
+              content: userDetails.hasData ? userDetails.data.userName : "",
+              icon: Icons.person_rounded,
+              contentColor: Colors.grey,
+              iconColor: Theme.of(context).primaryColor,
+              ratio: 'small',
+              isDesktop: widget.isDesktop,
+            )
+          : Container(),
       _ui.textIcon(
         context: context,
         content: historyDetails.data.historyInfo['date'],

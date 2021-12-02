@@ -179,8 +179,11 @@ class _UpdateAccountState extends State<UpdateAccount> {
         width: isDesktop
             ? MediaQuery.of(context).size.width / 4.2
             : MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        height: isDesktop
+            ? MediaQuery.of(context).size.height
+            : null,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _ui.headlineLarge(
                 context: context,
