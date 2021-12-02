@@ -319,7 +319,10 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               ListTile(
-                tileColor: _title == "Stocks"
+                tileColor: _title == "Stocks" ||
+                        _title == "Update Item" ||
+                        _title == "Records" ||
+                        _title == "Item Details"
                     ? Theme.of(context).primaryColorLight
                     : null,
                 title: Row(
@@ -327,7 +330,10 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Icon(
                       Icons.archive_rounded,
-                      color: _title == "Stocks"
+                      color: _title == "Stocks" ||
+                              _title == "Update Item" ||
+                              _title == "Records" ||
+                              _title == "Item Details"
                           ? Theme.of(context).primaryColor
                           : Colors.grey,
                     ),
@@ -337,7 +343,10 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       StocksPage().title,
                       style: TextStyle(
-                        color: _title == "Stocks"
+                        color: _title == "Stocks" ||
+                                _title == "Update Item" ||
+                                _title == "Records" ||
+                                _title == "Item Details"
                             ? Theme.of(context).primaryColor
                             : null,
                       ),
@@ -356,7 +365,9 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               ListTile(
-                tileColor: _title == "Sales"
+                tileColor: _title == "Sales" ||
+                        _title == "On Hand" ||
+                        _title == "Stock Out"
                     ? Theme.of(context).primaryColorLight
                     : null,
                 title: Row(
@@ -364,7 +375,9 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Icon(
                       Icons.shopping_bag_rounded,
-                      color: _title == "Sales"
+                      color: _title == "Sales" ||
+                              _title == "On Hand" ||
+                              _title == "Stock Out"
                           ? Theme.of(context).primaryColor
                           : Colors.grey,
                     ),
@@ -374,7 +387,9 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       SalesPage().title,
                       style: TextStyle(
-                        color: _title == "Sales"
+                        color: _title == "Sales" ||
+                                _title == "On Hand" ||
+                                _title == "Stock Out"
                             ? Theme.of(context).primaryColor
                             : null,
                       ),
@@ -432,7 +447,11 @@ class _HomePageState extends State<HomePage> {
                     )
                   : Container(),
               ListTile(
-                tileColor: _title == "Print"
+                tileColor: _title == "Print" ||
+                        _title == "Daily Report" ||
+                        _title == "Weekly Report" ||
+                        _title == "Monthly Report" ||
+                        _title == "Annual Report"
                     ? Theme.of(context).primaryColorLight
                     : null,
                 title: Row(
@@ -440,7 +459,11 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Icon(
                       Icons.print_rounded,
-                      color: _title == "Print"
+                      color: _title == "Print" ||
+                              _title == "Daily Report" ||
+                              _title == "Weekly Report" ||
+                              _title == "Monthly Report" ||
+                              _title == "Annual Report"
                           ? Theme.of(context).primaryColor
                           : Colors.grey,
                     ),
@@ -450,7 +473,11 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       PrintPage().title,
                       style: TextStyle(
-                        color: _title == "Print"
+                        color: _title == "Print" ||
+                                _title == "Daily Report" ||
+                                _title == "Weekly Report" ||
+                                _title == "Monthly Report" ||
+                                _title == "Annual Report"
                             ? Theme.of(context).primaryColor
                             : null,
                       ),
@@ -542,43 +569,45 @@ class _HomePageState extends State<HomePage> {
                   });
                 },
               ),
-              ListTile(
-                tileColor: _title == "About"
-                    ? Theme.of(context).primaryColorLight
-                    : null,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.info,
-                      color: _title == "About"
-                          ? Theme.of(context).primaryColor
-                          : Colors.grey,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      AboutPage().title,
-                      style: TextStyle(
-                        color: _title == "About"
-                            ? Theme.of(context).primaryColor
-                            : null,
+              isDesktop
+                  ? ListTile(
+                      tileColor: _title == "About"
+                          ? Theme.of(context).primaryColorLight
+                          : null,
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.info,
+                            color: _title == "About"
+                                ? Theme.of(context).primaryColor
+                                : Colors.grey,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            AboutPage().title,
+                            style: TextStyle(
+                              color: _title == "About"
+                                  ? Theme.of(context).primaryColor
+                                  : null,
+                            ),
+                          )
+                        ],
                       ),
+                      onTap: () {
+                        setState(() {
+                          _currentPage = AboutPage();
+                          _title = AboutPage().title;
+                          _appBarIcon = Icons.info_rounded;
+                          _deviceType == "desktop"
+                              ? Container()
+                              : Navigator.pop(context);
+                        });
+                      },
                     )
-                  ],
-                ),
-                onTap: () {
-                  setState(() {
-                    _currentPage = AboutPage();
-                    _title = AboutPage().title;
-                    _appBarIcon = Icons.info_rounded;
-                    _deviceType == "desktop"
-                        ? Container()
-                        : Navigator.pop(context);
-                  });
-                },
-              ),
+                  : Container(),
             ],
           ),
           Positioned(
