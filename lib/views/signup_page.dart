@@ -394,67 +394,54 @@ class _SignUpPageState extends State<SignUpPage> {
                   icon: Icons.person_add_outlined,
                   function: () {
                     if (_signUpFormKey.currentState.validate()) {
-                      _employeeIDViewModel
-                          .isEmployeeIDValid(employeeID: idNumberInputController.text)
-                          .then((isValid) {
+                      if (pwdInputController.text ==
+                          pwdConfInputController.text) {
                         _employeeIDViewModel
-                            .isEmployeeIDExists(employeeID: idNumberInputController.text)
-                            .then((isExist) {
-                          print("EMPLOYEE ID VALIDITY: $isValid");
-                          print("EMPLOYEE ID EXIST: $isExist");
-
-                          if (pwdInputController.text ==
-                              pwdConfInputController.text) {
-                            if (isValid && !isExist) {
-                              _baseUtils.snackBarProgress(
-                                  context: context, content: "Signing Up");
-                              _auth
-                                  .signUpWithEmailPassword(
+                            .isEmployeeIDAvailable(
                                 context: context,
-                                email: emailInputController.text,
-                                password: pwdInputController.text,
-                              )
-                                  .then((value) {
-                                if(value != null){
-                                  if (value.user != null) {
-                                    _userProfile.setUserInfo(
-                                      context: context,
-                                      userID: value.user.uid,
-                                      email: value.user.email,
-                                      phoneNumber:
-                                      phoneNumberInputController.text,
-                                      position: positionInputController.text,
-                                      userName: fullNameInputController.text,
-                                      idNumber: idNumberInputController.text,
-                                      imageFile: imageFile,
-                                    );
-                                    setState(() {
-                                      signingUp == true;
-                                    });
-                                  }
+                                employeeID: idNumberInputController.text)
+                            .then((isAvailable) {
+                          print("EMPLOYEE ID AVAILABILITY: $isAvailable");
+
+                          if (isAvailable) {
+                            _baseUtils.snackBarProgress(
+                                context: context, content: "Signing Up");
+                            _auth
+                                .signUpWithEmailPassword(
+                              context: context,
+                              email: emailInputController.text,
+                              password: pwdInputController.text,
+                            )
+                                .then((value) {
+                              if (value != null) {
+                                if (value.user != null) {
+                                  _userProfile.setUserInfo(
+                                    context: context,
+                                    userID: value.user.uid,
+                                    email: value.user.email,
+                                    phoneNumber:
+                                        phoneNumberInputController.text,
+                                    position: positionInputController.text,
+                                    userName: fullNameInputController.text,
+                                    idNumber: idNumberInputController.text,
+                                    imageFile: imageFile,
+                                  );
+                                  setState(() {
+                                    signingUp == true;
+                                  });
                                 }
-                              });
-                            } else if (!isValid) {
-                              _baseUtils.snackBarError(
-                                  context: context,
-                                  content: "ID Number is not valid");
-                            } else if (isExist) {
-                              _baseUtils.snackBarError(
-                                  context: context,
-                                  content:
-                                      "Other employee uses this ID Number");
-                            } else {
-                              _baseUtils.snackBarError(
-                                  context: context,
-                                  content: "Check your ID Number");
-                            }
+                              }
+                            });
                           } else {
                             _baseUtils.snackBarError(
                                 context: context,
-                                content: "Check your password");
+                                content: "Check your ID Number");
                           }
                         });
-                      });
+                      } else {
+                        _baseUtils.snackBarError(
+                            context: context, content: "Check your password");
+                      }
                     } else {
                       _baseUtils.snackBarError(
                           context: context, content: "Enter valid credentials");

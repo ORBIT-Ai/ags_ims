@@ -8,6 +8,7 @@ import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:ags_ims/views/home_page.dart';
 import 'package:ags_ims/views/home_pages/print/annual_inventory_report.dart';
+import 'package:ags_ims/views/home_pages/print/barcode_print.dart';
 import 'package:ags_ims/views/home_pages/print/daily_inventory_report.dart';
 import 'package:ags_ims/views/home_pages/print/monthly_inventory_report.dart';
 import 'package:ags_ims/views/home_pages/print/weekly_inventory_report.dart';
