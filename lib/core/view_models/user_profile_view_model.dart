@@ -71,6 +71,8 @@ class UserProfileViewModel {
           });
         });
          */
+      }).whenComplete(() {
+        _notificationsViewModel.newHistory(userID: userID, historyType: HistoryTypes.newUser);
       });
     });
   }
