@@ -64,13 +64,13 @@ class EmployeeIDViewModel {
             _baseUtils.snackBarError(
                 context: context, content: "ID Number is not available");
           }
-        }).whenComplete(() {
-          if (FirebaseAuth.instance.currentUser != null) {
-            FirebaseAuth.instance.currentUser
-                .delete()
-                .whenComplete(() => FirebaseAuth.instance.signOut());
-          }
         });
+      }).whenComplete(() {
+        if (FirebaseAuth.instance.currentUser != null) {
+          FirebaseAuth.instance.currentUser
+              .delete()
+              .whenComplete(() => FirebaseAuth.instance.signOut());
+        }
       });
     });
 
