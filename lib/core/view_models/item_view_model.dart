@@ -30,7 +30,7 @@ class ItemViewModel {
     @required File itemImage,
     @required File itemBarcodeImage,
     @required String itemCode,
-    @required int itemPrice,
+    @required double itemPrice,
     @required int itemCount,
   }) async {
     _cloudStorage
@@ -81,7 +81,7 @@ class ItemViewModel {
     String itemImage,
     @required String itemBarcodeImage,
     @required String itemCode,
-    @required int itemPrice,
+    @required double itemPrice,
     @required int itemCount,
   }) async {
     if(newItemImage != null){
@@ -160,7 +160,7 @@ class ItemViewModel {
     String itemImage,
     @required String itemBarcodeImage,
     @required String itemCode,
-    @required int itemPrice,
+    @required double itemPrice,
     @required int itemCount,
   }) async {
     ItemDetails itemDetails = ItemDetails(
@@ -193,7 +193,7 @@ class ItemViewModel {
     @required String itemImage,
     @required String itemBarcodeImage,
     @required String itemCode,
-    @required int itemPrice,
+    @required double itemPrice,
     @required int itemCount,
   }) async {
     ItemDetails itemDetails = ItemDetails(

@@ -108,7 +108,7 @@ class _AddItemState extends State<AddItem> {
                         itemID: itemID,
                         itemName:
                             itemNameInputController.text.toString().trim(),
-                        itemPrice: int.parse(
+                        itemPrice: double.parse(
                             itemPriceInputController.text.toString().trim()),
                         itemImage: itemImage,
                         itemBarcodeImage: barCodeImage,

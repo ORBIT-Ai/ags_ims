@@ -137,7 +137,7 @@ class _UpdateItemState extends State<UpdateItem> {
                                 itemName: itemNameInputController.text
                                     .toString()
                                     .trim(),
-                                itemPrice: int.parse(itemPriceInputController
+                                itemPrice: double.parse(itemPriceInputController
                                     .text
                                     .toString()
                                     .trim()),

@@ -249,10 +249,9 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                                           totalItemCount: itemCount,
                                           itemPrice:
                                               widget.itemDetails.data.itemPrice,
-                                          totalAmount:
-                                              int.parse(targetItemCount.text) *
-                                                  widget.itemDetails.data
-                                                      .itemPrice,
+                                          totalAmount: double.parse(
+                                                  targetItemCount.text) *
+                                              widget.itemDetails.data.itemPrice,
                                         );
                                         _itemViewModel
                                             .updateItemCount(
