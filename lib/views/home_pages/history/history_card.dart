@@ -76,17 +76,44 @@ class _HistoryCardState extends State<HistoryCard> {
                                               height:
                                                   widget.isDesktop ? 150 : 100,
                                               filterQuality: FilterQuality.low,
+                                              errorBuilder:
+                                                  (BuildContext context,
+                                                      Object exception,
+                                                      StackTrace stackTrace) {
+                                                return Container(
+                                                  width: widget.isDesktop
+                                                      ? 150
+                                                      : 100,
+                                                  height: widget.isDesktop
+                                                      ? 150
+                                                      : 100,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
+                                                  child: Icon(
+                                                    Icons
+                                                        .image_not_supported_rounded,
+                                                    size: 18,
+                                                    color: Theme.of(context)
+                                                        .primaryColorDark,
+                                                  ),
+                                                );
+                                              },
                                             )
-                                          : Image.asset(
-                                    "assets/images/sample_profile.jpg",
-                                    width:
-                                    widget.isDesktop ? 150 : 100,
-                                    height:
-                                    widget.isDesktop ? 150 : 100,
-                                    filterQuality: FilterQuality.low,
-                                    colorBlendMode: BlendMode.modulate,
-                                    color: Colors.white,
-                                  )
+                                          : Container(
+                                              width:
+                                                  widget.isDesktop ? 150 : 100,
+                                              height:
+                                                  widget.isDesktop ? 150 : 100,
+                                              color: Theme.of(context)
+                                                  .primaryColorLight,
+                                              child: Icon(
+                                                Icons
+                                                    .image_not_supported_rounded,
+                                                size: 18,
+                                                color: Theme.of(context)
+                                                    .primaryColorDark,
+                                              ),
+                                            )
                                       : FutureBuilder(
                                           future: _fireStoreDB.getStocksItem(
                                               itemID: historyDetails
@@ -105,8 +132,46 @@ class _HistoryCardState extends State<HistoryCard> {
                                                         : 100,
                                                     filterQuality:
                                                         FilterQuality.medium,
+                                                    errorBuilder: (BuildContext
+                                                            context,
+                                                        Object exception,
+                                                        StackTrace stackTrace) {
+                                                      return Container(
+                                                        width: widget.isDesktop
+                                                            ? 150
+                                                            : 100,
+                                                        height: widget.isDesktop
+                                                            ? 150
+                                                            : 100,
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight,
+                                                        child: Icon(
+                                                          Icons
+                                                              .image_not_supported_rounded,
+                                                          size: 18,
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColorDark,
+                                                        ),
+                                                      );
+                                                    },
                                                   )
-                                                : Container();
+                                                : Container(
+                                                    width: widget.isDesktop
+                                                        ? 150
+                                                        : 100,
+                                                    height: widget.isDesktop
+                                                        ? 150
+                                                        : 100,
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight,
+                                                    child: Icon(
+                                                      Icons.image_rounded,
+                                                      size: 18,
+                                                      color: Theme.of(context)
+                                                          .primaryColorDark,
+                                                    ),
+                                                  );
                                           },
                                         ),
                                 ),
