@@ -261,21 +261,48 @@ class _UpdateItemState extends State<UpdateItem> {
           SizedBox(
             height: 15,
           ),
-          _ui.outlinedButtonIcon(
-            context: context,
-            label: "Change Image",
-            backgroundColor: Theme.of(context).colorScheme.background,
-            foregroundColor: Theme.of(context).colorScheme.primary,
-            icon: Icons.photo_rounded,
-            function: () async {
-              itemImage = await _baseUtils.imageProcessor(
-                  context: context, ratioY: 4, ratioX: 4);
-              setState(() {
-                isItemImageChanged = true;
-                _baseUtils.snackBarNoProgress(
-                    context: context, content: "Image Loaded");
-              });
-            },
+          Row(
+            children: [
+              Expanded(
+                child: _ui.outlinedButtonIcon(
+                  context: context,
+                  label: itemImage != null ? "Change Image" : "Add Item Image",
+                  backgroundColor: Theme.of(context).colorScheme.background,
+                  foregroundColor: Theme.of(context).colorScheme.primary,
+                  icon: Icons.photo_rounded,
+                  function: () async {
+                    itemImage = await _baseUtils.imageProcessor(
+                        context: context, ratioY: 4, ratioX: 4);
+                    setState(() {
+                      isItemImageChanged = true;
+                      _baseUtils.snackBarNoProgress(
+                          context: context, content: "Image Loaded");
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                width: 15,
+              ),
+              Expanded(
+                child: _ui.outlinedButtonIcon(
+                  context: context,
+                  label: itemImage != null ? "Change Image" : "Capture Item Image",
+                  backgroundColor: Theme.of(context).colorScheme.background,
+                  foregroundColor: Theme.of(context).colorScheme.primary,
+                  icon: Icons.camera_rounded,
+                  function: () async {
+                    itemImage = await _baseUtils.imageProcessorCamera(
+                        context: context, ratioY: 4, ratioX: 4);
+                    setState(() {
+                      isItemImageChanged = true;
+                      _baseUtils.snackBarNoProgress(
+                          context: context, content: "Image Loaded");
+                    });
+                  },
+                ),
+              ),
+            ],
           ),
         ],
       ),

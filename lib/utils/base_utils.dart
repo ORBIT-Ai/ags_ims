@@ -184,7 +184,42 @@ class BaseUtils {
       @required double ratioX}) async {
     final ImagePicker _picker = ImagePicker();
     XFile pickedMedia =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 90);
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
+
+    File imageFile;
+    imageFile = File(pickedMedia.path);
+
+    File croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageFile.path,
+        aspectRatio: CropAspectRatio(ratioY: ratioY, ratioX: ratioX),
+        maxWidth: 500,
+        maxHeight: 500,
+        compressQuality: 100,
+        androidUiSettings: AndroidUiSettings(
+          toolbarColor: Theme.of(context).primaryColor,
+          statusBarColor: Theme.of(context).primaryColorDark,
+          toolbarWidgetColor: Theme.of(context).canvasColor,
+          backgroundColor: Theme.of(context).canvasColor,
+          activeControlsWidgetColor: Theme.of(context).primaryColor,
+          hideBottomControls: true,
+          lockAspectRatio: true,
+        ));
+
+    if (croppedFile != null) {
+      //var fileName = path.basename(croppedFile.path);
+      var croppedImage = imageLib.decodeImage(croppedFile.readAsBytesSync());
+      croppedImage = imageLib.copyResize(croppedImage, width: 500);
+    }
+    return croppedFile;
+  }
+
+  Future<File> imageProcessorCamera(
+      {@required BuildContext context,
+        @required double ratioY,
+        @required double ratioX}) async {
+    final ImagePicker _picker = ImagePicker();
+    XFile pickedMedia =
+    await _picker.pickImage(source: ImageSource.camera, imageQuality: 70);
 
     File imageFile;
     imageFile = File(pickedMedia.path);
