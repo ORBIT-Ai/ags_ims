@@ -80,7 +80,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   ? ListView.builder(
                       itemCount: histories.data.length,
                       shrinkWrap: true,
-                      reverse: true,
+                      //reverse: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, i) {
                         return HistoryCard(

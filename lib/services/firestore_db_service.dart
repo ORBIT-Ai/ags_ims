@@ -22,8 +22,7 @@ class FireStoreDBService extends FireStoreDB {
   Future<List<EmployeeID>> getEmployeeID() async {
     CollectionReference collection = _fireStoreDB.collection("employee_id");
 
-    QuerySnapshot doc =
-    await collection.get();
+    QuerySnapshot doc = await collection.get();
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => EmployeeID.fromJson(snapshot.data()))
@@ -34,8 +33,7 @@ class FireStoreDBService extends FireStoreDB {
   Future<List<UserDetails>> getUsers() async {
     CollectionReference collection = _fireStoreDB.collection("users");
 
-    QuerySnapshot doc =
-    await collection.get();
+    QuerySnapshot doc = await collection.get();
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => UserDetails.fromJson(snapshot.data()))
@@ -170,8 +168,10 @@ class FireStoreDBService extends FireStoreDB {
   Future<List<ItemDetails>> getStocks() async {
     CollectionReference collection = _fireStoreDB.collection("items");
 
-    QuerySnapshot doc =
-        await collection.where("isActive", isEqualTo: true).get();
+    QuerySnapshot doc = await collection
+        .where("isActive", isEqualTo: true)
+        .orderBy('itemName', descending: false)
+        .get();
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => ItemDetails.fromJson(snapshot.data()))
@@ -221,7 +221,9 @@ class FireStoreDBService extends FireStoreDB {
   Future<List<History>> getHistories() async {
     CollectionReference notifications = _fireStoreDB.collection("history");
 
-    QuerySnapshot doc = await notifications.get();
+    QuerySnapshot doc = await notifications
+        .orderBy('historyInfo.historyID', descending: true)
+        .get();
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => History.fromJson(snapshot.data()))
@@ -265,8 +267,10 @@ class FireStoreDBService extends FireStoreDB {
   Future<List<ItemDetails>> getOnHand() async {
     CollectionReference collection = _fireStoreDB.collection("items");
 
-    QuerySnapshot doc =
-        await collection.where("isOnHand", isEqualTo: true).get();
+    QuerySnapshot doc = await collection
+        .where("isOnHand", isEqualTo: true)
+        .orderBy('itemName', descending: false)
+        .get();
     //print(doc.docs.length);
     return doc.docs
         .map((snapshot) => ItemDetails.fromJson(snapshot.data()))
@@ -278,6 +282,7 @@ class FireStoreDBService extends FireStoreDB {
     CollectionReference collection = _fireStoreDB.collection("items");
 
     QuerySnapshot doc = await collection
+        .orderBy('itemName', descending: false)
         .where("isOnHand", isEqualTo: false)
         .where("itemCount", isEqualTo: 0)
         .get();
@@ -469,35 +474,38 @@ class FireStoreDBService extends FireStoreDB {
     final CollectionReference collection = _fireStoreDB.collection("sold");
 
     QuerySnapshot doc;
-    if(collectiveTerm == "daily" || collectiveTerm == "monthly" || collectiveTerm == "yearly"){
+    if (collectiveTerm == "daily" ||
+        collectiveTerm == "monthly" ||
+        collectiveTerm == "yearly") {
       doc = await collection
           .where("itemRecordsInfo.date.month",
-          isEqualTo: collectiveTerm == "daily" || collectiveTerm == "monthly"
-              ? BaseUtils().currentMonth()
-              : null)
+              isEqualTo:
+                  collectiveTerm == "daily" || collectiveTerm == "monthly"
+                      ? BaseUtils().currentMonth()
+                      : null)
           .where("itemRecordsInfo.date.day",
-          isEqualTo:
-          collectiveTerm == "daily" ? BaseUtils().currentDay() : null)
+              isEqualTo:
+                  collectiveTerm == "daily" ? BaseUtils().currentDay() : null)
           .where("itemRecordsInfo.date.year",
-          isEqualTo: collectiveTerm == "yearly" || collectiveTerm == "monthly"
-              ? BaseUtils().currentYear()
-              : null)
+              isEqualTo:
+                  collectiveTerm == "yearly" || collectiveTerm == "monthly"
+                      ? BaseUtils().currentYear()
+                      : null)
           .get();
     } else {
       DateTime now = DateTime.now();
       List<int> weekDays = [];
-      for(int i=0; i <= 6 ; i++){
+      for (int i = 0; i <= 6; i++) {
         int start = now.subtract(Duration(days: 6)).day;
         weekDays.add(start + i);
       }
       print("WEEKDAYS: ${weekDays.toString()}");
       doc = await collection
-          .where("itemRecordsInfo.date.day",
-          whereIn: weekDays)
+          .where("itemRecordsInfo.date.day", whereIn: weekDays)
           .where("itemRecordsInfo.date.month",
-          isEqualTo: BaseUtils().currentMonth())
+              isEqualTo: BaseUtils().currentMonth())
           .where("itemRecordsInfo.date.year",
-          isEqualTo: BaseUtils().currentYear())
+              isEqualTo: BaseUtils().currentYear())
           .get();
     }
 
