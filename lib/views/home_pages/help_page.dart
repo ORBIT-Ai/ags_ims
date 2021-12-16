@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unnecessary_new
 
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
 import 'package:ags_ims/services/auth_service.dart';
@@ -106,49 +106,54 @@ class _HelpPageState extends State<HelpPage> {
                           ? "Learn how to  view recent actions made by other employees within the ecosystem."
                           : null;
 
-          return Card(
-            margin: EdgeInsets.only(top: 10, right: 10, left: 10),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(18),
-                      topLeft: Radius.circular(18)),
-                  child: Container(
-                    padding: EdgeInsets.all(30),
-                    color: Theme.of(context).colorScheme.primaryVariant,
-                    child: Icon(
-                      icon,
-                      color: Theme.of(context).primaryColor,
-                      size: isDesktop ? 72 : 48,
+          return GestureDetector(
+            onTap: () {
+              helpDialog(position: i);
+            },
+            child: Card(
+              margin: EdgeInsets.only(top: 10, right: 10, left: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(18),
+                        topLeft: Radius.circular(18)),
+                    child: Container(
+                      padding: EdgeInsets.all(30),
+                      color: Theme.of(context).colorScheme.primaryVariant,
+                      child: Icon(
+                        icon,
+                        color: Theme.of(context).primaryColor,
+                        size: isDesktop ? 72 : 48,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _ui.headlineMedium(
-                            context: context,
-                            content: title,
-                            color: null,
-                            isDesktop: isDesktop,
-                          ),
-                          _ui.subheadSmall(
-                            context: context,
-                            content: subhead,
-                            color: null,
-                            isDesktop: isDesktop,
-                          ),
-                        ]),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _ui.headlineMedium(
+                              context: context,
+                              content: title,
+                              color: null,
+                              isDesktop: isDesktop,
+                            ),
+                            _ui.subheadSmall(
+                              context: context,
+                              content: subhead,
+                              color: null,
+                              isDesktop: isDesktop,
+                            ),
+                          ]),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },
@@ -157,5 +162,35 @@ class _HelpPageState extends State<HelpPage> {
       ),
       SizedBox(height: 10),
     ];
+  }
+
+  Future<void> helpDialog({@required int position}) {
+    List<String> procedures;
+    procedures = position == 0
+        ? [
+            "To add an item, go to Stock page. Click the + button. Fill the text fields with item details, don't forget to add an image and generate a barcode. Lastly, click the 'Save' button.",
+            "To view an item, go to Stock page and click an item to view its details.",
+            "To update an item, go to Stock page, click an item, press the edit button in the toolbar. Tap the update button to saved the changes that have been made.",
+            "To delete an item, click an item in the Stock page and tap the 'Delete' button.",
+            "To view records, go to Stock page, select an item and press the 'Records' button."
+          ]
+        : position == 1
+            ? ['']
+            : position == 2
+                ? ['']
+                : [''];
+    return showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: Text("Procedures"),
+        content: ListView.builder(
+            itemCount: procedures.length,
+            shrinkWrap: true,
+            physics: AlwaysScrollableScrollPhysics(),
+            itemBuilder: (context, i) {
+              return Text("${i + 1}. ${procedures[i]}");
+            }),
+      ),
+    );
   }
 }

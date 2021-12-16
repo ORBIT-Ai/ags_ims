@@ -32,6 +32,8 @@ class _AccountPageState extends State<AccountPage> {
   bool isMobile;
   bool isTablet;
 
+  bool isAdmin;
+
   TextEditingController emailInputController;
   TextEditingController fullNameInputController;
   TextEditingController positionInputController;
@@ -46,6 +48,8 @@ class _AccountPageState extends State<AccountPage> {
     positionInputController = new TextEditingController();
     phoneNumberInputController = new TextEditingController();
     idNumberInputController = new TextEditingController();
+
+    isAdmin = _auth.getCurrentUserID() == "uffEWANeSwaopAZolx6VNXbqakA3";
     super.initState();
   }
 
@@ -159,10 +163,10 @@ class _AccountPageState extends State<AccountPage> {
                     enabled: false,
                   ),
                 ),
-                SizedBox(
+                isAdmin ? Container() : SizedBox(
                   width: 10,
                 ),
-                Expanded(
+                isAdmin ? Container() : Expanded(
                   child: _ui.textFormField(
                     context: context,
                     controller: phoneNumberInputController,
@@ -206,7 +210,7 @@ class _AccountPageState extends State<AccountPage> {
             SizedBox(
               height: 15,
             ),
-            Container(
+            isAdmin ? Container() : Container(
               width: MediaQuery.of(context).size.width,
               height: 50,
               child: Row(
@@ -241,7 +245,7 @@ class _AccountPageState extends State<AccountPage> {
   List<Widget> controlsButtons(
       BuildContext context, AsyncSnapshot<UserDetails> userDetails) {
     return [
-      Expanded(
+      isAdmin ? Container() : Expanded(
         child: FloatingActionButton.extended(
           label: Text("Update Account"),
           icon: Icon(Icons.edit_rounded),
@@ -260,7 +264,7 @@ class _AccountPageState extends State<AccountPage> {
           },
         ),
       ),
-      SizedBox(
+      isAdmin ? Container() : SizedBox(
         width: 15,
         height: 15,
       ),
