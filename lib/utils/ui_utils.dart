@@ -632,6 +632,19 @@ class UI {
         width: 100,
         height: 100,
         filterQuality: filterQuality,
+            errorWidget: (BuildContext context,
+                String data, dynamic error) {
+              return Container(
+                width: 100,
+                height: 100,
+                color: Theme.of(context).primaryColorLight,
+                child: Icon(
+                  Icons.image_not_supported_rounded,
+                  size: 18,
+                  color: Theme.of(context).primaryColorDark,
+                ),
+              );
+            },
       )),
       radius: 90,
     );

@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors, sized_box_for_whitespace
 
-import 'dart:io';
+import 'dart:html';
+import 'dart:typed_data';
 
 import 'package:ags_ims/core/models/user_details.dart';
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
@@ -11,7 +12,11 @@ import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:mime_type/mime_type.dart';
+import 'package:path/path.dart' as Path;
+import 'package:cross_file/cross_file.dart';
 
 class UpdateAccount extends StatefulWidget {
   const UpdateAccount({Key key, this.userDetails}) : super(key: key);
@@ -49,6 +54,8 @@ class _UpdateAccountState extends State<UpdateAccount> {
 
   File imageFile;
   ImageCache imageCache = new ImageCache();
+
+  var profileImageMediaData;
 
   @override
   initState() {
@@ -199,73 +206,90 @@ class _UpdateAccountState extends State<UpdateAccount> {
             SizedBox(
               height: 30,
             ),
-            !kIsWeb
-                ? Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        child: Container(
-                          width: 86,
-                          height: 86,
-                          child: CircleAvatar(
-                            backgroundColor:
-                                Theme.of(context).primaryColorLight,
-                            child: ClipOval(
-                              child: widget.userDetails.data.profileUrl ==
-                                          null &&
-                                      imageFile == null
-                                  ? Container(
-                                      height: 86,
-                                      width: 86,
-                                      child: Icon(
-                                        Icons.person,
-                                        size: 48,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                      ),
-                                    )
-                                  : widget.userDetails.data.profileUrl != null
-                                      ? Image.network(
-                                          widget.userDetails.data.profileUrl,
-                                          height: 86,
-                                          width: 86,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Image.file(
-                                          imageFile,
-                                          height: 86,
-                                          width: 86,
-                                          fit: BoxFit.cover,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  child: Container(
+                    width: 86,
+                    height: 86,
+                    child: CircleAvatar(
+                      backgroundColor: Theme.of(context).primaryColorLight,
+                      child: ClipOval(
+                        child: widget.userDetails.data.profileUrl == null &&
+                                imageFile == null
+                            ? Container(
+                                height: 86,
+                                width: 86,
+                                child: Icon(
+                                  Icons.person,
+                                  size: 48,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              )
+                            : widget.userDetails.data.profileUrl != null && imageFile == null
+                                ? Image.network(
+                                    widget.userDetails.data.profileUrl,
+                                    height: 86,
+                                    width: 86,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace stackTrace) {
+                                      return Container(
+                                        width: 86,
+                                        height: 86,
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        child: Icon(
+                                          Icons.image_not_supported_rounded,
+                                          size: 18,
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
                                         ),
-                            ),
-                            radius: 100,
-                          ),
-                        ),
+                                      );
+                                    },
+                                  )
+                                : imageFile != null ? Image.memory(
+                                    profileImageMediaData,
+                                    height: 86,
+                                    width: 86,
+                                    fit: BoxFit.cover,
+                                  ) : Container(),
                       ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Expanded(
-                          child: _ui.outlinedButtonIcon(
-                        context: context,
-                        label: "Change Photo",
-                        backgroundColor:
-                            Theme.of(context).colorScheme.background,
-                        foregroundColor: Theme.of(context).colorScheme.primary,
-                        icon: Icons.photo_rounded,
-                        function: () async {
-                          //imageFile = await _baseUtils.imageProcessor(context: context, ratioY: 4, ratioX: 4);
-                          setState(() {
-                            _baseUtils.snackBarNoProgress(
-                                context: context, content: "Image Loaded");
-                          });
-                        },
-                      ))
-                    ],
-                  )
-                : Container(),
+                      radius: 100,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                Expanded(
+                    child: _ui.outlinedButtonIcon(
+                  context: context,
+                  label: "Change Photo",
+                  backgroundColor: Theme.of(context).colorScheme.background,
+                  foregroundColor: Theme.of(context).colorScheme.primary,
+                  icon: Icons.photo_rounded,
+                  function: () async {
+                    var mediaData = await ImagePickerWeb.getImageInfo;
+                    String mimeType = mime(Path.basename(mediaData.fileName));
+                    File mediaFile = new File(
+                        mediaData.data, mediaData.fileName, {'type': mimeType});
+
+                    if (mediaFile != null) {
+                      setState(() {
+                        _baseUtils.snackBarNoProgress(
+                            context: context, content: "Image Loaded");
+                        imageFile = mediaFile;
+                        profileImageMediaData = mediaData.data;
+                      });
+                    }
+                  },
+                ))
+              ],
+            ),
           ],
         ),
       ),
@@ -394,7 +418,9 @@ class _UpdateAccountState extends State<UpdateAccount> {
                   position: positionInputController.text,
                   userName: fullNameInputController.text,
                   idNumber: idNumberInputController.text,
-                  imageFile: imageFile != null ? imageFile : null,
+                  imageFile: profileImageMediaData != null
+                      ? profileImageMediaData
+                      : null,
                   imageUrl: widget.userDetails.data.profileUrl,
                 );
               } else {

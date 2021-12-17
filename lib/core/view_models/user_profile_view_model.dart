@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, prefer_const_constructors
 
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:ags_ims/core/enums/history_types.dart';
 import 'package:ags_ims/core/models/images.dart';
@@ -107,7 +108,7 @@ class UserProfileViewModel {
     @required String position,
     @required String userName,
     @required String idNumber,
-    File imageFile,
+    Uint8List imageFile,
     String imageUrl,
   }) async {
     _fireStoreDB.getUserDetails(userID: userID).then((value) {
@@ -167,7 +168,7 @@ class UserProfileViewModel {
 
   Future<String> uploadProfilePhoto({
     @required BuildContext context,
-    @required imageFile,
+    @required Uint8List imageFile,
     @required String userID,
   }) async {
     final imageID = _baseUtils.timeStamp();

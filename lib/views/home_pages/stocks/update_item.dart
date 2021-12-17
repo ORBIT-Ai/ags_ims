@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new, sized_box_for_whitespace
 
-import 'dart:io';
+import 'dart:html';
+import 'dart:typed_data';
 
 import 'package:ags_ims/core/enums/record_types.dart';
 import 'package:ags_ims/core/models/item_details.dart';
@@ -14,11 +15,15 @@ import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:image/image.dart' as image;
 import 'package:barcode_image/barcode_image.dart';
+import 'package:mime_type/mime_type.dart';
+import 'package:path/path.dart' as Path;
+import 'package:cross_file/cross_file.dart';
 
 class UpdateItem extends StatefulWidget {
   final String itemID;
@@ -58,6 +63,8 @@ class _UpdateItemState extends State<UpdateItem> {
   ImageCache imageCache = new ImageCache();
 
   String itemID;
+
+  var itemImageMediaData;
 
   @override
   initState() {
@@ -141,9 +148,9 @@ class _UpdateItemState extends State<UpdateItem> {
                                     .text
                                     .toString()
                                     .trim()),
-                                //newItemImage: isItemImageChanged == true
-                                    //? itemImage
-                                    //: null,
+                                newItemImage: isItemImageChanged == true
+                                    ? itemImageMediaData
+                                    : null,
                                 itemImage: isItemImageChanged == false
                                     ? widget.itemDetails.data.itemImage
                                     : null,
@@ -249,9 +256,21 @@ class _UpdateItemState extends State<UpdateItem> {
                       height: 100,
                       width: 100,
                       fit: BoxFit.cover,
+                errorBuilder: (BuildContext context,
+                    Object exception,
+                    StackTrace stackTrace) {
+                  return Container(
+                    color: Theme.of(context).primaryColorLight,
+                    child: Icon(
+                      Icons.image_not_supported_rounded,
+                      size: 18,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  );
+                },
                     )
                   : Image.file(
-                      itemImage,
+                      itemImageMediaData,
                       height: 100,
                       width: 100,
                       fit: BoxFit.cover,
@@ -271,32 +290,21 @@ class _UpdateItemState extends State<UpdateItem> {
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   icon: Icons.photo_rounded,
                   function: () async {
-                    //itemImage = await _baseUtils.imageProcessor(context: context, ratioY: 4, ratioX: 4);
-                    setState(() {
-                      isItemImageChanged = true;
-                      _baseUtils.snackBarNoProgress(
-                          context: context, content: "Image Loaded");
-                    });
-                  },
-                ),
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              Expanded(
-                child: _ui.outlinedButtonIcon(
-                  context: context,
-                  label: itemImage != null ? "Change Image" : "Capture Item Image",
-                  backgroundColor: Theme.of(context).colorScheme.background,
-                  foregroundColor: Theme.of(context).colorScheme.primary,
-                  icon: Icons.camera_rounded,
-                  function: () async {
-                    //itemImage = await _baseUtils.imageProcessorCamera(context: context, ratioY: 4, ratioX: 4);
-                    setState(() {
-                      isItemImageChanged = true;
-                      _baseUtils.snackBarNoProgress(
-                          context: context, content: "Image Loaded");
-                    });
+                    var mediaData = await ImagePickerWeb.getImageInfo;
+                    String mimeType =
+                    mime(Path.basename(mediaData.fileName));
+                    File mediaFile = new File(mediaData.data,
+                        mediaData.fileName, {'type': mimeType});
+
+                    if (mediaFile != null) {
+                      setState(() {
+                        isItemImageChanged = true;
+                        _baseUtils.snackBarNoProgress(
+                            context: context, content: "Image Loaded");
+                        itemImage = mediaFile;
+                        itemImageMediaData = mediaData.data;
+                      });
+                    }
                   },
                 ),
               ),
