@@ -56,8 +56,9 @@ class Auth {
           .signInWithEmailAndPassword(
               email: emailInputController.text,
               password: pwdInputController.text)
-          .then((currentUser) {
+          .then((currentUser) async {
         if (currentUser != null) {
+          await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => HomePage()));
           BaseUtils().snackBarNoProgress(

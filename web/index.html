@@ -42,6 +42,19 @@
   <script type="text/javascript">
     pdfjsLib.GlobalWorkerOptions.workerSrc = "//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.worker.min.js";
   </script>
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyCpPucjB2JfeLZb3cfM1kFtcufeZC-Vnh0",
+      authDomain: "ags-ims.firebaseapp.com",
+      projectId: "ags-ims",
+      storageBucket: "ags-ims.appspot.com",
+      messagingSenderId: "809670957662",
+      appId: "1:809670957662:web:2077fdb4a12078486a32cf",
+      measurementId: "G-833KMN9YYG"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
   <script src="main.dart.js" type="application/javascript"></script>
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
@@ -109,19 +122,6 @@
       // Service workers not supported. Just drop the <script> tag.
       loadMainDartJs();
     }
-
-    var firebaseConfig = {
-      apiKey: "AIzaSyCpPucjB2JfeLZb3cfM1kFtcufeZC-Vnh0",
-      authDomain: "ags-ims.firebaseapp.com",
-      projectId: "ags-ims",
-      storageBucket: "ags-ims.appspot.com",
-      messagingSenderId: "809670957662",
-      appId: "1:809670957662:web:2077fdb4a12078486a32cf",
-      measurementId: "G-833KMN9YYG"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
   </script>
 </body>
 </html>

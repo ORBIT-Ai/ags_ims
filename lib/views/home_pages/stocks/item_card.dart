@@ -135,10 +135,8 @@ class _ItemCardState extends State<ItemCard> {
                               ),
                             ],
                           ),
-                          Positioned(
-                            top: 10,
-                            right: 20,
-                            bottom: 10,
+                          Padding(
+                            padding: EdgeInsets.only(left: 80, top: 20, bottom: 20, right: 20,),
                             child: _ui.iconButton(
                               context: context,
                               iconColor: Theme.of(context).primaryColor,

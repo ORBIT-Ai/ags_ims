@@ -13,15 +13,10 @@ import 'package:firebase_app_check_web/firebase_app_check_web.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final ags_ims_app = await Firebase.initializeApp().then((value){
-    print('FIREBASE INITIALIZATION || APP ID:: ${value.options.appId}');
-  });
-  if (kIsWeb) {
-    final appCheckWeb = new FirebaseAppCheckWeb(app: ags_ims_app);
-    await appCheckWeb.activate(webRecaptchaSiteKey: '6LfCcjcdAAAAAH97dbFHQidJUpwtAHcAeqgPHoup');
-  } else {
-    await FirebaseAppCheck.instance.activate(webRecaptchaSiteKey: '6LfCcjcdAAAAAH97dbFHQidJUpwtAHcAeqgPHoup');
-  }
+  await Firebase.initializeApp();
+  await FirebaseAppCheck.instance.activate(
+    webRecaptchaSiteKey: '6LfCcjcdAAAAAH97dbFHQidJUpwtAHcAeqgPHoup',
+  );
   runApp(MyApp());
 }
 
