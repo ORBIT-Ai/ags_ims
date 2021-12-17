@@ -190,6 +190,12 @@ class BaseUtils {
     return imageFile;
   }
 
+  void downloadImage({@required String url, @required String code}){
+    AnchorElement anchorElement = new AnchorElement(href: url);
+    anchorElement.download = code;
+    anchorElement.click();
+  }
+
   /*
   Future<html.File> imageProcessorWeb(
       {@required BuildContext context,

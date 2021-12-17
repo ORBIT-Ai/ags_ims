@@ -74,11 +74,13 @@ class _ItemCardState extends State<ItemCard> {
                                       return Container(
                                         width: widget.isDesktop ? 150 : 100,
                                         height: widget.isDesktop ? 150 : 100,
-                                        color: Theme.of(context).primaryColorLight,
+                                        color:
+                                            Theme.of(context).primaryColorLight,
                                         child: Icon(
                                           Icons.image_not_supported_rounded,
                                           size: 18,
-                                          color: Theme.of(context).primaryColorDark,
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
                                         ),
                                       );
                                     },
@@ -132,6 +134,23 @@ class _ItemCardState extends State<ItemCard> {
                                 isDesktop: widget.isDesktop,
                               ),
                             ],
+                          ),
+                          Positioned(
+                            top: 10,
+                            right: 20,
+                            bottom: 10,
+                            child: _ui.iconButton(
+                              context: context,
+                              iconColor: Theme.of(context).primaryColor,
+                              icon: Icons.download_rounded,
+                              ratio: "medium",
+                              function: () {
+                                _baseUtils.downloadImage(
+                                    url: itemDetails.data.itemBarcodeImage,
+                                    code: itemDetails.data.itemName);
+                              },
+                              isDesktop: true,
+                            ),
                           ),
                         ],
                       ),
