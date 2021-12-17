@@ -74,10 +74,9 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                               filterQuality: FilterQuality.high,
                               fit: BoxFit.cover,
                               errorBuilder: (BuildContext context,
-                                  Object exception,
-                                  StackTrace stackTrace) {
+                                  Object exception, StackTrace stackTrace) {
                                 return Container(
-                                  color: Theme.of(context).primaryColorLight,
+                                  color: Theme.of(context).canvasColor,
                                   child: Icon(
                                     Icons.image_not_supported_rounded,
                                     size: 56,
@@ -315,6 +314,19 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                             itemDetails.data.itemBarcodeImage,
                             height: widget.isDesktop ? 150 : 100,
                             filterQuality: FilterQuality.high,
+                            errorBuilder: (BuildContext context,
+                                Object exception, StackTrace stackTrace) {
+                              return Container(
+                                width: widget.isDesktop ? 150 : 100,
+                                height: widget.isDesktop ? 150 : 100,
+                                color: Theme.of(context).canvasColor,
+                                child: Icon(
+                                  Icons.image_not_supported_rounded,
+                                  size: 56,
+                                  color: Theme.of(context).primaryColorDark,
+                                ),
+                              );
+                            },
                           ),
                         ),
                         SizedBox(

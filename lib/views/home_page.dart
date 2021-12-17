@@ -172,7 +172,7 @@ class _HomePageState extends State<HomePage> {
       elevation: 12,
       actionsIconTheme: IconThemeData(color: Theme.of(context).canvasColor),
       actions: [
-        _title == "Item Details" && !kIsWeb
+        _title == "Item Details"
             ? IconButton(
                 onPressed: () {
                   Navigator.push(

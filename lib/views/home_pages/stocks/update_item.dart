@@ -256,20 +256,21 @@ class _UpdateItemState extends State<UpdateItem> {
                       height: 100,
                       width: 100,
                       fit: BoxFit.cover,
-                errorBuilder: (BuildContext context,
-                    Object exception,
-                    StackTrace stackTrace) {
-                  return Container(
-                    color: Theme.of(context).primaryColorLight,
-                    child: Icon(
-                      Icons.image_not_supported_rounded,
-                      size: 18,
-                      color: Theme.of(context).primaryColorDark,
-                    ),
-                  );
-                },
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace stackTrace) {
+                        return Container(
+                          width: widget.isDesktop ? 150 : 100,
+                          height: widget.isDesktop ? 150 : 100,
+                          color: Theme.of(context).canvasColor,
+                          child: Icon(
+                            Icons.image_not_supported_rounded,
+                            size: 56,
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                        );
+                      },
                     )
-                  : Image.file(
+                  : Image.memory(
                       itemImageMediaData,
                       height: 100,
                       width: 100,
@@ -291,10 +292,9 @@ class _UpdateItemState extends State<UpdateItem> {
                   icon: Icons.photo_rounded,
                   function: () async {
                     var mediaData = await ImagePickerWeb.getImageInfo;
-                    String mimeType =
-                    mime(Path.basename(mediaData.fileName));
-                    File mediaFile = new File(mediaData.data,
-                        mediaData.fileName, {'type': mimeType});
+                    String mimeType = mime(Path.basename(mediaData.fileName));
+                    File mediaFile = new File(
+                        mediaData.data, mediaData.fileName, {'type': mimeType});
 
                     if (mediaFile != null) {
                       setState(() {
@@ -330,6 +330,19 @@ class _UpdateItemState extends State<UpdateItem> {
                 height: 100,
                 width: 100,
                 fit: BoxFit.fitHeight,
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace stackTrace) {
+                  return Container(
+                    width: widget.isDesktop ? 150 : 100,
+                    height: widget.isDesktop ? 150 : 100,
+                    color: Theme.of(context).canvasColor,
+                    child: Icon(
+                      Icons.image_not_supported_rounded,
+                      size: 56,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  );
+                },
               ),
             ),
           ),
