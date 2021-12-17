@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new, sized_box_for_whitespace
 
-import 'dart:io';
+import 'dart:html';
 import 'dart:typed_data';
 
 import 'package:ags_ims/core/view_models/item_view_model.dart';
@@ -11,12 +11,15 @@ import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:image/image.dart' as image;
 import 'package:barcode_image/barcode_image.dart';
+import 'package:mime_type/mime_type.dart';
+import 'package:path/path.dart' as Path;
+import 'package:cross_file/cross_file.dart';
 
 class AddItem extends StatefulWidget {
   const AddItem({Key key}) : super(key: key);
@@ -49,6 +52,7 @@ class _AddItemState extends State<AddItem> {
   ImageCache imageCache = new ImageCache();
 
   String itemID;
+  var itemImageMediaData, barcodeImageData;
 
   @override
   initState() {
@@ -110,8 +114,8 @@ class _AddItemState extends State<AddItem> {
                             itemNameInputController.text.toString().trim(),
                         itemPrice: double.parse(
                             itemPriceInputController.text.toString().trim()),
-                        itemImage: itemImage,
-                        itemBarcodeImage: barCodeImage,
+                        itemImage: itemImageMediaData,
+                        itemBarcodeImage: barcodeImageData,
                         itemCode: itemID,
                         itemCount: int.parse(
                             itemCountInputController.text.toString().trim()),
@@ -213,8 +217,8 @@ class _AddItemState extends State<AddItem> {
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           )
-                        : Image.file(
-                            itemImage,
+                        : Image.memory(
+                            itemImageMediaData,
                             height: 100,
                             width: 100,
                             fit: BoxFit.cover,
@@ -236,32 +240,20 @@ class _AddItemState extends State<AddItem> {
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   icon: Icons.photo_rounded,
                   function: () async {
-                    itemImage = await _baseUtils.imageProcessor(
-                        context: context, ratioY: 4, ratioX: 4);
-                    setState(() {
-                      _baseUtils.snackBarNoProgress(
-                          context: context, content: "Image Loaded");
-                    });
-                  },
-                ),
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              Expanded(
-                child: _ui.outlinedButtonIcon(
-                  context: context,
-                  label: itemImage != null ? "Change Image" : "Capture Item Image",
-                  backgroundColor: Theme.of(context).colorScheme.background,
-                  foregroundColor: Theme.of(context).colorScheme.primary,
-                  icon: Icons.camera_rounded,
-                  function: () async {
-                    itemImage = await _baseUtils.imageProcessorCamera(
-                        context: context, ratioY: 4, ratioX: 4);
-                    setState(() {
-                      _baseUtils.snackBarNoProgress(
-                          context: context, content: "Image Loaded");
-                    });
+                    var mediaData = await ImagePickerWeb.getImageInfo;
+                    String mimeType =
+                        mime(Path.basename(mediaData.fileName));
+                    File mediaFile = new File(mediaData.data,
+                        mediaData.fileName, {'type': mimeType});
+
+                    if (mediaFile != null) {
+                      setState(() {
+                        _baseUtils.snackBarNoProgress(
+                            context: context, content: "Image Loaded");
+                        itemImage = mediaFile;
+                        itemImageMediaData = mediaData.data;
+                      });
+                    }
                   },
                 ),
               ),
@@ -294,8 +286,8 @@ class _AddItemState extends State<AddItem> {
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           )
-                        : Image.file(
-                            barCodeImage,
+                        : Image.memory(
+                            barcodeImageData,
                             height: 100,
                             width: 100,
                             fit: BoxFit.fitHeight,
@@ -330,21 +322,32 @@ class _AddItemState extends State<AddItem> {
 
               //File('barcode.png').writeAsBytesSync(image.encodePng(img));
               final data = image.encodePng(img);
-              Directory tempDir = await getExternalStorageDirectory();
-              String tempPath = tempDir.path;
+              String tempPath = "/home/genedvlpr/Documents";
               String barcodeName = _baseUtils.timeStamp().toString();
               XFile barcodeFile = XFile.fromData(
                 Uint8List.fromList(data),
                 name: '$barcodeName.png',
                 mimeType: 'image/png',
               );
-              await barcodeFile.saveTo('$tempPath/$barcodeName.png');
-              barCodeImage = File('$tempPath/$barcodeName.png');
-              setState(() {
-                barCodeGenerated = true;
-                _baseUtils.snackBarNoProgress(
-                    context: context, content: "Generating Barcode");
+              await barcodeFile.saveTo('$barcodeName.png').whenComplete(() async {
+                //barCodeImage = File(barcodeFile.data, data.fileName, {'type': mimeType});
+                var mediaData = await ImagePickerWeb.getImageInfo;
+                String mimeType =
+                mime(Path.basename(mediaData.fileName));
+                File mediaFile = new File(mediaData.data,
+                    mediaData.fileName, {'type': mimeType});
+
+                if (mediaFile != null) {
+                  setState(() {
+                    _baseUtils.snackBarNoProgress(
+                        context: context, content: "Image Loaded");
+                    barCodeImage = mediaFile;
+                    barcodeImageData = mediaData.data;
+                    barCodeGenerated = true;
+                  });
+                }
               });
+
             },
           ),
         ],

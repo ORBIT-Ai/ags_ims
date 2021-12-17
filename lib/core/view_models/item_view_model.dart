@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:io';
+import 'dart:html';
+import 'dart:typed_data';
 
 import 'package:ags_ims/core/enums/history_types.dart';
 import 'package:ags_ims/core/models/item_details.dart';
@@ -27,8 +28,8 @@ class ItemViewModel {
     @required BuildContext context,
     @required String itemID,
     @required String itemName,
-    @required File itemImage,
-    @required File itemBarcodeImage,
+    @required Uint8List itemImage,
+    @required Uint8List itemBarcodeImage,
     @required String itemCode,
     @required double itemPrice,
     @required int itemCount,
@@ -77,7 +78,7 @@ class ItemViewModel {
     @required BuildContext context,
     @required String itemID,
     @required String itemName,
-    File newItemImage,
+    Uint8List newItemImage,
     String itemImage,
     @required String itemBarcodeImage,
     @required String itemCode,

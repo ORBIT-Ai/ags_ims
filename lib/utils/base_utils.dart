@@ -1,6 +1,6 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors, avoid_print
 
-import 'dart:io';
+import 'dart:html';
 import 'dart:typed_data';
 
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
@@ -14,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:intl/intl.dart';
 import 'package:photofilters/filters/preset_filters.dart';
 import 'package:photofilters/widgets/photo_filter.dart';
@@ -183,69 +184,10 @@ class BaseUtils {
       @required double ratioY,
       @required double ratioX}) async {
     final ImagePicker _picker = ImagePicker();
-    XFile pickedMedia =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
 
-    File imageFile;
-    imageFile = File(pickedMedia.path);
+    File imageFile = await ImagePickerWeb.getImageAsFile();
 
-    File croppedFile = await ImageCropper.cropImage(
-        sourcePath: imageFile.path,
-        aspectRatio: CropAspectRatio(ratioY: ratioY, ratioX: ratioX),
-        maxWidth: 500,
-        maxHeight: 500,
-        compressQuality: 100,
-        androidUiSettings: AndroidUiSettings(
-          toolbarColor: Theme.of(context).primaryColor,
-          statusBarColor: Theme.of(context).primaryColorDark,
-          toolbarWidgetColor: Theme.of(context).canvasColor,
-          backgroundColor: Theme.of(context).canvasColor,
-          activeControlsWidgetColor: Theme.of(context).primaryColor,
-          hideBottomControls: true,
-          lockAspectRatio: true,
-        ));
-
-    if (croppedFile != null) {
-      //var fileName = path.basename(croppedFile.path);
-      var croppedImage = imageLib.decodeImage(croppedFile.readAsBytesSync());
-      croppedImage = imageLib.copyResize(croppedImage, width: 500);
-    }
-    return croppedFile;
-  }
-
-  Future<File> imageProcessorCamera(
-      {@required BuildContext context,
-        @required double ratioY,
-        @required double ratioX}) async {
-    final ImagePicker _picker = ImagePicker();
-    XFile pickedMedia =
-    await _picker.pickImage(source: ImageSource.camera, imageQuality: 70);
-
-    File imageFile;
-    imageFile = File(pickedMedia.path);
-
-    File croppedFile = await ImageCropper.cropImage(
-        sourcePath: imageFile.path,
-        aspectRatio: CropAspectRatio(ratioY: ratioY, ratioX: ratioX),
-        maxWidth: 500,
-        maxHeight: 500,
-        compressQuality: 100,
-        androidUiSettings: AndroidUiSettings(
-          toolbarColor: Theme.of(context).primaryColor,
-          statusBarColor: Theme.of(context).primaryColorDark,
-          toolbarWidgetColor: Theme.of(context).canvasColor,
-          backgroundColor: Theme.of(context).canvasColor,
-          activeControlsWidgetColor: Theme.of(context).primaryColor,
-          hideBottomControls: true,
-          lockAspectRatio: true,
-        ));
-
-    if (croppedFile != null) {
-      //var fileName = path.basename(croppedFile.path);
-      var croppedImage = imageLib.decodeImage(croppedFile.readAsBytesSync());
-      croppedImage = imageLib.copyResize(croppedImage, width: 500);
-    }
-    return croppedFile;
+    return imageFile;
   }
 
   /*

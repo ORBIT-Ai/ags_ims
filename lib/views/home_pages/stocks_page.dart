@@ -61,7 +61,7 @@ class _StocksPageState extends State<StocksPage> {
                     isDesktop: isDesktop,
                     content: "Device Not Supported"),
           )),
-          !kIsWeb ? Positioned(
+          Positioned(
             bottom: 20,
             right: 20,
             child: FloatingActionButton(
@@ -76,7 +76,7 @@ class _StocksPageState extends State<StocksPage> {
                             )));
               },
             ),
-          ) : Container(),
+          ),
         ],
       );
     });

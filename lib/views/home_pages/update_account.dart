@@ -256,8 +256,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
                         foregroundColor: Theme.of(context).colorScheme.primary,
                         icon: Icons.photo_rounded,
                         function: () async {
-                          imageFile = await _baseUtils.imageProcessor(
-                              context: context, ratioY: 4, ratioX: 4);
+                          //imageFile = await _baseUtils.imageProcessor(context: context, ratioY: 4, ratioX: 4);
                           setState(() {
                             _baseUtils.snackBarNoProgress(
                                 context: context, content: "Image Loaded");

@@ -1,6 +1,6 @@
 // ignore_for_file: unnecessary_new, sized_box_for_whitespace, prefer_const_constructors, avoid_print
 
-import 'dart:io';
+import 'dart:html';
 
 import 'package:ags_ims/core/view_models/employee_id_view_model.dart';
 import 'package:ags_ims/core/view_models/user_profile_view_model.dart';
@@ -10,8 +10,11 @@ import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mime_type/mime_type.dart';
+import 'package:path/path.dart' as Path;
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key key}) : super(key: key);
@@ -48,6 +51,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   File imageFile;
   ImageCache imageCache = new ImageCache();
+  var mediaData;
 
   @override
   initState() {
@@ -285,8 +289,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                                 .primary,
                                           ),
                                         )
-                                      : Image.file(
-                                          imageFile,
+                                      : Image.memory(
+                                          mediaData.data,
                                           height: 48,
                                           width: 48,
                                           fit: BoxFit.cover,
@@ -322,8 +326,11 @@ class _SignUpPageState extends State<SignUpPage> {
                         foregroundColor: Theme.of(context).colorScheme.primary,
                         icon: Icons.photo_rounded,
                         function: () async {
-                          imageFile = await _baseUtils.imageProcessor(
-                              context: context, ratioY: 4, ratioX: 4);
+                          var mediaData = await ImagePickerWeb.getImageInfo;
+                          String mimeType = mime(Path.basename(mediaData.fileName));
+                          imageFile =
+                          new File(mediaData.data, mediaData.fileName, {'type': mimeType});
+
                           setState(() {
                             _baseUtils.snackBarNoProgress(
                                 context: context, content: "Image Loaded");

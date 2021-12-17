@@ -141,9 +141,9 @@ class _UpdateItemState extends State<UpdateItem> {
                                     .text
                                     .toString()
                                     .trim()),
-                                newItemImage: isItemImageChanged == true
-                                    ? itemImage
-                                    : null,
+                                //newItemImage: isItemImageChanged == true
+                                    //? itemImage
+                                    //: null,
                                 itemImage: isItemImageChanged == false
                                     ? widget.itemDetails.data.itemImage
                                     : null,
@@ -271,8 +271,7 @@ class _UpdateItemState extends State<UpdateItem> {
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   icon: Icons.photo_rounded,
                   function: () async {
-                    itemImage = await _baseUtils.imageProcessor(
-                        context: context, ratioY: 4, ratioX: 4);
+                    //itemImage = await _baseUtils.imageProcessor(context: context, ratioY: 4, ratioX: 4);
                     setState(() {
                       isItemImageChanged = true;
                       _baseUtils.snackBarNoProgress(
@@ -292,8 +291,7 @@ class _UpdateItemState extends State<UpdateItem> {
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   icon: Icons.camera_rounded,
                   function: () async {
-                    itemImage = await _baseUtils.imageProcessorCamera(
-                        context: context, ratioY: 4, ratioX: 4);
+                    //itemImage = await _baseUtils.imageProcessorCamera(context: context, ratioY: 4, ratioX: 4);
                     setState(() {
                       isItemImageChanged = true;
                       _baseUtils.snackBarNoProgress(

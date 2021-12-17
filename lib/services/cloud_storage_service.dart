@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
 
-import 'dart:io';
+import 'dart:html';
+import 'dart:typed_data';
 
 import 'package:ags_ims/services/auth_service.dart';
 import 'package:ags_ims/services/cloud_storage.dart';
@@ -16,7 +17,7 @@ class CloudStorageService extends CloudStorage {
 
   @override
   Future<Reference> setProfilePhoto(
-      {@required userID, @required File imageFile}) async {
+      {@required userID, @required Uint8List imageFile}) async {
     final imageID = _baseUtils.timeStamp();
 
     print(_auth.getCurrentUserID());
@@ -31,7 +32,7 @@ class CloudStorageService extends CloudStorage {
               .child("images")
               .child("profile_photos")
               .child("$imageID.png")
-              .putFile(imageFile)
+              .putData(imageFile)
               .then((value) {
               ref = value.ref;
             }).onError((e, stackTrace) {
@@ -47,7 +48,7 @@ class CloudStorageService extends CloudStorage {
 
   @override
   Future<Reference> setItemPhoto(
-      {@required itemID, @required File imageFile}) async {
+      {@required itemID, @required Uint8List imageFile}) async {
     final imageID = _baseUtils.timeStamp();
 
     print(_auth.getCurrentUserID());
@@ -61,12 +62,12 @@ class CloudStorageService extends CloudStorage {
               .child('item_image')
               .child(itemID)
               .child("$imageID.png")
-              .putFile(imageFile)
+              .putData(imageFile)
               .then((value) {
               ref = value.ref;
             }).onError((e, stackTrace) {
               print("STORAGE ERROR:: $e");
-            }).whenComplete(() => imageFile.delete())
+            })
           : print("EMPTY FILE");
     } on FirebaseException catch (e) {
       // e.g, e.code == 'canceled'
@@ -77,7 +78,7 @@ class CloudStorageService extends CloudStorage {
 
   @override
   Future<Reference> setItemBarCodePhoto(
-      {@required itemID, @required File imageFile}) async {
+      {@required itemID, @required Uint8List imageFile}) async {
     final imageID = _baseUtils.timeStamp();
 
     print(_auth.getCurrentUserID());
@@ -91,12 +92,12 @@ class CloudStorageService extends CloudStorage {
               .child('item_barcode_image')
               .child(itemID)
               .child("$imageID.png")
-              .putFile(imageFile)
+              .putData(imageFile)
               .then((value) {
               ref = value.ref;
             }).onError((e, stackTrace) {
               print("STORAGE ERROR:: $e");
-            }).whenComplete(() => imageFile.delete())
+            })
           : print("EMPTY FILE");
     } on FirebaseException catch (e) {
       // e.g, e.code == 'canceled'
