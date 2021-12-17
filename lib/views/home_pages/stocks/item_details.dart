@@ -73,6 +73,18 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                               itemDetails.data.itemImage,
                               filterQuality: FilterQuality.high,
                               fit: BoxFit.cover,
+                              errorBuilder: (BuildContext context,
+                                  Object exception,
+                                  StackTrace stackTrace) {
+                                return Container(
+                                  color: Theme.of(context).primaryColorLight,
+                                  child: Icon(
+                                    Icons.image_not_supported_rounded,
+                                    size: 56,
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ),
@@ -249,10 +261,9 @@ class _ItemDetailedViewState extends State<ItemDetailedView> {
                                           totalItemCount: itemCount,
                                           itemPrice:
                                               widget.itemDetails.data.itemPrice,
-                                          totalAmount:
-                                              int.parse(targetItemCount.text) *
-                                                  widget.itemDetails.data
-                                                      .itemPrice,
+                                          totalAmount: double.parse(
+                                                  targetItemCount.text) *
+                                              widget.itemDetails.data.itemPrice,
                                         );
                                         _itemViewModel
                                             .updateItemCount(

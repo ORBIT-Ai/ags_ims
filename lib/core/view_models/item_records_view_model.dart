@@ -29,7 +29,7 @@ class ItemRecordsViewModel {
       int itemCount,
       int totalItemCount,
       String itemName,
-      int itemPrice}) async {
+      double itemPrice}) async {
     final recordID = _baseUtils.timeStamp();
 
     String date = _baseUtils.currentDate();
@@ -112,8 +112,8 @@ class ItemRecordsViewModel {
       int itemCount,
       int totalItemCount,
       String itemName,
-      int itemPrice,
-      int totalAmount}) async {
+      double itemPrice,
+      double totalAmount}) async {
     final soldID = _baseUtils.timeStamp();
 
     String date = _baseUtils.currentDate();

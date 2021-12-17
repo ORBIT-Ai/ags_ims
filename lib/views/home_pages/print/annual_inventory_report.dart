@@ -35,9 +35,9 @@ class _AnnualInventoryReportState extends State<AnnualInventoryReport> {
 
   final doc = print_widget.Document();
 
-  int totalSoldAmount = 0;
-  int totalStockAmount = 0;
-  int soldAmount = 0;
+  double totalSoldAmount = 0.0;
+  double totalStockAmount = 0.0;
+  double soldAmount = 0.0;
   int sold = 0;
 
   @override

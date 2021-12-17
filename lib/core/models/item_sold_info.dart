@@ -7,8 +7,8 @@ class ItemSoldInfo {
   final String type;
   final String itemName;
   final int itemCount;
-  final int itemPrice;
-  final int itemTotalAmount;
+  final double itemPrice;
+  final double itemTotalAmount;
 
   ItemSoldInfo({
     @required this.soldID,
@@ -29,8 +29,8 @@ class ItemSoldInfo {
           type: json['type'] as String,
           itemName: json['itemName'] as String,
           itemCount: json['itemCount'] as int,
-          itemPrice: json['itemPrice'] as int,
-          itemTotalAmount: json['itemTotalAmount'] as int,
+          itemPrice: json['itemPrice'] as double,
+          itemTotalAmount: json['itemTotalAmount'] as double,
         );
 
   toJson() {

@@ -6,7 +6,7 @@ class ItemDetails {
   final String itemImage;
   final String itemBarcodeImage;
   final String itemCode;
-  final int itemPrice;
+  final double itemPrice;
   final int itemCount;
   final bool isOnHand;
   final bool isActive;
@@ -34,7 +34,7 @@ class ItemDetails {
           itemImage: json['itemImage'] as String,
           itemBarcodeImage: json['itemBarcodeImage'] as String,
           itemCode: json['itemCode'] as String,
-          itemPrice: json['itemPrice'] as int,
+          itemPrice: json['itemPrice'] as double,
           itemCount: json['itemCount'] as int,
           isOnHand: json['isOnHand'] as bool,
           isActive: json['isActive'] as bool,

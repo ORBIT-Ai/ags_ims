@@ -44,16 +44,17 @@ class _ItemCardState extends State<ItemCard> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => HomePage(
-                              title: "Item Details",
+                          builder: (context) => HomePage(
+                            title: "Item Details",
+                            itemID: widget.itemID,
+                            itemDetails: itemDetails,
+                            currentPage: ItemDetailedView(
+                              isDesktop: widget.isDesktop,
                               itemID: widget.itemID,
                               itemDetails: itemDetails,
-                              currentPage: ItemDetailedView(
-                                isDesktop: widget.isDesktop,
-                                itemID: widget.itemID,
-                                itemDetails: itemDetails,
-                              ),
-                            ),));
+                            ),
+                          ),
+                        ));
                   },
                   child: Column(
                     children: [
@@ -61,12 +62,37 @@ class _ItemCardState extends State<ItemCard> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              itemDetails.data.itemImage,
-                              width: widget.isDesktop ? 150 : 100,
-                              height: widget.isDesktop ? 150 : 100,
-                              filterQuality: FilterQuality.low,
-                            ),
+                            child: itemDetails.data.itemImage != null
+                                ? Image.network(
+                                    itemDetails.data.itemImage,
+                                    width: widget.isDesktop ? 150 : 100,
+                                    height: widget.isDesktop ? 150 : 100,
+                                    filterQuality: FilterQuality.low,
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace stackTrace) {
+                                      return Container(
+                                        width: widget.isDesktop ? 150 : 100,
+                                        height: widget.isDesktop ? 150 : 100,
+                                        color: Theme.of(context).primaryColorLight,
+                                        child: Icon(
+                                          Icons.image_not_supported_rounded,
+                                          size: 18,
+                                          color: Theme.of(context).primaryColorDark,
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : Container(
+                                    width: widget.isDesktop ? 150 : 100,
+                                    height: widget.isDesktop ? 150 : 100,
+                                    color: Theme.of(context).primaryColorLight,
+                                    child: Icon(
+                                      Icons.image_not_supported_rounded,
+                                      size: 18,
+                                      color: Theme.of(context).primaryColorDark,
+                                    ),
+                                  ),
                           ),
                           SizedBox(
                             width: 10,

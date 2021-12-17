@@ -53,7 +53,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
             left: isDesktop ? 20 : 0,
             right: isDesktop ? 20 : 0,
             top: isDesktop ? 20 : 0,
-            bottom: isDesktop ? 20 : 0),
+            bottom: isDesktop ? 0 : 0),
         child: isDesktop || isMobile || isTablet
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -101,7 +101,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
                       : i == 3
                           ? Icons.history_rounded
                           : isDesktop
-                              ? null
+                              ? ""
                               : Icons.info_rounded;
 
           final title = i == 0
@@ -115,7 +115,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
                       : i == 3
                           ? "History"
                           : isDesktop
-                              ? null
+                              ? ""
                               : "About";
 
           final subhead = i == 0
@@ -129,10 +129,10 @@ class _HomeMainPageState extends State<HomeMainPage> {
                       : i == 3
                           ? "View recent actions made by other employees within the ecosystem."
                           : isDesktop
-                              ? null
+                              ? ""
                               : "View information about the software.";
 
-          return Card(
+          return title != "" ? Card(
             margin: EdgeInsets.only(top: 10, right: 10, left: 10),
             child: GestureDetector(
               onTap: () => Navigator.push(
@@ -205,7 +205,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
                 ],
               ),
             ),
-          );
+          ) : Container();
         },
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: isDesktop ? 2 : 1, childAspectRatio: 4 / 1.5),
