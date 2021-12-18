@@ -191,9 +191,7 @@ class BaseUtils {
   }
 
   void downloadImage({@required String url, @required String code}){
-    AnchorElement anchorElement = new AnchorElement(href: url);
-    anchorElement.download = code;
-    anchorElement.click();
+    window.open(url, code);
   }
 
   /*

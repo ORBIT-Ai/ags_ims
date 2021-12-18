@@ -145,7 +145,7 @@ class _ItemCardState extends State<ItemCard> {
                               function: () {
                                 _baseUtils.downloadImage(
                                     url: itemDetails.data.itemBarcodeImage,
-                                    code: itemDetails.data.itemName);
+                                    code: itemDetails.data.itemCode);
                               },
                               isDesktop: true,
                             ),
