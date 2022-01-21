@@ -40,7 +40,7 @@ class _HistoryPageState extends State<HistoryPage> {
       return SingleChildScrollView(
           child: Container(
         width: MediaQuery.of(context).size.width,
-        height: isDesktop ? MediaQuery.of(context).size.height : null,
+        //height: isDesktop ? MediaQuery.of(context).size.height : null,
         padding: EdgeInsets.only(
             left: isDesktop ? 20 : 0,
             right: isDesktop ? 20 : 0,

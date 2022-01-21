@@ -77,7 +77,7 @@ class _AboutPageState extends State<AboutPage> {
         itemCount: 2,
         itemBuilder: (context, i) {
           final icon = i == 0
-              ? MdiIcons.firebase
+              ? "assets/images/flutter_logo.png"
               : i == 1
                   ? MdiIcons.firebase
                   : null;
@@ -107,11 +107,19 @@ class _AboutPageState extends State<AboutPage> {
                   child: Container(
                     padding: EdgeInsets.all(30),
                     color: Theme.of(context).colorScheme.primaryVariant,
-                    child: Icon(
-                      icon,
-                      color: Theme.of(context).primaryColor,
-                      size: isDesktop ? 72 : 48,
-                    ),
+                    child: i == 0
+                        ? Image.asset(
+                            icon,
+                            colorBlendMode: BlendMode.modulate,
+                            color: Theme.of(context).primaryColor,
+                            width: 60,
+                            height: 60,
+                          )
+                        : Icon(
+                            icon,
+                            color: Theme.of(context).primaryColor,
+                            size: isDesktop ? 72 : 48,
+                          ),
                   ),
                 ),
                 Expanded(

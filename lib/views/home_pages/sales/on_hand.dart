@@ -42,7 +42,7 @@ class _OnHandState extends State<OnHand> {
       return SingleChildScrollView(
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: isDesktop ? MediaQuery.of(context).size.height : null,
+            //height: isDesktop ? MediaQuery.of(context).size.height : null,
             child: isDesktop || isMobile || isTablet
                 ? Column(
               crossAxisAlignment: CrossAxisAlignment.center,
