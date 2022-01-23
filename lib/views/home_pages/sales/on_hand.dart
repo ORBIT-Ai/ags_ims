@@ -1,4 +1,3 @@
-
 // ignore_for_file: prefer_const_constructors
 
 import 'package:ags_ims/core/models/item_details.dart';
@@ -41,19 +40,19 @@ class _OnHandState extends State<OnHand> {
       isTablet = sizingInformation.deviceScreenType == DeviceScreenType.tablet;
       return SingleChildScrollView(
           child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: isDesktop ? MediaQuery.of(context).size.height : null,
-            child: isDesktop || isMobile || isTablet
-                ? Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: mainContent(context: context),
-            )
-                : UI().deviceNotSupported(
+        width: MediaQuery.of(context).size.width,
+        height: isDesktop ? MediaQuery.of(context).size.height : null,
+        child: isDesktop || isMobile || isTablet
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: mainContent(context: context),
+              )
+            : UI().deviceNotSupported(
                 context: context,
                 isDesktop: isDesktop,
                 content: "Device Not Supported"),
-          ));
+      ));
     });
   }
 
@@ -64,8 +63,7 @@ class _OnHandState extends State<OnHand> {
         context: context,
         page: "on_hand",
         header: "On Hand",
-        subhead:
-        "Manage items that are currently present in the warehouse.",
+        subhead: "Manage items that are currently present in the warehouse.",
         hasButton: false,
         isDesktop: isDesktop,
       ),
@@ -76,16 +74,17 @@ class _OnHandState extends State<OnHand> {
             builder: (context, AsyncSnapshot<List<ItemDetails>> items) {
               return items.hasData
                   ? ListView.builder(
-                itemCount: items.data.length,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, i) {
-                  return ItemCard(
-                    itemID: items.data[i].itemID,
-                    isDesktop: isDesktop,
-                  );
-                },
-              )
+                      itemCount: items.data.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, i) {
+                        return ItemCard(
+                          itemID: items.data[i].itemID,
+                          isDesktop: isDesktop,
+                          position: "${i + 1}",
+                        );
+                      },
+                    )
                   : Container();
             }),
       ),

@@ -33,6 +33,13 @@ class _StocksPageState extends State<StocksPage> {
   bool isMobile;
   bool isTablet;
 
+  int page = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveBuilder(builder: (context, sizingInformation) {
@@ -61,22 +68,24 @@ class _StocksPageState extends State<StocksPage> {
                     isDesktop: isDesktop,
                     content: "Device Not Supported"),
           )),
-          !kIsWeb ? Positioned(
-            bottom: 20,
-            right: 20,
-            child: FloatingActionButton(
-              child: Icon(Icons.add_rounded),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => HomePage(
-                              title: 'Stocks',
-                              currentPage: AddItem(),
-                            )));
-              },
-            ),
-          ) : Container(),
+          !kIsWeb
+              ? Positioned(
+                  bottom: 20,
+                  right: 20,
+                  child: FloatingActionButton(
+                    child: Icon(Icons.add_rounded),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomePage(
+                                    title: 'Stocks',
+                                    currentPage: AddItem(),
+                                  )));
+                    },
+                  ),
+                )
+              : Container(),
         ],
       );
     });
@@ -95,9 +104,28 @@ class _StocksPageState extends State<StocksPage> {
         isDesktop: isDesktop,
       ),
       Container(
+        width: MediaQuery.of(context).size.width,
+        height: 50,
+        child: ListView.builder(
+            itemCount: 4,
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (context, i) {
+              return TextButton(
+                child: Text("Page ${i + 1}"),
+                onPressed: () {
+                  setState(() {
+                    page = i;
+                  });
+                },
+              );
+            }),
+      ),
+      Container(
         padding: EdgeInsets.only(top: 10, left: 10, right: 10),
         child: FutureBuilder(
-            future: _fireStoreDB.getStocks(),
+            future: _fireStoreDB.getStocks(page: page),
             builder: (context, AsyncSnapshot<List<ItemDetails>> items) {
               return items.hasData
                   ? ListView.builder(
@@ -105,9 +133,11 @@ class _StocksPageState extends State<StocksPage> {
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, i) {
+                        print("LENGTH ${items.data.length}");
                         return ItemCard(
                           itemID: items.data[i].itemID,
                           isDesktop: isDesktop,
+                          position: "${i + 1}",
                         );
                       },
                     )

@@ -37,7 +37,7 @@ abstract class FireStoreDB {
   Future<void> getStocksItem({String itemID});
 
   //Get Items
-  Future<void> getStocks();
+  Future<void> getStocks({int page});
 
   //Update Item
   Future<void> updateStocksItem({ItemDetails itemDetails});

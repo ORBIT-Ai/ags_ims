@@ -165,17 +165,77 @@ class FireStoreDBService extends FireStoreDB {
   }
 
   @override
-  Future<List<ItemDetails>> getStocks() async {
+  Future<List<ItemDetails>> getStocks({int page}) async {
     CollectionReference collection = _fireStoreDB.collection("items");
 
-    QuerySnapshot doc = await collection
-        .where("isActive", isEqualTo: true)
-        .orderBy('itemName', descending: false)
-        .get();
-    //print(doc.docs.length);
-    return doc.docs
-        .map((snapshot) => ItemDetails.fromJson(snapshot.data()))
-        .toList();
+    QuerySnapshot doc1, doc2, doc3, doc4;
+    DocumentSnapshot snapshot1, snapshot2, snapshot3, snapshot4;
+
+    print("PAGE $page");
+    if (page == 0 || page == 1 || page == 2 || page == 3) {
+      doc1 = await collection
+          .where("isActive", isEqualTo: true)
+          .orderBy('itemName', descending: false)
+          .limit(100)
+          .get();
+
+      print("SNAPSHOT 1 ${doc1.docs.last.get("itemID")}");
+
+      snapshot1 = doc1.docs[doc1.docs.length - 1];
+
+      doc2 = await collection
+          .where("isActive", isEqualTo: true)
+          .orderBy('itemName', descending: false)
+          .startAfterDocument(snapshot1)
+          .limit(100)
+          .get();
+
+      //print("SNAPSHOT ${doc2.docs[doc2.docs.length - 1].get("itemID")}");
+      snapshot2 = doc2.docs[doc2.docs.length - 1];
+
+      doc3 = await collection
+          .where("isActive", isEqualTo: true)
+          .orderBy('itemName', descending: false)
+          .startAfterDocument(snapshot2)
+          .limit(100)
+          .get();
+
+      //print("SNAPSHOT ${doc3.docs[doc3.docs.length - 1].get("itemID")}");
+      snapshot3 = doc3.docs[doc3.docs.length - 1];
+
+      doc4 = await collection
+          .where("isActive", isEqualTo: true)
+          .orderBy('itemName', descending: false)
+          .startAfterDocument(snapshot3)
+          .limit(100)
+          .get();
+
+      //print("SNAPSHOT ${doc4.docs[doc4.docs.length - 1].get("itemID")}");
+
+      //print("TOTAL RECORDS ${doc1.docs.length + doc2.docs.length + doc3.docs.length + doc4.docs.length}");
+    }
+
+    return page == 0
+        ? doc1.docs
+            .map((snapshot) => ItemDetails.fromJson(snapshot.data()))
+            .toList()
+        : page == 1
+            ? doc2.docs
+                .map((snapshot) => ItemDetails.fromJson(snapshot.data()))
+                .toList()
+            : page == 2
+                ? doc3.docs
+                    .map((snapshot) => ItemDetails.fromJson(snapshot.data()))
+                    .toList()
+                : page == 3
+                    ? doc4.docs
+                        .map(
+                            (snapshot) => ItemDetails.fromJson(snapshot.data()))
+                        .toList()
+                    : doc1.docs
+                        .map(
+                            (snapshot) => ItemDetails.fromJson(snapshot.data()))
+                        .toList();
   }
 
   @override
@@ -223,6 +283,7 @@ class FireStoreDBService extends FireStoreDB {
 
     QuerySnapshot doc = await notifications
         .orderBy('historyInfo.historyID', descending: true)
+        .limit(100)
         .get();
     //print(doc.docs.length);
     return doc.docs
@@ -282,11 +343,12 @@ class FireStoreDBService extends FireStoreDB {
     CollectionReference collection = _fireStoreDB.collection("items");
 
     QuerySnapshot doc = await collection
-        .orderBy('itemName', descending: false)
+        //.orderBy('itemName', descending: false)
+        .where("isTrashed", isEqualTo: false)
         .where("isOnHand", isEqualTo: false)
         .where("itemCount", isEqualTo: 0)
         .get();
-    //print(doc.docs.length);
+
     return doc.docs
         .map((snapshot) => ItemDetails.fromJson(snapshot.data()))
         .toList();

@@ -16,8 +16,9 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class ItemCard extends StatefulWidget {
   final String itemID;
   final bool isDesktop;
+  final String position;
 
-  const ItemCard({Key key, this.itemID, this.isDesktop}) : super(key: key);
+  const ItemCard({Key key, this.itemID, this.isDesktop, this.position}) : super(key: key);
 
   @override
   _ItemCardState createState() => _ItemCardState();
@@ -105,7 +106,7 @@ class _ItemCardState extends State<ItemCard> {
                                 width: widget.isDesktop ? 600 : 200,
                                 child: _ui.headlineSmall(
                                     context: context,
-                                    content: itemDetails.data.itemName,
+                                    content: "${widget.position}) ${itemDetails.data.itemName}",
                                     color: null,
                                     isDesktop: widget.isDesktop),
                               ),
