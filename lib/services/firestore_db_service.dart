@@ -239,6 +239,26 @@ class FireStoreDBService extends FireStoreDB {
   }
 
   @override
+  Future<List<ItemDetails>> getAllStocks() async {
+    CollectionReference collection = _fireStoreDB.collection("items");
+
+    QuerySnapshot doc;
+
+    doc = await collection
+        .where("isActive", isEqualTo: true)
+        .orderBy('itemName', descending: false)
+        .limit(100)
+        .get();
+
+    print("SNAPSHOT 1 ${doc.docs.last.get("itemID")}");
+
+    return doc.docs
+        .map(
+            (snapshot) => ItemDetails.fromJson(snapshot.data()))
+        .toList();
+  }
+
+  @override
   Future<void> updateStocksItem({@required ItemDetails itemDetails}) async {
     final docRef = _fireStoreDB.collection("items").doc(itemDetails.itemID);
 

@@ -55,7 +55,7 @@ class _WeeklyInventoryReportState extends State<WeeklyInventoryReport> {
         }
       }
     });
-    _fireStoreDB.getStocks().then((stockValue) {
+    _fireStoreDB.getAllStocks().then((stockValue) {
       for (int i = 0; i < stockValue.length; i++) {
         if (stockValue != null) {
           setState(() {
