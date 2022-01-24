@@ -113,63 +113,67 @@ class _AccountPageState extends State<AccountPage> {
       Container(
         padding: EdgeInsets.only(
             left: 20, right: 20, top: 20, bottom: isDesktop ? 0 : 40),
-        child: Column(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: _ui.textFormField(
-                      context: context,
-                      controller: emailInputController,
-                      keyboardType: TextInputType.emailAddress,
-                      label: "Email Address",
-                      icon: Icons.email_rounded,
-                      color: null,
-                      enabled: false,
-                      autoFocus: true),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: _ui.textFormField(
-                    context: context,
-                    controller: fullNameInputController,
-                    keyboardType: TextInputType.name,
-                    label: "Full Name",
-                    icon: Icons.person_rounded,
-                    color: null,
-                    enabled: false,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: _ui.textFormField(
-                    context: context,
-                    controller: positionInputController,
-                    keyboardType: TextInputType.text,
-                    label: "Position",
-                    icon: Icons.business_center_rounded,
-                    color: null,
-                    enabled: false,
-                  ),
-                ),
-                isAdmin
-                    ? Container()
-                    : SizedBox(
+            Expanded(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: _ui.textFormField(
+                            context: context,
+                            controller: emailInputController,
+                            keyboardType: TextInputType.emailAddress,
+                            label: "Email Address",
+                            icon: Icons.email_rounded,
+                            color: null,
+                            enabled: false,
+                            autoFocus: true),
+                      ),
+                      SizedBox(
                         width: 10,
                       ),
-                isAdmin
-                    ? Container()
-                    : Expanded(
+                      Expanded(
+                        child: _ui.textFormField(
+                          context: context,
+                          controller: fullNameInputController,
+                          keyboardType: TextInputType.name,
+                          label: "Full Name",
+                          icon: Icons.person_rounded,
+                          color: null,
+                          enabled: false,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: _ui.textFormField(
+                          context: context,
+                          controller: positionInputController,
+                          keyboardType: TextInputType.text,
+                          label: "Position",
+                          icon: Icons.business_center_rounded,
+                          color: null,
+                          enabled: false,
+                        ),
+                      ),
+                      isAdmin
+                          ? Container()
+                          : SizedBox(
+                        width: 10,
+                      ),
+                      isAdmin
+                          ? Container()
+                          : Expanded(
                         child: _ui.textFormField(
                           context: context,
                           controller: phoneNumberInputController,
@@ -180,29 +184,35 @@ class _AccountPageState extends State<AccountPage> {
                           enabled: false,
                         ),
                       ),
-              ],
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  _ui.textFormField(
+                    context: context,
+                    controller: idNumberInputController,
+                    keyboardType: TextInputType.text,
+                    label: "ID Number",
+                    icon: Icons.person_pin_rounded,
+                    color: null,
+                    enabled: false,
+                  ),
+                ],
+              ),
             ),
             SizedBox(
-              height: 15,
+              width: 20,
             ),
-            _ui.textFormField(
-              context: context,
-              controller: idNumberInputController,
-              keyboardType: TextInputType.text,
-              label: "ID Number",
-              icon: Icons.person_pin_rounded,
-              color: null,
-              enabled: false,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            isMobile
-                ? Row(
+            Expanded(
+              child: Column(
+                children: [
+                  isMobile
+                      ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: controlsButtons(context, userDetails),
                   )
-                : Container(
+                      : Container(
                     width: MediaQuery.of(context).size.width,
                     height: 112,
                     child: Column(
@@ -210,12 +220,12 @@ class _AccountPageState extends State<AccountPage> {
                       children: controlsButtons(context, userDetails),
                     ),
                   ),
-            SizedBox(
-              height: 15,
-            ),
-            isAdmin
-                ? Container()
-                : Container(
+                  SizedBox(
+                    height: 15,
+                  ),
+                  isAdmin
+                      ? Container()
+                      : Container(
                     width: MediaQuery.of(context).size.width,
                     height: 50,
                     child: Row(
@@ -227,21 +237,24 @@ class _AccountPageState extends State<AccountPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => HomePage(
-                                            title: "Account Deletion",
-                                            currentPage: AccountDelete(),
-                                            userDetails: userDetails,
-                                          )));
+                                        title: "Account Deletion",
+                                        currentPage: AccountDelete(),
+                                        userDetails: userDetails,
+                                      )));
                             },
                             label: Text("Delete Account"),
                             icon: Icon(Icons.delete_rounded),
                             backgroundColor: Theme.of(context).primaryColor,
                             foregroundColor:
-                                Theme.of(context).primaryColorLight,
+                            Theme.of(context).primaryColorLight,
                           ),
                         ),
                       ],
                     ),
                   ),
+                ],
+              ),
+            ),
           ],
         ),
       )
