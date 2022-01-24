@@ -185,7 +185,8 @@ class _AnnualInventoryReportState extends State<AnnualInventoryReport> {
                     ]),
                   ]),
               print_widget.ListView.builder(
-                itemCount: itemDetails.data.length,
+                //itemCount: itemDetails.data.length,
+                itemCount: 20,
                 itemBuilder: (context, i) {
                   int soldTotal = 0;
                   return print_widget.Table(

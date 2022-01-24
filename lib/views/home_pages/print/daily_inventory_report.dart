@@ -195,6 +195,7 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
                     ]),
                   ]),
               print_widget.ListView.builder(
+                //itemCount: itemDetails.data.length,
                 itemCount: 20,
                 itemBuilder: (context, i) {
                   int soldTotal = 0;
