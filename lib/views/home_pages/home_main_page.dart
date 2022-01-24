@@ -48,12 +48,11 @@ class _HomeMainPageState extends State<HomeMainPage> {
       return SingleChildScrollView(
           child: Container(
         width: MediaQuery.of(context).size.width,
-        height: isDesktop ? MediaQuery.of(context).size.height : null,
         padding: EdgeInsets.only(
             left: isDesktop ? 20 : 0,
             right: isDesktop ? 20 : 0,
             top: isDesktop ? 20 : 0,
-            bottom: isDesktop ? 0 : 0),
+            bottom: isDesktop ? 20 : 0),
         child: isDesktop || isMobile || isTablet
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -88,7 +87,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
       GridView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: 5,
+        itemCount: 4,
         itemBuilder: (context, i) {
           final icon = i == 0
               ? Icons.archive_rounded
@@ -210,7 +209,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: isDesktop ? 2 : 1, childAspectRatio: 4 / 1.5),
       ),
-      isDesktop ? Container() : SizedBox(height: 10),
+      //isDesktop ? Container() : SizedBox(height: 10),
     ];
   }
 }

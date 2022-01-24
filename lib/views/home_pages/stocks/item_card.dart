@@ -16,8 +16,9 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class ItemCard extends StatefulWidget {
   final String itemID;
   final bool isDesktop;
+  final String position;
 
-  const ItemCard({Key key, this.itemID, this.isDesktop}) : super(key: key);
+  const ItemCard({Key key, this.itemID, this.isDesktop, this.position}) : super(key: key);
 
   @override
   _ItemCardState createState() => _ItemCardState();
@@ -65,15 +66,15 @@ class _ItemCardState extends State<ItemCard> {
                             child: itemDetails.data.itemImage != null
                                 ? Image.network(
                                     itemDetails.data.itemImage,
-                                    width: widget.isDesktop ? 150 : 100,
-                                    height: widget.isDesktop ? 150 : 100,
+                                    width: 100,
+                                    height: 100,
                                     filterQuality: FilterQuality.low,
                                     errorBuilder: (BuildContext context,
                                         Object exception,
                                         StackTrace stackTrace) {
                                       return Container(
-                                        width: widget.isDesktop ? 150 : 100,
-                                        height: widget.isDesktop ? 150 : 100,
+                                        width: 100,
+                                        height: 100,
                                         color:
                                             Theme.of(context).primaryColorLight,
                                         child: Icon(
@@ -86,8 +87,8 @@ class _ItemCardState extends State<ItemCard> {
                                     },
                                   )
                                 : Container(
-                                    width: widget.isDesktop ? 150 : 100,
-                                    height: widget.isDesktop ? 150 : 100,
+                                    width: 100,
+                                    height: 100,
                                     color: Theme.of(context).primaryColorLight,
                                     child: Icon(
                                       Icons.image_not_supported_rounded,
@@ -107,31 +108,60 @@ class _ItemCardState extends State<ItemCard> {
                                 width: widget.isDesktop ? 600 : 200,
                                 child: _ui.headlineSmall(
                                     context: context,
-                                    content: itemDetails.data.itemName,
+                                    content: "${widget.position}) ${itemDetails.data.itemName}",
                                     color: null,
                                     isDesktop: widget.isDesktop),
                               ),
                               SizedBox(
                                 height: 4,
                               ),
-                              _ui.textIcon(
-                                context: context,
-                                content:
+                              widget.isDesktop ? Row(
+                                children: [
+                                  _ui.textIcon(
+                                    context: context,
+                                    content:
                                     'PHP ${itemDetails.data.itemPrice.toString()}',
-                                icon: MdiIcons.tag,
-                                contentColor: Colors.grey,
-                                iconColor: Colors.grey,
-                                ratio: 'small',
-                                isDesktop: widget.isDesktop,
-                              ),
-                              _ui.textIcon(
-                                context: context,
-                                content: itemDetails.data.itemCode,
-                                icon: MdiIcons.barcode,
-                                contentColor: Colors.grey,
-                                iconColor: Colors.grey,
-                                ratio: 'small',
-                                isDesktop: widget.isDesktop,
+                                    icon: MdiIcons.tag,
+                                    contentColor: Colors.grey,
+                                    iconColor: Colors.grey,
+                                    ratio: 'small',
+                                    isDesktop: widget.isDesktop,
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  _ui.textIcon(
+                                    context: context,
+                                    content: itemDetails.data.itemCode,
+                                    icon: MdiIcons.barcode,
+                                    contentColor: Colors.grey,
+                                    iconColor: Colors.grey,
+                                    ratio: 'small',
+                                    isDesktop: widget.isDesktop,
+                                  ),
+                                ],
+                              ) : Column(
+                                children: [
+                                  _ui.textIcon(
+                                    context: context,
+                                    content:
+                                    'PHP ${itemDetails.data.itemPrice.toString()}',
+                                    icon: MdiIcons.tag,
+                                    contentColor: Colors.grey,
+                                    iconColor: Colors.grey,
+                                    ratio: 'small',
+                                    isDesktop: widget.isDesktop,
+                                  ),
+                                  _ui.textIcon(
+                                    context: context,
+                                    content: itemDetails.data.itemCode,
+                                    icon: MdiIcons.barcode,
+                                    contentColor: Colors.grey,
+                                    iconColor: Colors.grey,
+                                    ratio: 'small',
+                                    isDesktop: widget.isDesktop,
+                                  ),
+                                ],
                               ),
                             ],
                           ),

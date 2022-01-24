@@ -108,6 +108,7 @@ class _StocksPageState extends State<StocksPage> {
                         return ItemCard(
                           itemID: items.data[i].itemID,
                           isDesktop: isDesktop,
+                          position: "${i + 1}",
                         );
                       },
                     )

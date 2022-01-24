@@ -38,6 +38,11 @@ class _StockOutState extends State<StockOut> {
       isMobile = sizingInformation.deviceScreenType == DeviceScreenType.mobile;
       isTablet = sizingInformation.deviceScreenType == DeviceScreenType.tablet;
       return SingleChildScrollView(
+          padding: EdgeInsets.only(
+              left: isDesktop ? 20 : 0,
+              right: isDesktop ? 20 : 0,
+              top: isDesktop ? 20 : 0,
+              bottom: isDesktop ? 20 : 0),
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
             //height: isDesktop ? MediaQuery.of(context).size.height : null,
@@ -81,6 +86,7 @@ class _StockOutState extends State<StockOut> {
                   return ItemCard(
                     itemID: items.data[i].itemID,
                     isDesktop: isDesktop,
+                    position: "${i + 1}",
                   );
                 },
               )

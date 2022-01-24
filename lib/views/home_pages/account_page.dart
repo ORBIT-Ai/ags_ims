@@ -74,13 +74,12 @@ class _AccountPageState extends State<AccountPage> {
               }
               return Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                padding: EdgeInsets.only(
-                    left: isDesktop ? 20 : 0,
-                    right: isDesktop ? 20 : 0,
-                    top: isDesktop ? 20 : 0,
-                    bottom: isDesktop ? 20 : 0),
                 child: SingleChildScrollView(
+                  padding: EdgeInsets.only(
+                      left: isDesktop ? 20 : 0,
+                      right: isDesktop ? 20 : 0,
+                      top: isDesktop ? 20 : 0,
+                      bottom: isDesktop ? 20 : 0),
                   child: isDesktop || isMobile || isTablet
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -163,20 +162,24 @@ class _AccountPageState extends State<AccountPage> {
                     enabled: false,
                   ),
                 ),
-                isAdmin ? Container() : SizedBox(
-                  width: 10,
-                ),
-                isAdmin ? Container() : Expanded(
-                  child: _ui.textFormField(
-                    context: context,
-                    controller: phoneNumberInputController,
-                    keyboardType: TextInputType.phone,
-                    label: "Phone Number",
-                    icon: Icons.phone_rounded,
-                    color: null,
-                    enabled: false,
-                  ),
-                ),
+                isAdmin
+                    ? Container()
+                    : SizedBox(
+                        width: 10,
+                      ),
+                isAdmin
+                    ? Container()
+                    : Expanded(
+                        child: _ui.textFormField(
+                          context: context,
+                          controller: phoneNumberInputController,
+                          keyboardType: TextInputType.phone,
+                          label: "Phone Number",
+                          icon: Icons.phone_rounded,
+                          color: null,
+                          enabled: false,
+                        ),
+                      ),
               ],
             ),
             SizedBox(
@@ -210,32 +213,35 @@ class _AccountPageState extends State<AccountPage> {
             SizedBox(
               height: 15,
             ),
-            isAdmin ? Container() : Container(
-              width: MediaQuery.of(context).size.width,
-              height: 50,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: FloatingActionButton.extended(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomePage(
-                                      title: "Account Deletion",
-                                      currentPage: AccountDelete(),
-                                      userDetails: userDetails,
-                                    )));
-                      },
-                      label: Text("Delete Account"),
-                      icon: Icon(Icons.delete_rounded),
-                      backgroundColor: Theme.of(context).primaryColor,
-                      foregroundColor: Theme.of(context).primaryColorLight,
+            isAdmin
+                ? Container()
+                : Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: FloatingActionButton.extended(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomePage(
+                                            title: "Account Deletion",
+                                            currentPage: AccountDelete(),
+                                            userDetails: userDetails,
+                                          )));
+                            },
+                            label: Text("Delete Account"),
+                            icon: Icon(Icons.delete_rounded),
+                            backgroundColor: Theme.of(context).primaryColor,
+                            foregroundColor:
+                                Theme.of(context).primaryColorLight,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
           ],
         ),
       )
@@ -245,29 +251,33 @@ class _AccountPageState extends State<AccountPage> {
   List<Widget> controlsButtons(
       BuildContext context, AsyncSnapshot<UserDetails> userDetails) {
     return [
-      isAdmin ? Container() : Expanded(
-        child: FloatingActionButton.extended(
-          label: Text("Update Account"),
-          icon: Icon(Icons.edit_rounded),
-          backgroundColor: Theme.of(context).primaryColorLight,
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => HomePage(
-                          title: "Update Account",
-                          currentPage: UpdateAccount(
-                            userDetails: userDetails,
-                          ),
-                          userDetails: userDetails,
-                        )));
-          },
-        ),
-      ),
-      isAdmin ? Container() : SizedBox(
-        width: 15,
-        height: 15,
-      ),
+      isAdmin
+          ? Container()
+          : Expanded(
+              child: FloatingActionButton.extended(
+                label: Text("Update Account"),
+                icon: Icon(Icons.edit_rounded),
+                backgroundColor: Theme.of(context).primaryColorLight,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomePage(
+                                title: "Update Account",
+                                currentPage: UpdateAccount(
+                                  userDetails: userDetails,
+                                ),
+                                userDetails: userDetails,
+                              )));
+                },
+              ),
+            ),
+      isAdmin
+          ? Container()
+          : SizedBox(
+              width: 15,
+              height: 15,
+            ),
       Expanded(
         child: FloatingActionButton.extended(
           onPressed: () {

@@ -71,22 +71,16 @@ class _HistoryCardState extends State<HistoryCard> {
                                       ? userDetails.hasData
                                           ? Image.network(
                                               userDetails.data.profileUrl,
-                                              width:
-                                                  widget.isDesktop ? 150 : 100,
-                                              height:
-                                                  widget.isDesktop ? 150 : 100,
+                                              width: 100,
+                                              height: 100,
                                               filterQuality: FilterQuality.low,
                                               errorBuilder:
                                                   (BuildContext context,
                                                       Object exception,
                                                       StackTrace stackTrace) {
                                                 return Container(
-                                                  width: widget.isDesktop
-                                                      ? 150
-                                                      : 100,
-                                                  height: widget.isDesktop
-                                                      ? 150
-                                                      : 100,
+                                                  width: 100,
+                                                  height: 100,
                                                   color: Theme.of(context)
                                                       .primaryColorLight,
                                                   child: Icon(
@@ -100,10 +94,8 @@ class _HistoryCardState extends State<HistoryCard> {
                                               },
                                             )
                                           : Container(
-                                              width:
-                                                  widget.isDesktop ? 150 : 100,
-                                              height:
-                                                  widget.isDesktop ? 150 : 100,
+                                              width: 100,
+                                              height: 100,
                                               color: Theme.of(context)
                                                   .primaryColorLight,
                                               child: Icon(
@@ -124,12 +116,8 @@ class _HistoryCardState extends State<HistoryCard> {
                                             return itemDetails.hasData
                                                 ? Image.network(
                                                     itemDetails.data.itemImage,
-                                                    width: widget.isDesktop
-                                                        ? 150
-                                                        : 100,
-                                                    height: widget.isDesktop
-                                                        ? 150
-                                                        : 100,
+                                                    width: 100,
+                                                    height: 100,
                                                     filterQuality:
                                                         FilterQuality.medium,
                                                     errorBuilder: (BuildContext
@@ -137,12 +125,8 @@ class _HistoryCardState extends State<HistoryCard> {
                                                         Object exception,
                                                         StackTrace stackTrace) {
                                                       return Container(
-                                                        width: widget.isDesktop
-                                                            ? 150
-                                                            : 100,
-                                                        height: widget.isDesktop
-                                                            ? 150
-                                                            : 100,
+                                                        width: 100,
+                                                        height: 100,
                                                         color: Theme.of(context)
                                                             .primaryColorLight,
                                                         child: Icon(
@@ -157,12 +141,8 @@ class _HistoryCardState extends State<HistoryCard> {
                                                     },
                                                   )
                                                 : Container(
-                                                    width: widget.isDesktop
-                                                        ? 150
-                                                        : 100,
-                                                    height: widget.isDesktop
-                                                        ? 150
-                                                        : 100,
+                                                    width: 100,
+                                                    height: 100,
                                                     color: Theme.of(context)
                                                         .primaryColorLight,
                                                     child: Icon(
