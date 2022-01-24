@@ -91,7 +91,7 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
                                   List<String> soldID = [];
                                   if (itemDetails.hasData && itemSold.hasData) {
                                     for (int i = 0;
-                                        i < itemDetails.data.length;
+                                        i < itemSold.data.length;
                                         i++) {
                                       soldID.add(itemSold.data[i].itemID);
                                       itemDetails.data.removeAt(itemDetails.data

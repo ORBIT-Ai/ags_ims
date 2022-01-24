@@ -143,7 +143,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ? MediaQuery.of(context).size.width / 2
             : MediaQuery.of(context).size.width,
         color:
-            isDesktop || isTablet ? Theme.of(context).primaryColorLight : null,
+            isDesktop || isTablet ? Theme.of(context).primaryColorLight.withAlpha(50) : null,
         padding: EdgeInsets.all(0),
         height: isDesktop
             ? MediaQuery.of(context).size.height
@@ -154,7 +154,7 @@ class _SignUpPageState extends State<SignUpPage> {
           padding: EdgeInsets.all(20),
           child: Image.asset(
             "assets/images/register_vector.png",
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
           ),
         ),
       ),
