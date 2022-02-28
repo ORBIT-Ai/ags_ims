@@ -11,6 +11,7 @@ import 'package:ags_ims/services/service_locator.dart';
 import 'package:ags_ims/utils/base_utils.dart';
 import 'package:ags_ims/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as print_widget;
 import 'package:printing/printing.dart';
@@ -128,6 +129,7 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
       AsyncSnapshot<UserDetails> userDetails,
       AsyncSnapshot<List<ItemSold>> itemSold) async {
     final doc = print_widget.Document();
+    final currency = new NumberFormat("#,##0.00", "en_US");
 
     doc.addPage(print_widget.Page(
         pageFormat: PdfPageFormat.a4,
@@ -163,10 +165,10 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
                     print_widget.TableRow(children: [
                       headlineRow(
                           text:
-                              "Total Amount Sold: PHP ${totalSoldAmount.toString()}"),
+                          "Total Amount Sold: PHP ${currency.format(totalSoldAmount).toString()}"),
                       headlineRow(
                           text:
-                              "Total Value Stock IN Hand: PHP ${totalStockAmount.toString()}"),
+                          "Total Value Stock IN Hand: PHP ${currency.format(totalStockAmount).toString()}"),
                     ]),
                   ]),
               print_widget.SizedBox(
@@ -222,7 +224,7 @@ class _DailyInventoryReportState extends State<DailyInventoryReport> {
                                   '${itemDetails.data[i].itemCount.toString()}'),
                           tableRow(
                               text:
-                                  '${(itemDetails.data[i].itemCount * itemDetails.data[i].itemPrice).toString()}'),
+                                  'PHP ${currency.format(itemDetails.data[i].itemCount * itemDetails.data[i].itemPrice).toString()}'),
                           itemSold.hasData
                               ? print_widget.ListView.builder(
                                   itemCount: itemSold.data.length,
