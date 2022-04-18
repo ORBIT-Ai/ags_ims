@@ -107,7 +107,7 @@ class _StocksPageState extends State<StocksPage> {
         width: MediaQuery.of(context).size.width,
         height: 50,
         child: ListView.builder(
-            itemCount: 4,
+            itemCount: 8,
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             physics: NeverScrollableScrollPhysics(),

@@ -23,7 +23,7 @@ void main() async {
     //await FirebaseAppCheck.instance.activate(webRecaptchaSiteKey: '6LfCcjcdAAAAAH97dbFHQidJUpwtAHcAeqgPHoup');
   //}
   runApp(MyApp());
-}
+} 
 
 class MyApp extends StatelessWidget {
   @override

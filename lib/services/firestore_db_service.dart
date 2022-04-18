@@ -168,11 +168,29 @@ class FireStoreDBService extends FireStoreDB {
   Future<List<ItemDetails>> getStocks({int page}) async {
     CollectionReference collection = _fireStoreDB.collection("items");
 
-    QuerySnapshot doc1, doc2, doc3, doc4;
-    DocumentSnapshot snapshot1, snapshot2, snapshot3, snapshot4;
+    QuerySnapshot doc1, doc2, doc3, doc4, doc5, doc6, doc7, doc8, doc9, doc10;
+    DocumentSnapshot snapshot1,
+        snapshot2,
+        snapshot3,
+        snapshot4,
+        snapshot5,
+        snapshot6,
+        snapshot7,
+        snapshot8,
+        snapshot9,
+        snapshot10;
 
     print("PAGE $page");
-    if (page == 0 || page == 1 || page == 2 || page == 3) {
+    if (page == 0 ||
+        page == 1 ||
+        page == 2 ||
+        page == 3 ||
+        page == 4 ||
+        page == 5 ||
+        page == 6 ||
+        page == 7 ||
+        page == 8 ||
+        page == 9) {
       doc1 = await collection
           .where("isActive", isEqualTo: true)
           .orderBy('itemName', descending: false)
@@ -210,6 +228,61 @@ class FireStoreDBService extends FireStoreDB {
           .limit(100)
           .get();
 
+      snapshot4 = doc4.docs[doc4.docs.length - 1];
+
+      doc5 = await collection
+          .where("isActive", isEqualTo: true)
+          .orderBy('itemName', descending: false)
+          .startAfterDocument(snapshot4)
+          .limit(100)
+          .get();
+
+      snapshot5 = doc5.docs[doc5.docs.length - 1];
+
+      doc6 = await collection
+          .where("isActive", isEqualTo: true)
+          .orderBy('itemName', descending: false)
+          .startAfterDocument(snapshot5)
+          .limit(100)
+          .get();
+
+      snapshot6 = doc6.docs[doc6.docs.length - 1];
+
+      doc7 = await collection
+          .where("isActive", isEqualTo: true)
+          .orderBy('itemName', descending: false)
+          .startAfterDocument(snapshot6)
+          .limit(100)
+          .get();
+
+      snapshot7 = doc7.docs[doc7.docs.length - 1];
+
+      doc8 = await collection
+          .where("isActive", isEqualTo: true)
+          .orderBy('itemName', descending: false)
+          .startAfterDocument(snapshot7)
+          .limit(100)
+          .get();
+
+      snapshot8 = doc8.docs[doc8.docs.length - 1];
+
+      doc9 = await collection
+          .where("isActive", isEqualTo: true)
+          .orderBy('itemName', descending: false)
+          .startAfterDocument(snapshot8)
+          .limit(100)
+          .get();
+
+      snapshot9 = doc9.docs[doc9.docs.length - 1];
+
+      doc10 = await collection
+          .where("isActive", isEqualTo: true)
+          .orderBy('itemName', descending: false)
+          .startAfterDocument(snapshot9)
+          .limit(100)
+          .get();
+
+      snapshot10 = doc10.docs[doc10.docs.length - 1];
       //print("SNAPSHOT ${doc4.docs[doc4.docs.length - 1].get("itemID")}");
 
       //print("TOTAL RECORDS ${doc1.docs.length + doc2.docs.length + doc3.docs.length + doc4.docs.length}");
@@ -232,10 +305,37 @@ class FireStoreDBService extends FireStoreDB {
                         .map(
                             (snapshot) => ItemDetails.fromJson(snapshot.data()))
                         .toList()
-                    : doc1.docs
-                        .map(
-                            (snapshot) => ItemDetails.fromJson(snapshot.data()))
-                        .toList();
+                    : page == 4
+                        ? doc5.docs
+                            .map((snapshot) =>
+                                ItemDetails.fromJson(snapshot.data()))
+                            .toList()
+                        : page == 5
+                            ? doc6.docs
+                                .map((snapshot) =>
+                                    ItemDetails.fromJson(snapshot.data()))
+                                .toList()
+                            : page == 6
+                                ? doc7.docs
+                                    .map((snapshot) =>
+                                        ItemDetails.fromJson(snapshot.data()))
+                                    .toList()
+                                : page == 8
+                                    ? doc9.docs
+                                        .map((snapshot) => ItemDetails.fromJson(
+                                            snapshot.data()))
+                                        .toList()
+                                    : page == 9
+                                        ? doc10.docs
+                                            .map((snapshot) =>
+                                                ItemDetails.fromJson(
+                                                    snapshot.data()))
+                                            .toList()
+                                        : doc1.docs
+                                            .map((snapshot) =>
+                                                ItemDetails.fromJson(
+                                                    snapshot.data()))
+                                            .toList();
   }
 
   @override
@@ -253,8 +353,7 @@ class FireStoreDBService extends FireStoreDB {
     print("SNAPSHOT 1 ${doc.docs.last.get("itemID")}");
 
     return doc.docs
-        .map(
-            (snapshot) => ItemDetails.fromJson(snapshot.data()))
+        .map((snapshot) => ItemDetails.fromJson(snapshot.data()))
         .toList();
   }
 
